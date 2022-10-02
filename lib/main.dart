@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:labelling/graphql/graphql.dart';
+import 'package:labelling/linkHub/consumer_interface.dart';
 import 'package:labelling/services/appmode.dart';
 import 'package:labelling/services/fragments_model.dart';
 import 'package:labelling/services/source.dart';
@@ -37,12 +38,9 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => SourceService()),
-      ChangeNotifierProvider(create: (_) => AppModeService()),
-      ChangeNotifierProxyProvider<SourceService, FragmentModel>(
-          create: (context) => FragmentModel(context.read<SourceService>()),
-          update: (_, source, oldModel) => FragmentModel(source, oldModel))
-    ], child: Column(children: [ToolBar(key: key), const Chart()])));
+        body: Column(
+            children: [ToolBar(key: key), Container(color: Colors.black)]));
   }
 }
+
+    // ], child: Column(children: [ToolBar(key: key), const Chart()])));

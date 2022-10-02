@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:labelling/services/appmode.dart';
 import 'package:labelling/services/source.dart';
 import 'package:provider/provider.dart';
@@ -12,22 +13,22 @@ class SelectionMode extends StatefulWidget {
 
 class _SelectionModeState extends State<SelectionMode> {
   bool isSelected = false;
-  late final appMode = context.read<AppModeService>();
+  // late final appMode = context.read<AppModeService>();
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () => _onButtonPressed(context),
         iconSize: 30,
-        icon: Icon(
-          Icons.touch_app_sharp,
+        icon: SvgPicture.asset(
+          'assets/svg/head_and_shoulders.svg',
           color: _getIconColor(context),
         ));
   }
 
   void _onButtonPressed(BuildContext context) {
     setState(() => isSelected = !isSelected);
-    appMode.mode = (isSelected) ? AppMode.selection : AppMode.free;
+    // AppModeService = (isSelected) ? AppMode.selection : AppMode.free;
   }
 
   Color _getIconColor(BuildContext context) {
