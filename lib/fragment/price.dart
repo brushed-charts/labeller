@@ -13,33 +13,19 @@ import 'package:grapher/pipe/pipeIn.dart';
 import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/tag.dart';
 import 'package:grapher/utils/merge.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:labelling/fragment/fragment.dart';
-import 'package:labelling/fragment/struct.dart';
-import 'package:labelling/graphql/async_loading.dart';
-import 'package:labelling/graphql/mock_price.dart';
-import 'package:labelling/services/fragments_model.dart';
+import 'package:labelling/fragment/base.dart';
 import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
-class PriceFragment extends GraphFragment {
+class PriceFragment implements FragmentContract {
   @override
-  var subgraph = FragmentStruct();
-
-  PriceFragment(FragmentMetadata metadata, SourceService source,
-      void Function() updateStateCallback)
-      : super(metadata, source, updateStateCallback);
+  GraphObject? interaction, parser, visualisation;
 
   @override
-  AsyncLoadingComponent getGraphqlFetcher(GraphQLClient client) =>
-      MockPriceFetcher(client);
-
-  @override
-  void onReady(Map<String, dynamic>? data, SourceService source) {
+  PriceFragment(Map<String, dynamic>? data) {
     if (data == null) return;
-    subgraph = FragmentStruct(
-        parser: createParser(data), visualisation: createVisual());
-    updateStateCallback();
+    parser = createParser(data);
+    visualisation = createVisual();
   }
 
   GraphObject createParser(Map jsonInput) {
@@ -47,13 +33,13 @@ class PriceFragment extends GraphFragment {
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: Extract(
-                options: source.broker!,
+                options: SourceService.broker!,
                 child: Explode(
                     child: ToCandle2D(
                         xLabel: "datetime",
                         yLabel: "price",
                         child: Tag(
-                            name: source.broker!,
+                            name: SourceService.broker!,
                             child: PipeIn(
                                 eventType: IncomingData,
                                 name: 'pipe_main')))))));
@@ -62,7 +48,7 @@ class PriceFragment extends GraphFragment {
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: source.broker!,
+            tagName: SourceService.broker!,
             child: DrawUnitFactory(
                 template: Cell.template(
                     child: Candlestick(

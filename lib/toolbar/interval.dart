@@ -12,8 +12,6 @@ class IntervalSelector extends StatefulWidget {
 }
 
 class _IntervalSelector extends State<IntervalSelector> {
-  late final SourceService source = context.read<SourceService>();
-
   @override
   void initState() {
     super.initState();
@@ -24,7 +22,7 @@ class _IntervalSelector extends State<IntervalSelector> {
   Widget build(BuildContext context) {
     return DropdownButton(
         onChanged: _onInterval,
-        value: source.interval,
+        value: SourceService.interval,
         items: <String>[
           '1s',
           '2s',
@@ -53,20 +51,20 @@ class _IntervalSelector extends State<IntervalSelector> {
     var savedInterval = prefs.getString('interval');
     savedInterval ??= SourceService.defaultInterval;
     setState(() {
-      source.interval = savedInterval!;
+      SourceService.interval = savedInterval!;
     });
-    source.update();
+    SourceService.update();
   }
 
   void _onInterval(String? interval) {
     if (interval == null) return;
-    setState(() => source.interval = interval);
-    source.update();
+    setState(() => SourceService.interval = interval);
+    SourceService.update();
     _savePref();
   }
 
   Future<void> _savePref() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('interval', source.interval ?? '');
+    await prefs.setString('interval', SourceService.interval ?? '');
   }
 }

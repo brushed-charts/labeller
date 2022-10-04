@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:labelling/linkHub/event.dart';
+import 'package:labelling/linkHub/main.dart';
 
-class SourceService extends ChangeNotifier {
+class SourceService {
+  static const sourceChangedChannel = 'source_changed';
   static const defaultRawSource = 'OANDA:EUR_USD';
   static const defaultInterval = '30m';
   static final defaultTimeRange = DateTimeRange(
       start: DateTime.now().toUtc().subtract(const Duration(days: 3)),
       end: DateTime.now().toUtc());
 
-  DateTimeRange? dateRange;
-  String? interval, rawSource;
+  static DateTimeRange? dateRange;
+  static String? interval, rawSource;
 
-  SourceService();
-
-  SourceService.copy(SourceService original)
-      : dateRange = original.dateRange,
-        interval = original.interval,
-        rawSource = original.rawSource;
-
-  void update() {
+  static void update() {
     if (!isValid()) return;
-    notifyListeners();
+    LinkHub.emit(HubEvent(channel: sourceChangedChannel));
   }
 
-  String? get broker => rawSource?.split(':')[0].toLowerCase();
-  String? get asset => rawSource?.split(':')[1].toLowerCase();
-  String? get dateFrom => dateRange?.start.toIso8601String().split('.')[0];
-  String? get dateTo => dateRange?.end.toIso8601String().split('.')[0];
+  static String? get broker => rawSource?.split(':')[0].toLowerCase();
+  static String? get asset => rawSource?.split(':')[1].toLowerCase();
+  static String? get dateFrom =>
+      dateRange?.start.toIso8601String().split('.')[0];
+  static String? get dateTo => dateRange?.end.toIso8601String().split('.')[0];
 
-  int? get intervalToSeconds {
+  static int? get intervalToSeconds {
     if (interval == null) return null;
     final number = int.parse(interval!.substring(0, interval!.length - 1));
     final unit = interval![interval!.length - 1];
@@ -51,7 +48,7 @@ class SourceService extends ChangeNotifier {
     }
   }
 
-  bool isValid() {
+  static bool isValid() {
     if (rawSource == null || rawSource!.isEmpty) return false;
     if (!rawSource!.contains(':')) return false;
     if (dateRange == null) return false;

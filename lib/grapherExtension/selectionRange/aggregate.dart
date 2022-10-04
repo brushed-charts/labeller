@@ -11,17 +11,17 @@ import 'package:grapher/pipe/pipeOut.dart';
 import 'package:grapher/tag/property.dart';
 import 'package:grapher/tag/tag.dart';
 import 'package:grapher/utils/merge.dart';
-import 'package:labelling/fragment/struct.dart';
+import 'package:labelling/fragment/base.dart';
 import 'package:labelling/grapherExtension/selectionRange/data.dart';
 import 'package:labelling/grapherExtension/selectionRange/event.dart';
 import 'package:labelling/grapherExtension/selectionRange/interaction.dart';
 import 'package:labelling/grapherExtension/selectionRange/view.dart';
 
 class SelectionRangeComposer {
-  FragmentStruct unifiedFragment;
+  FragmentContract unifiedFragment;
   SelectionRangeComposer(this.unifiedFragment);
 
-  FragmentStruct aggregate() {
+  FragmentContract aggregate() {
     _updateParser();
     _updateVisual();
     _updateInteraction();

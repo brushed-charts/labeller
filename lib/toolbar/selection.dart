@@ -13,7 +13,6 @@ class SelectionMode extends StatefulWidget {
 
 class _SelectionModeState extends State<SelectionMode> {
   bool isSelected = false;
-  // late final appMode = context.read<AppModeService>();
 
   @override
   Widget build(BuildContext context) {

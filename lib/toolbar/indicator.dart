@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/services/fragments_model.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
 
 class IndicatorWidget extends StatelessWidget {
   const IndicatorWidget({Key? key}) : super(key: key);
@@ -14,18 +11,18 @@ class IndicatorWidget extends StatelessWidget {
             color: Theme.of(context).buttonTheme.colorScheme?.primary),
         onSelected: (String selection) => onSelected(context, selection),
         itemBuilder: (context) => [
-              const PopupMenuItem(child: Text('MA'), value: 'MA'),
-              const PopupMenuItem(child: Text('EMA'), value: 'EMA'),
-              const PopupMenuItem(child: Text('RSI'), value: 'RSI'),
-              const PopupMenuItem(child: Text('MACD'), value: 'MACD'),
-              const PopupMenuItem(child: Text('Volume'), value: 'Volume'),
+              const PopupMenuItem(value: 'MA', child: Text('MA')),
+              const PopupMenuItem(value: 'EMA', child: Text('EMA')),
+              const PopupMenuItem(value: 'RSI', child: Text('RSI')),
+              const PopupMenuItem(value: 'MACD', child: Text('MACD')),
+              const PopupMenuItem(value: 'Volume', child: Text('Volume')),
               const PopupMenuItem(
-                  child: Text('Stochastic'), value: 'Stochastic'),
+                  value: 'Stochastic', child: Text('Stochastic')),
             ]);
   }
 
   void onSelected(BuildContext context, String name) {
-    final fragModel = context.read<FragmentModel>();
-    fragModel.add(name);
+    // final fragModel = context.read<FragmentModel>();
+    // fragModel.add(name);
   }
 }

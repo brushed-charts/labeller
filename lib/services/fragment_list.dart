@@ -16,7 +16,7 @@ class FragmentModel extends ChangeNotifier {
   }
 
   void add(String name) {
-    if (metadataContains(name) || !source.isValid()) return;
+    if (metadataContains(name) || !SourceService.isValid()) return;
     metadata.add(FragmentMetadata(name));
     notifyListeners();
   }

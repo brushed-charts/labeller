@@ -11,7 +11,6 @@ class CalendarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    source = context.read<SourceService>();
     _loadPref();
     return IconButton(
       onPressed: () => _onCalendar(context),
@@ -27,8 +26,8 @@ class CalendarWidget extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     final strDateFrom = prefs.getString('dateFrom');
     final strDateTo = prefs.getString('dateTo');
-    source.dateRange = _makeDatetimeRange(strDateFrom, strDateTo);
-    source.update();
+    SourceService.dateRange = _makeDatetimeRange(strDateFrom, strDateTo);
+    SourceService.update();
   }
 
   DateTimeRange _makeDatetimeRange(String? strFrom, String? strTo) {
@@ -43,7 +42,7 @@ class CalendarWidget extends StatelessWidget {
   void _onCalendar(BuildContext context) async {
     final range = await showDateRangePicker(
         context: context,
-        initialDateRange: source.dateRange,
+        initialDateRange: SourceService.dateRange,
         firstDate: DateTime(2018),
         lastDate: DateTime.now());
     saveIfDateIsCorrect(range);
@@ -51,16 +50,16 @@ class CalendarWidget extends StatelessWidget {
 
   void saveIfDateIsCorrect(DateTimeRange? range) {
     if (range == null) return;
-    source.dateRange = range;
-    source.update();
+    SourceService.dateRange = range;
+    SourceService.update();
     _savePref();
   }
 
   Future<void> _savePref() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(
-        'dateFrom', source.dateRange?.start.toIso8601String() ?? '');
+        'dateFrom', SourceService.dateRange?.start.toIso8601String() ?? '');
     await prefs.setString(
-        'dateTo', source.dateRange?.end.toIso8601String() ?? '');
+        'dateTo', SourceService.dateRange?.end.toIso8601String() ?? '');
   }
 }

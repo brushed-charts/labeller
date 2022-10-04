@@ -8,15 +8,15 @@ import 'package:grapher/pipe/pipeOut.dart';
 import 'package:grapher/staticLayout/stack.dart';
 import 'package:grapher/view/view-event.dart';
 import 'package:grapher/view/window.dart';
-import 'package:labelling/fragment/struct.dart';
+import 'package:labelling/fragment/base.dart';
 import 'package:labelling/utils/null_graph_object.dart';
 
-class FragmentedGraph extends GraphObject with SinglePropagator {
-  FragmentedGraph({required FragmentStruct struct}) {
-    child = buildCoreGraph(struct);
+class FragmentToGraphObject extends GraphObject with SinglePropagator {
+  FragmentToGraphObject({required FragmentContract fragment}) {
+    child = buildCoreGraph(fragment);
   }
 
-  GraphObject buildCoreGraph(FragmentStruct fragmentStruct) {
+  GraphObject buildCoreGraph(FragmentContract fragmentStruct) {
     return StackLayout(children: [
       buildParser(fragmentStruct),
       buildVisualization(fragmentStruct),
@@ -24,11 +24,11 @@ class FragmentedGraph extends GraphObject with SinglePropagator {
     ]);
   }
 
-  GraphObject buildParser(FragmentStruct struct) {
+  GraphObject buildParser(FragmentContract struct) {
     return struct.parser ?? NullGraphObject();
   }
 
-  GraphObject buildVisualization(FragmentStruct struct) {
+  GraphObject buildVisualization(FragmentContract struct) {
     return PipeOut(
         name: 'pipe_main',
         child: Pack(
@@ -41,7 +41,7 @@ class FragmentedGraph extends GraphObject with SinglePropagator {
         ])))));
   }
 
-  GraphObject buildInteraction(FragmentStruct struct) {
+  GraphObject buildInteraction(FragmentContract struct) {
     return struct.interaction ?? NullGraphObject();
   }
 }

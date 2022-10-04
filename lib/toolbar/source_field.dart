@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:labelling/services/source.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SourceField extends StatefulWidget {
@@ -13,7 +12,6 @@ class SourceField extends StatefulWidget {
 
 class _SourceFieldState extends State<SourceField> {
   final _controller = TextEditingController();
-  late final SourceService source = context.read<SourceService>();
 
   @override
   void initState() {
@@ -26,8 +24,8 @@ class _SourceFieldState extends State<SourceField> {
     var savedSource = prefs.getString('rawSource');
     savedSource ??= SourceService.defaultRawSource;
     setState(() {
-      source.rawSource = savedSource!;
-      _controller.text = source.rawSource!;
+      SourceService.rawSource = savedSource!;
+      _controller.text = SourceService.rawSource!;
     });
   }
 
@@ -45,13 +43,13 @@ class _SourceFieldState extends State<SourceField> {
   }
 
   void _onEdited(String rawSource) {
-    setState(() => source.rawSource = rawSource);
-    source.update();
+    setState(() => SourceService.rawSource = rawSource);
+    SourceService.update();
     _savePref();
   }
 
   Future<void> _savePref() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('rawSource', source.rawSource ?? '');
+    await prefs.setString('rawSource', SourceService.rawSource ?? '');
   }
 }

@@ -8,7 +8,7 @@ enum AppMode { free, selection }
 
 class AppModeService {
   final appModeChannel = 'app_mode';
-  static var _mode = AppMode.free;
+  var _mode = AppMode.free;
 
   AppMode get mode => _mode;
   set mode(AppMode value) {
