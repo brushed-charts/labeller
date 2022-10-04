@@ -3,7 +3,7 @@ import 'package:grapher/staticLayout/stack.dart';
 import 'package:labelling/fragment/base.dart';
 import 'package:labelling/utils/null_graph_object.dart';
 
-class ConcatFragment implements FragmentContract {
+class ConcatFragments implements FragmentContract {
   @override
   GraphObject? parser, visualisation, interaction;
 
@@ -13,7 +13,8 @@ class ConcatFragment implements FragmentContract {
   final _visualList = <GraphObject?>[];
   final _interactionList = <GraphObject?>[];
 
-  ConcatFragment(this._fragments) {
+  ConcatFragments({List<FragmentContract>? children})
+      : _fragments = children ?? [] {
     extractSubgraphFromFragment();
     removeNullValues();
     makeUnifiedFragment();

@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:grapher/kernel/kernel.dart';
 import 'package:grapher/kernel/widget.dart';
 import 'package:grapher/interaction/widget.dart';
+import 'package:labelling/fragment/concat.dart';
 import 'package:labelling/fragment/price.dart';
+import 'package:labelling/fragment/volume.dart';
 import 'package:labelling/grapherExtension/axed_graph.dart';
 import 'package:labelling/grapherExtension/centered_text.dart';
 import 'package:labelling/grapherExtension/fragment_to_graph_object.dart';
@@ -39,10 +43,10 @@ class _ChartState extends State<Chart> implements HubConsumer {
     setState(() => currentGraph = loadingScreen());
     try {
       // final jsonPrice = await GraphqlService.fetch(PriceFetcher());
+      // print(jsonPrice);
       final jsonPrice = await GQLMockPrice().fetch();
       setState(() => currentGraph = priceWidget(jsonPrice));
     } catch (e) {
-      print(e);
       setState(() => currentGraph = errorScreen());
     }
   }
@@ -71,7 +75,10 @@ class _ChartState extends State<Chart> implements HubConsumer {
         kernel: GraphKernel(
             child: AxedGraph(
                 graph: FragmentToGraphObject(
-                    fragment: PriceFragment(jsonInput)))));
+                    fragment: ConcatFragments(children: [
+      PriceFragment(jsonInput),
+      VolumeFragment(jsonInput),
+    ])))));
   }
 
   @override

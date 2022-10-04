@@ -13,6 +13,7 @@ class Labeller extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Labeller',
       theme: ThemeData(
         colorScheme: const ColorScheme.dark(),
@@ -27,10 +28,8 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(children: [
-      ToolBar(key: key),
-      Expanded(child: Chart(key: UniqueKey()))
-    ]));
+        body: Column(
+            children: [ToolBar(key: key), const Expanded(child: Chart())]));
   }
 }
 
