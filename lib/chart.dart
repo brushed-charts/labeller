@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:grapher/kernel/kernel.dart';
 import 'package:grapher/kernel/widget.dart';
@@ -15,7 +13,11 @@ import 'package:labelling/linkHub/consumer_interface.dart';
 import 'package:labelling/linkHub/event.dart';
 import 'package:labelling/linkHub/main.dart';
 import 'package:labelling/services/appmode.dart';
+import 'package:labelling/services/cache.dart';
 import 'package:labelling/services/source.dart';
+
+import 'graphql/graphql.dart';
+import 'graphql/price.dart';
 
 class Chart extends StatefulWidget {
   const Chart({Key? key}) : super(key: key);
@@ -42,9 +44,11 @@ class _ChartState extends State<Chart> implements HubConsumer {
   Future<void> getAppropriateView() async {
     setState(() => currentGraph = loadingScreen());
     try {
-      // final jsonPrice = await GraphqlService.fetch(PriceFetcher());
-      // print(jsonPrice);
-      final jsonPrice = await GQLMockPrice().fetch();
+      // final jsonPrice = CacheService.load('price') ??
+      // await GraphqlService.fetch(PriceFetcher());
+      final jsonPrice =
+          CacheService.load('price') ?? await GQLMockPrice().fetch();
+      CacheService.save('price', jsonPrice);
       setState(() => currentGraph = priceWidget(jsonPrice));
     } catch (e) {
       setState(() => currentGraph = errorScreen());
