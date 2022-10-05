@@ -17,12 +17,12 @@ import 'package:labelling/fragment/base.dart';
 import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
-class PriceFragment implements FragmentContract {
+class CandleFragment implements FragmentContract {
   @override
   GraphObject? interaction, parser, visualisation;
 
   @override
-  PriceFragment(Map<String, dynamic>? data) {
+  CandleFragment(Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();

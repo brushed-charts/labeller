@@ -5,7 +5,7 @@ import 'package:grapher/kernel/kernel.dart';
 import 'package:grapher/kernel/widget.dart';
 import 'package:grapher/interaction/widget.dart';
 import 'package:labelling/fragment/concat.dart';
-import 'package:labelling/fragment/price.dart';
+import 'package:labelling/fragment/candle.dart';
 import 'package:labelling/fragment/volume.dart';
 import 'package:labelling/grapherExtension/axed_graph.dart';
 import 'package:labelling/grapherExtension/centered_text.dart';
@@ -76,7 +76,7 @@ class _ChartState extends State<Chart> implements HubConsumer {
             child: AxedGraph(
                 graph: FragmentToGraphObject(
                     fragment: ConcatFragments(children: [
-      PriceFragment(jsonInput),
+      CandleFragment(jsonInput),
       VolumeFragment(jsonInput),
     ])))));
   }
