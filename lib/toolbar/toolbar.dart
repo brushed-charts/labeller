@@ -3,7 +3,7 @@ import 'package:labelling/toolbar/indicator.dart';
 import 'package:labelling/toolbar/source_field.dart';
 import 'package:labelling/toolbar/calendar.dart';
 import 'package:labelling/toolbar/interval.dart';
-import 'package:labelling/toolbar/selection.dart';
+import 'package:labelling/toolbar/head_and_shoulders.dart';
 
 class ToolBar extends StatelessWidget {
   const ToolBar({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class ToolBar extends StatelessWidget {
           const SizedBox(width: 30),
           CalendarWidget(),
           const SizedBox(width: 30),
-          const SelectionMode(),
+          const HeadAndShouldersAnnotation(),
         ]));
   }
 }

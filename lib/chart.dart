@@ -10,12 +10,11 @@ import 'package:labelling/fragment/volume.dart';
 import 'package:labelling/grapherExtension/axed_graph.dart';
 import 'package:labelling/grapherExtension/centered_text.dart';
 import 'package:labelling/grapherExtension/fragment_to_graph_object.dart';
-import 'package:labelling/graphql/graphql.dart';
 import 'package:labelling/graphql/mock_price.dart';
-import 'package:labelling/graphql/price.dart';
 import 'package:labelling/linkHub/consumer_interface.dart';
 import 'package:labelling/linkHub/event.dart';
 import 'package:labelling/linkHub/main.dart';
+import 'package:labelling/services/appmode.dart';
 import 'package:labelling/services/source.dart';
 
 class Chart extends StatefulWidget {
@@ -31,6 +30,7 @@ class _ChartState extends State<Chart> implements HubConsumer {
   @override
   void initState() {
     LinkHub.subscribe(SourceService.sourceChangedChannel, this);
+    LinkHub.subscribe(AppModeService.channel, this);
     super.initState();
   }
 

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:labelling/services/appmode.dart';
-import 'package:labelling/services/source.dart';
-import 'package:provider/provider.dart';
 
-class SelectionMode extends StatefulWidget {
-  const SelectionMode({Key? key}) : super(key: key);
+import '../services/appmode.dart';
+
+class HeadAndShouldersAnnotation extends StatefulWidget {
+  const HeadAndShouldersAnnotation({Key? key}) : super(key: key);
 
   @override
-  _SelectionModeState createState() => _SelectionModeState();
+  createState() => _HeadAndShouldersAnnotationState();
 }
 
-class _SelectionModeState extends State<SelectionMode> {
+class _HeadAndShouldersAnnotationState
+    extends State<HeadAndShouldersAnnotation> {
   bool isSelected = false;
 
   @override
@@ -27,7 +27,8 @@ class _SelectionModeState extends State<SelectionMode> {
 
   void _onButtonPressed(BuildContext context) {
     setState(() => isSelected = !isSelected);
-    // AppModeService = (isSelected) ? AppMode.selection : AppMode.free;
+    AppModeService.mode =
+        (isSelected) ? AppMode.headAndShoulders : AppMode.free;
   }
 
   Color _getIconColor(BuildContext context) {
