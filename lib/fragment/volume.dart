@@ -20,6 +20,7 @@ import 'package:grapher/tag/tag.dart';
 import 'package:grapher/utils/merge.dart';
 import 'package:grapher/utils/y-virtual-range.dart';
 import 'package:labelling/fragment/base.dart';
+import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 import 'package:grapher/detachedPanel/align-options.dart';
@@ -41,18 +42,19 @@ class VolumeFragment implements FragmentContract {
     return SubGraphKernel(
         child: DataInjector(
             stream: mapToStream(jsonInput),
-            child: Extract(
-                options: SourceService.broker!,
-                child: Explode(
-                    child: ToPoint2D(
-                        xLabel: "datetime",
-                        yLabel: "uniform_volume",
-                        child: Tag(
-                            name: '${SourceService.broker!}_volume',
-                            property: TagProperty.neutralRange,
-                            child: PipeIn(
-                                eventType: IncomingData,
-                                name: 'pipe_main')))))));
+            child: BlockAlreadyReceivedMap(
+                child: Extract(
+                    options: SourceService.broker!,
+                    child: Explode(
+                        child: ToPoint2D(
+                            xLabel: "datetime",
+                            yLabel: "uniform_volume",
+                            child: Tag(
+                                name: '${SourceService.broker!}_volume',
+                                property: TagProperty.neutralRange,
+                                child: PipeIn(
+                                    eventType: IncomingData,
+                                    name: 'pipe_main'))))))));
   }
 
   GraphObject createVisual() {

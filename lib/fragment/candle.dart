@@ -14,6 +14,7 @@ import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/tag.dart';
 import 'package:grapher/utils/merge.dart';
 import 'package:labelling/fragment/base.dart';
+import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
@@ -32,17 +33,18 @@ class CandleFragment implements FragmentContract {
     return SubGraphKernel(
         child: DataInjector(
             stream: mapToStream(jsonInput),
-            child: Extract(
-                options: SourceService.broker!,
-                child: Explode(
-                    child: ToCandle2D(
-                        xLabel: "datetime",
-                        yLabel: "price",
-                        child: Tag(
-                            name: '${SourceService.broker!}_price',
-                            child: PipeIn(
-                                eventType: IncomingData,
-                                name: 'pipe_main')))))));
+            child: BlockAlreadyReceivedMap(
+                child: Extract(
+                    options: SourceService.broker!,
+                    child: Explode(
+                        child: ToCandle2D(
+                            xLabel: "datetime",
+                            yLabel: "price",
+                            child: Tag(
+                                name: '${SourceService.broker!}_price',
+                                child: PipeIn(
+                                    eventType: IncomingData,
+                                    name: 'pipe_main'))))))));
   }
 
   GraphObject createVisual() {
