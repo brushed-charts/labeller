@@ -43,6 +43,7 @@ class VolumeFragment implements FragmentContract {
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
+                id: 'volume',
                 child: Extract(
                     options: SourceService.broker!,
                     child: Explode(

@@ -4,8 +4,13 @@ import 'package:grapher/kernel/object.dart';
 import 'package:labelling/services/cache.dart';
 
 class BlockAlreadyReceivedMap extends Filter {
-  final cacheKey = 'graph_cache_last_received_map_hashcode';
-  BlockAlreadyReceivedMap({GraphObject? child}) : super(child);
+  static const baseCacheKey = 'graph_cache_last_received_map_hashcode';
+  final String id;
+  final String cacheKey;
+
+  BlockAlreadyReceivedMap({required this.id, GraphObject? child})
+      : cacheKey = '${baseCacheKey}_$id',
+        super(child);
 
   @override
   void onIncomingData(IncomingData input) {

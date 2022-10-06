@@ -34,6 +34,7 @@ class CandleFragment implements FragmentContract {
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
+                id: 'price',
                 child: Extract(
                     options: SourceService.broker!,
                     child: Explode(
