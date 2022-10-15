@@ -1,2 +1,2 @@
-assets/mock/oanda.json filter=lfs diff=lfs merge=lfs -text
-assets/mock/*.json filter=lfs diff=lfs merge=lfs -text
+src/assets/mock/*.json filter=lfs diff=lfs merge=lfs -text
+dist/assets/mock/*.json filter=lfs diff=lfs merge=lfs -text
