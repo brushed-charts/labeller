@@ -1,28 +1,31 @@
 import { Canvas } from "../grapher/canvas";
 import { Grapher, InputJSONArray } from "../grapher/grapher";
-import { Interaction, InteractionEvent, InteractionEventType } from "../grapher/interaction";
+import { Interaction, InteractionEventCallback, InteractionEventType } from "../grapher/interaction";
 import { Layer } from "../grapher/layer";
 import { Window } from "../window";
 
 export class GrapherService {
     static obj: Grapher
     private static store: Map<String, Layer> = new Map()
-    private static xaxis_len: number
     private static window: Window
 
     static init(): void {
-        this.obj = new Grapher(new Canvas())
-        this.window = new Window()
-        this.obj.interaction.register_on_event(InteractionEventType.scroll, this.on_scroll)
+        const canvas = new Canvas()
+        this.obj = new Grapher(canvas)
+        this.window = new Window(canvas)
+        this.obj.interaction.register_on_event(InteractionEventType.scroll, (i, prop) => this.on_scroll(i, prop))
     }
 
     static add(id: string, layer: Layer) {
         this.store.set(id, layer)
-        this.xaxis_len = layer.data.length
     }
 
-    private static on_scroll(i: Interaction, evt: InteractionEvent) {
-        
+    private static on_scroll(i: Interaction, delta_xscroll: number) {
+        const old_window_length = this.window.length
+        const delta_cell_width = delta_xscroll / this.window.length
+        this.window.cell_width += delta_cell_width
+        if(old_window_length == this.window.length) return
+        this.rebuild()
     }
     
     private static build_windowed_layers(): Layer[] {

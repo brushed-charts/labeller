@@ -4,11 +4,11 @@ export enum InteractionEventType {
     scroll
 }
 
-export type InteractionEvent = (i: Interaction, prop: any) => void
+export type InteractionEventCallback = (i: Interaction, prop: any) => void
 export class Interaction {
-    private registry: Map<InteractionEventType, InteractionEvent[]> = new Map()
+    private registry: Map<InteractionEventType, InteractionEventCallback[]> = new Map()
     grapher: Grapher
-    x_scroll_total: number = 0
+    x_scroll_total = 0
 
 
     constructor(grapher: Grapher) {
@@ -19,18 +19,18 @@ export class Interaction {
 
     private handle_scroll(ev: WheelEvent): void {
         this.x_scroll_total += ev.deltaY
-        this.call_subscriptors(InteractionEventType.scroll)
+        this.call_subscriptors(InteractionEventType.scroll, ev.deltaY)
     }
 
-    private call_subscriptors(event_type: InteractionEventType) {
-        const subs = this.registry[event_type] as InteractionEvent[]
+    private call_subscriptors(event_type: InteractionEventType, prop: any) {
+        const subs = this.registry[event_type] as InteractionEventCallback[]
         if(subs == undefined) return 
         for (const sub of subs) {
-            sub(this, this.x_scroll_total)
+            sub(this, prop)
         }
     }
 
-    register_on_event(event_type: InteractionEventType, fn: InteractionEvent): void {
+    register_on_event(event_type: InteractionEventType, fn: InteractionEventCallback): void {
         const vals = this.registry[event_type]
         if(vals == undefined) {
             this.registry[event_type] = [fn]
