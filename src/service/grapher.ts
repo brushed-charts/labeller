@@ -1,6 +1,6 @@
 import { Canvas } from "../grapher/canvas";
-import { Grapher, InputJSONArray } from "../grapher/grapher";
-import { Interaction, InteractionEvent, InteractionEventCallback, InteractionType } from "../grapher/interaction";
+import { Grapher } from "../grapher/grapher";
+import { Interaction, InteractionEvent, InteractionType } from "../grapher/interaction";
 import { Layer } from "../grapher/layer";
 import { Window } from "../window";
 
@@ -24,10 +24,8 @@ export class GrapherService {
 
     private static on_scroll(i: Interaction, ev: InteractionEvent) {
         const delta_yscroll = ev.y
-        const old_window_length = this.window.length
-        const delta_cell_width = delta_yscroll / this.window.length
-        this.window.cell_width += delta_cell_width
-        if(old_window_length == this.window.length) return
+        const delta_cell_width = delta_yscroll / this.window.cell_width
+        this.window.zoom(delta_cell_width)
         this.rebuild()
     }
 
