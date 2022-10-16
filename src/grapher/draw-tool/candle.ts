@@ -11,9 +11,9 @@ export class Candle implements DrawTool{
     draw(layer: Layer) {
         const ctx = layer.grapher.canvas.context
         ctx.fillStyle = "green";
-        const data = layer.data
+        const revesed_data = layer.data.slice()
         let cursorX = layer.grapher.canvas.source.width
-        for (const candle of data.reverse()) {
+        for (const candle of revesed_data) {
             this.draw_candle_wick(cursorX, candle, layer)
             this.draw_candle_body(cursorX, candle, layer)
             cursorX -= layer.grapher.cell_width
