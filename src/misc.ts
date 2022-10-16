@@ -7,4 +7,8 @@ export default class Misc {
         const array = json_obj['default']
         return array as InputJSONArray
     }
+
+    static async sleep(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
+    }
 }

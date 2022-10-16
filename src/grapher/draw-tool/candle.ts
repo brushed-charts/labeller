@@ -29,7 +29,7 @@ export class Candle implements DrawTool{
         const x = cursorX - pixel_marging
         const width = -(layer.grapher.cell_width - pixel_marging*2)
         
-        ctx.fillStyle = (open > close) ? 'red' : 'green';
+        ctx.fillStyle = this.get_candle_color(candle)
         ctx.fillRect(x, open, width, close - open)
     }
 
@@ -39,12 +39,20 @@ export class Candle implements DrawTool{
         const low = y_axis.toPixel(candle['low'])
         const ctx = layer.grapher.canvas.context
         const cell_width = layer.grapher.cell_width
-        ctx.strokeStyle = 'gray'
+        ctx.strokeStyle = this.get_candle_color(candle)
         ctx.lineWidth = 1
         ctx.beginPath()
         ctx.moveTo(cursorX - cell_width/2, high)
         ctx.lineTo(cursorX - cell_width/2, low)
         ctx.stroke()
+    }
+
+
+    get_candle_color(candle: Map<String, any>): string {
+        if (candle['open'] > candle['close']) {
+            return 'red'
+        }
+        return 'green'
     }
 
     getRange(input: InputJSONArray): Range {

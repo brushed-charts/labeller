@@ -13,8 +13,12 @@ export class Canvas {
         this.adjust_size()
     }
 
-    adjust_size() {
+    private adjust_size(): void {
         this.source.width = this.source.clientWidth;
         this.source.height = this.source.clientHeight;
+    }
+
+    clear(): void {
+        this.context.clearRect(0, 0, this.source.width, this.source.height)
     }
 }

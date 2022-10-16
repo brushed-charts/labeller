@@ -25,6 +25,8 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.0",
+    "graphql": "^16.6.0",
     "lodash": "^4.17.21"
   }
 }
