@@ -20,6 +20,7 @@ export class GrapherService {
 
     static add(id: string, layer: Layer) {
         this.store.set(id, layer)
+        
     }
 
     private static on_scroll(i: Interaction, ev: InteractionEvent) {

@@ -62,7 +62,7 @@ export class Candle implements DrawTool{
         for(const candle of input) {
             const low = candle['low'] as number
             const high = candle['high'] as number
-            
+            if(low == undefined || high == undefined) continue
             min = Math.min(low, min)
             max = Math.max(high, max)
         }

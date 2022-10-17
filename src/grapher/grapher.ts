@@ -11,8 +11,9 @@ export class Grapher {
     canvas: Canvas
     layers: Array<Layer>
     y_axis: VirtualAxis
-    cell_width: number
     interaction: Interaction
+
+    get cell_width(): number {return this.canvas.source.width / this.get_cell_count()}
     
 
     constructor(canvas: Canvas) {
@@ -28,14 +29,18 @@ export class Grapher {
     
     add(layer: Layer): void {
         layer.grapher = this
+        this.layers.push(layer)
+        this.update_yaxis(layer)
+    }
+
+    private update_yaxis(layer: Layer) {
         let virtual_range = this.y_axis.virtual_range
         virtual_range = Range.extremum(virtual_range, layer.range)
         this.y_axis.virtual_range = virtual_range
-        this.layers.push(layer)
-        this.cell_width = this.canvas.source.width / this.get_max_data_length()
+        
     }
 
-    get_max_data_length(): number {
+    get_cell_count(): number {
         const max_layer = this.layers.reduce((p, c) => (p.data.length > c.data.length)? p: c)
         return max_layer.data.length
     }
