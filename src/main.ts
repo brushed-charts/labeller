@@ -1,11 +1,13 @@
 import './style/main.scss'
 import * as oanda_json from './assets/mock/json-oanda.json'
 import * as close from './assets/mock/json-oanda-close.json'
+import * as volume from './assets/mock/oanda_volume.json'
 import Misc from './misc'
 import { GrapherService } from './service/grapher'
 import { Layer } from './grapher/layer'
 import { Candle } from './grapher/draw-tool/candle'
 import { Line } from './grapher/draw-tool/line'
+import { Volume } from './grapher/draw-tool/volume'
 
 /**
  * - Every JSON Input data should have the same length
@@ -15,12 +17,13 @@ import { Line } from './grapher/draw-tool/line'
  *      In this way the grapher will interpret it as a "hole" 
  */
 
-async function mock_load(imported_data, id, tool) {
+async function mock_load(imported_data, id, tool, affect_shared_axis = true) {
     const data = Misc.load_json_from_file(imported_data)
     await Misc.sleep(200)    
-    GrapherService.add(id, new Layer(data, tool))
+    GrapherService.add(id, new Layer(data, tool, affect_shared_axis))
     GrapherService.rebuild()
 }
 GrapherService.init()
 mock_load(oanda_json, 'price', new Candle())
+mock_load(volume, 'volume', new Volume(), false)
 mock_load(close, 'close', new Line())

@@ -8,8 +8,8 @@ export type InputJSONArray = Array<Map<String, any>>
 
 export class Grapher {
     static readonly CELL_MARGIN_PERCENT = 0.2
+    private layers: Array<Layer>
     canvas: Canvas
-    layers: Array<Layer>
     y_axis: VirtualAxis
     interaction: Interaction
 
@@ -30,7 +30,8 @@ export class Grapher {
     add(layer: Layer): void {
         layer.grapher = this
         this.layers.push(layer)
-        this.update_yaxis(layer)
+        if(layer.affect_shared_yaxis)
+            this.update_yaxis(layer)
     }
 
     private update_yaxis(layer: Layer) {
