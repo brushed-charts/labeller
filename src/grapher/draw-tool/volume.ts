@@ -47,8 +47,6 @@ export class Volume implements DrawTool {
         const width = -(this.layer.grapher.cell_width - margin*2)
         const height = y_bottom - y_up
         
-        console.log(y_bottom, y_up, x, width, height);
-        
         ctx.fillStyle = this.color
         ctx.fillRect(x, y_up, width, height)
     }

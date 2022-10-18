@@ -26,6 +26,7 @@ export class Line implements DrawTool {
     }
 
     draw(layer: Layer) {
+        this.reset()
         this.layer = layer
         this.cursor_x = layer.grapher.canvas.source.width
         for (const json_data of layer.data) {
