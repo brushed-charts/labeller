@@ -25,7 +25,7 @@ export class CrossCursor {
         const y = this.last_interaction.y
         this.canvas.context.strokeStyle = this.color
         this.canvas.context.beginPath()
-        this.canvas.context.setLineDash([4, 10])
+        this.canvas.context.setLineDash([4, 4])
         this.canvas.context.moveTo(0, y)
         this.canvas.context.lineTo(this.canvas.source.width, y)
         this.canvas.context.stroke()
