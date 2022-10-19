@@ -1,4 +1,5 @@
 import { Canvas } from "./canvas"
+import { CrossCursor } from "./cross-cursor"
 import { Interaction } from "./interaction"
 import { Layer } from "./layer"
 import { Range } from "./utils/range"
@@ -12,6 +13,7 @@ export class Grapher {
     canvas: Canvas
     y_axis: VirtualAxis
     interaction: Interaction
+    cross_cursor: CrossCursor
 
     get cell_width(): number {return this.canvas.source.width / this.get_cell_count()}
     
@@ -19,6 +21,7 @@ export class Grapher {
     constructor(canvas: Canvas) {
         this.canvas = canvas
         this.interaction = new Interaction(this)
+        this.cross_cursor = new CrossCursor(this)
         this.clear()
     }
 
@@ -41,13 +44,14 @@ export class Grapher {
         
     }
 
-    get_cell_count(): number {
+    private get_cell_count(): number {
         const max_layer = this.layers.reduce((p, c) => (p.data.length > c.data.length)? p: c)
         return max_layer.data.length
     }
 
     update(): void {
         this.canvas.clear()
+        this.cross_cursor.draw()
         for(const layer of this.layers) {
             layer.tool.draw(layer, this.canvas)
         }

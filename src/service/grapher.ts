@@ -24,7 +24,7 @@ export class GrapherService {
     }
 
     private static on_scroll(i: Interaction, ev: InteractionEvent) {
-        const delta_yscroll = ev.y
+        const delta_yscroll = ev.delta_y!
         const delta_cell_width = delta_yscroll / this.window.cell_width
         this.window.zoom(delta_cell_width)
         this.rebuild()
@@ -33,7 +33,7 @@ export class GrapherService {
 
     private static on_touch_move(i: Interaction, ev: InteractionEvent) {
         if(!ev.is_touch_down) return
-        this.window.shift(ev.x / this.window.cell_width)
+        this.window.shift(ev.delta_x! / this.window.cell_width)
         this.rebuild()
     }
     

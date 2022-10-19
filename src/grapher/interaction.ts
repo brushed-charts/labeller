@@ -3,12 +3,16 @@ import { Grapher } from "./grapher";
 export class InteractionEvent {
     x: number
     y: number
+    delta_x?: number
+    delta_y?: number
     is_touch_down: boolean
     last_keyboard_event?: KeyboardEvent
 
-    constructor(x:number, y:number, is_touch_down: boolean, keyboard_event?:KeyboardEvent) {
+    constructor(x:number, y:number, is_touch_down: boolean, keyboard_event?:KeyboardEvent, delta_x?: number, delta_y?: number) {
         this.x = x
         this.y = y
+        this.delta_x = delta_x
+        this.delta_y = delta_y
         this.is_touch_down = is_touch_down
         this.last_keyboard_event = keyboard_event
     }
@@ -54,7 +58,7 @@ export class Interaction {
     }
 
     private handle_scroll(ev: WheelEvent): void {
-        const relative_event = this.build_interaction_event(ev.deltaX, ev.deltaY)
+        const relative_event = this.build_interaction_event(ev.clientX, ev.clientY, ev.deltaX, ev.deltaY)
         this.call_subscriptors(InteractionType.scroll, relative_event)
     }
 
@@ -71,7 +75,7 @@ export class Interaction {
     }
 
     private handle_mouse_move(ev: MouseEvent): void {
-        const relative_event = this.build_interaction_event(ev.movementX, ev.movementY)
+        const relative_event = this.build_interaction_event(ev.clientX, ev.clientY, ev.movementX, ev.movementY)
         this.call_subscriptors(InteractionType.touch_move, relative_event)
     }
 
@@ -83,14 +87,16 @@ export class Interaction {
         }
     }
 
-    private build_interaction_event(x: number, y: number) {
+    private build_interaction_event(x: number, y: number, delta_x?: number, delta_y?: number) {
         const canvas_source = this.grapher.canvas.source
         const rect = canvas_source.getBoundingClientRect();
         return new InteractionEvent(
             ((x - rect.left) / (rect.right - rect.left)) * canvas_source.width,
             ((y - rect.top) / (rect.bottom - rect.top)) * canvas_source.height,
             this.is_touch_down,
-            this.last_keyboard_event
+            this.last_keyboard_event,
+            delta_x,
+            delta_y
         )
     };
 
