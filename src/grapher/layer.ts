@@ -1,7 +1,6 @@
 import { DrawTool } from "./draw-tool/base"
 import { Grapher, InputJSONArray } from "./grapher"
 import { Range } from "./utils/range"
-import { VirtualAxis } from "./virtual-axis"
 
 export class Layer {
     readonly data: InputJSONArray

@@ -1,4 +1,5 @@
 import { Canvas } from "../grapher/canvas";
+import { DrawTool } from "../grapher/draw-tool/base";
 import { Grapher } from "../grapher/grapher";
 import { Interaction, InteractionEvent, InteractionType } from "../grapher/interaction";
 import { Layer } from "../grapher/layer";
@@ -8,6 +9,7 @@ export class GrapherService {
     static obj: Grapher
     private static store: Map<String, Layer> = new Map()
     private static window: Window
+    private static draw_tool?: DrawTool
 
     static init(): void {
         const canvas = new Canvas()
@@ -20,7 +22,6 @@ export class GrapherService {
 
     static add(id: string, layer: Layer) {
         this.store.set(id, layer)
-        
     }
 
     private static on_scroll(i: Interaction, ev: InteractionEvent) {
