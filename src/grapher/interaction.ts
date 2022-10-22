@@ -23,6 +23,7 @@ export enum InteractionType {
     touch_down,
     touch_up,
     touch_move,
+    tap,
     keydown,
     keyup
 }
@@ -40,7 +41,9 @@ export class Subscriber {
 
 export class Interaction {
     last_keyboard_event?: KeyboardEvent
-    is_touch_down: boolean 
+    private is_touch_down: boolean
+    private x_movement_during_touch: number
+    static readonly THRESOLD_IS_A_MOVING_TOUCH = 10
     private registry: Map<InteractionType, Subscriber[]> = new Map()
     grapher: Grapher
 
@@ -80,6 +83,7 @@ export class Interaction {
     private handle_mouse_down(ev: MouseEvent): void {
         const relative_event = this.build_interaction_event(ev.clientX, ev.clientY)
         this.is_touch_down = true
+        this.x_movement_during_touch = 0
         this.call_subscriptors(InteractionType.touch_down, relative_event)
     }
 
@@ -87,11 +91,16 @@ export class Interaction {
         const relative_event = this.build_interaction_event(ev.clientX, ev.clientY)
         this.is_touch_down = false
         this.call_subscriptors(InteractionType.touch_up, relative_event)
+        if(this.x_movement_during_touch < Interaction.THRESOLD_IS_A_MOVING_TOUCH) {
+            this.call_subscriptors(InteractionType.tap,  relative_event)
+        }
     }
 
     private handle_mouse_move(ev: MouseEvent): void {
         const relative_event = this.build_interaction_event(ev.clientX, ev.clientY, ev.movementX, ev.movementY)
         this.call_subscriptors(InteractionType.touch_move, relative_event)
+        if(!this.is_touch_down) return
+        this.x_movement_during_touch += ev.movementX
     }
 
     private call_subscriptors(event_type: InteractionType, prop: any) {

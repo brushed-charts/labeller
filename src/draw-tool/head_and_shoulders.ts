@@ -22,8 +22,9 @@ export class HeadAndShoulders {
 
     constructor() {
         this.interaction_id = `head_and_shoulder_${Misc.generate_unique_id()}`
-        const interaction_subscriber = new Subscriber(this.interaction_id, (_, ev) => this.on_touch_down(ev))
-        GrapherService.obj.interaction.register_on_event(InteractionType.touch_down, interaction_subscriber)
+        const interaction_subscriber = new Subscriber(this.interaction_id, (_, ev) => this.on_tap(ev))
+        GrapherService.obj.interaction.register_on_event(InteractionType.tap, interaction_subscriber)
+        // GrapherService.obj.interaction.register_on_event(InteractionType.tap, interaction_subscriber)
         this.reset()
     }
 
@@ -33,10 +34,11 @@ export class HeadAndShoulders {
         this.current_layer = new Layer(data_template, new AnchorLine(), false)
     }
 
-    on_touch_down(ev: InteractionEvent) {
+    on_tap(ev: InteractionEvent) {
         this.construct_pattern(ev)
         this.reset_on_completed_pattern()
     }
+    
 
     private reset_on_completed_pattern() {
         if (this.point_count < HeadAndShoulders.PATTERN_POINT) return
