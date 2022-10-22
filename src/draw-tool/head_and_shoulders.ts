@@ -1,30 +1,50 @@
-import { Line } from "../grapher/draw-tool/line";
+import { AnchorLine } from "../grapher/draw-tool/anchor-line";
 import { InteractionEvent, InteractionType, Subscriber } from "../grapher/interaction";
 import { Layer } from "../grapher/layer";
 import Misc from "../misc";
 import { GrapherService } from "../service/grapher";
 import { Window } from "../service/window";
 
-export class HeadAndShoulders{
+export class HeadAndShoulders {
+    static readonly PATTERN_POINT = 7
     static readonly ID_PREFIX = 'head_and_shoulders'
     private interaction_id: string
     private layer_id: string
     private current_layer: Layer
+    private get point_count(): number { 
+        let count = 0
+        for(const val of this.current_layer.data) {
+            if(!val['value']) continue
+            count++
+        }
+        return count
+    }
 
     constructor() {
         this.interaction_id = `head_and_shoulder_${Misc.generate_unique_id()}`
         const interaction_subscriber = new Subscriber(this.interaction_id, (_, ev) => this.on_touch_down(ev))
         GrapherService.obj.interaction.register_on_event(InteractionType.touch_down, interaction_subscriber)
-        const data_template = GrapherService.get_price_based_template()
-        this.current_layer = new Layer(data_template, new Line(), false)
-        this.layer_id = HeadAndShoulders.ID_PREFIX + `.${Misc.generate_unique_id()}`
+        this.reset()
     }
 
-    detach() {
-        GrapherService.obj.interaction.remove_subscription(InteractionType.touch_down,this.interaction_id)
+    private reset() {
+        this.refresh_layer_id()
+        const data_template = GrapherService.get_price_based_template()
+        this.current_layer = new Layer(data_template, new AnchorLine(), false)
     }
-    
+
     on_touch_down(ev: InteractionEvent) {
+        this.construct_pattern(ev)
+        this.reset_on_completed_pattern()
+    }
+
+    private reset_on_completed_pattern() {
+        if (this.point_count < HeadAndShoulders.PATTERN_POINT) return
+        this.reset()
+    }
+
+    private construct_pattern(ev: InteractionEvent) {
+        if (this.point_count > HeadAndShoulders.PATTERN_POINT) return
         const index_to_edit = this.deduce_data_index_from_x_position(ev.x)
         const price = this.convert_y_pos_to_price(ev.y)
         this.set_price_at_data_index(index_to_edit, price)
@@ -53,5 +73,14 @@ export class HeadAndShoulders{
         const cell_count_from_right = Window.cell_count - cell_count_at_click
         const local_index = cell_count_from_right
         return local_index
+    }
+
+    private refresh_layer_id(): void {
+        const unique_id = Misc.generate_unique_id()
+        this.layer_id = HeadAndShoulders.ID_PREFIX + `.${unique_id}`
+    }
+
+    detach() {
+        GrapherService.obj.interaction.remove_subscription(InteractionType.touch_down, this.interaction_id)
     }
 }

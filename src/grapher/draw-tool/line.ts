@@ -1,12 +1,10 @@
-import { Canvas } from "../canvas";
-import { Grapher, InputJSONArray } from "../grapher";
+import { InputJSONArray } from "../grapher";
 import { Layer } from "../layer";
 import { Range } from "../utils/range";
 import { VirtualAxis } from "../virtual-axis";
 import { DrawTool } from "./base";
 
 export class Line extends DrawTool {
-    layer: Layer
     cursor_x: number
     width: number
     color: string
@@ -15,7 +13,7 @@ export class Line extends DrawTool {
 
     get y_axis(): VirtualAxis { return this.layer.grapher.y_axis }
 
-    constructor(color: string = 'yellow', width = 1) {
+    constructor(color: string = '#c7a046', width = 2) {
         super()
         this.color = color
         this.width = width
@@ -28,8 +26,7 @@ export class Line extends DrawTool {
 
     draw(layer: Layer) {
         this.reset()
-        this.layer = layer
-        this.cursor_x = layer.grapher.canvas.source.width
+        this.cursor_x = this.canvas.source.width
         for (const json_data of layer.data) {
             const y_price = json_data['value']
             if(y_price)
@@ -40,7 +37,7 @@ export class Line extends DrawTool {
 
     private draw_line(y_value: number) {
         const margin = this.layer.grapher.cell_width / 2
-        const ctx = this.layer.grapher.canvas.context
+        const ctx = this.canvas.context
         const x = this.cursor_x - margin
         const y = this.y_axis.toPixel(y_value)
         

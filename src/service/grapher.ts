@@ -28,6 +28,7 @@ export class GrapherService{
 
     static add(id: string, layer: Layer) {
         this.store.set(id, layer)
+        this.rebuild()
     }
 
     static set_mode(mode: GrapherMode) {
