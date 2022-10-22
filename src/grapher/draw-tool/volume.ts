@@ -5,8 +5,7 @@ import { Range } from "../utils/range";
 import { VirtualAxis } from "../virtual-axis";
 import { DrawTool } from "./base";
 
-export class Volume implements DrawTool {
-    layer: Layer
+export class Volume extends DrawTool {
     cursor_x: number
     bar_width_percent: number
     height_percent: number
@@ -15,6 +14,7 @@ export class Volume implements DrawTool {
     
 
     constructor(color: string = '#FF7F0030', bar_width_percent = 0.05, height_percent = 0.1) {
+        super()
         this.color = color
         this.bar_width_percent = bar_width_percent
         this.height_percent = height_percent
@@ -24,7 +24,7 @@ export class Volume implements DrawTool {
         const canvas_height = this.layer.grapher.canvas.source.height
         const up_range = canvas_height - canvas_height * this.height_percent
         this.y_axis = new VirtualAxis(new Range(up_range, canvas_height))
-        this.y_axis.virtual_range = this.layer.range
+        this.y_axis.virtual_range = this.layer.range!
     }
 
     draw(layer: Layer) {

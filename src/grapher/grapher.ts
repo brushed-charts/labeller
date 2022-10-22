@@ -39,7 +39,7 @@ export class Grapher {
 
     private update_yaxis(layer: Layer) {
         let virtual_range = this.y_axis.virtual_range
-        virtual_range = Range.extremum(virtual_range, layer.range)
+        virtual_range = Range.extremum(virtual_range, layer.range!)
         this.y_axis.virtual_range = virtual_range
         
     }

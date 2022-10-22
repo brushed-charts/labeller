@@ -3,7 +3,7 @@ import * as oanda_json from './assets/mock/json-oanda.json'
 import * as close from './assets/mock/json-oanda-close.json'
 import * as volume from './assets/mock/oanda_volume.json'
 import Misc from './misc'
-import { GrapherService } from './service/grapher'
+import { GrapherMode, GrapherService } from './service/grapher'
 import { Layer } from './grapher/layer'
 import { Candle } from './grapher/draw-tool/candle'
 import { Line } from './grapher/draw-tool/line'
@@ -22,6 +22,7 @@ async function mock_load(imported_data, id, tool, affect_shared_axis = true) {
     await Misc.sleep(200)    
     GrapherService.add(id, new Layer(data, tool, affect_shared_axis))
     GrapherService.rebuild()
+    GrapherService.set_mode(GrapherMode.head_and_shoulders)
 }
 GrapherService.init()
 mock_load(oanda_json, 'price', new Candle())

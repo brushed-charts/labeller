@@ -4,7 +4,8 @@ import { Layer } from "../layer";
 import { Range } from "../utils/range";
 import { DrawTool } from "./base";
 
-export class Candle implements DrawTool{
+export class Candle extends DrawTool{
+    layer: Layer;
     data_ref: string;
     group_ref: string;
     

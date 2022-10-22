@@ -57,6 +57,13 @@ export class Interaction {
         this.registry[event_type].push(fn)
     }
 
+    remove_subscription(event_type: InteractionType, fn: InteractionEventCallback): void {
+        const subs = this.registry.get(event_type)
+        const index_to_remove = subs?.lastIndexOf(fn)
+        if(index_to_remove == undefined || subs == undefined) return
+        delete subs[index_to_remove]
+    }
+
     private handle_scroll(ev: WheelEvent): void {
         const relative_event = this.build_interaction_event(ev.clientX, ev.clientY, ev.deltaX, ev.deltaY)
         this.call_subscriptors(InteractionType.scroll, relative_event)

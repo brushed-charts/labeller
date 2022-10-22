@@ -11,4 +11,8 @@ export default class Misc {
     static async sleep(ms: number) {
         return new Promise( resolve => setTimeout(resolve, ms) );
     }
+
+    static generate_unique_id(): number {
+        return Date.now()
+    }
 }
