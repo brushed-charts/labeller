@@ -1,5 +1,5 @@
 import { Line } from "../grapher/draw-tool/line";
-import { InteractionEvent, InteractionType } from "../grapher/interaction";
+import { InteractionEvent, InteractionType, Subscriber } from "../grapher/interaction";
 import { Layer } from "../grapher/layer";
 import Misc from "../misc";
 import { GrapherService } from "../service/grapher";
@@ -7,15 +7,21 @@ import { Window } from "../service/window";
 
 export class HeadAndShoulders{
     static readonly ID_PREFIX = 'head_and_shoulders'
+    private interaction_id: string
     private layer_id: string
     private current_layer: Layer
 
     constructor() {
-        GrapherService.obj.interaction.register_on_event(InteractionType.touch_down, (_, ev) => this.on_touch_down(ev))
+        this.interaction_id = `head_and_shoulder_${Misc.generate_unique_id()}`
+        const interaction_subscriber = new Subscriber(this.interaction_id, (_, ev) => this.on_touch_down(ev))
+        GrapherService.obj.interaction.register_on_event(InteractionType.touch_down, interaction_subscriber)
         const data_template = GrapherService.get_price_based_template()
         this.current_layer = new Layer(data_template, new Line(), false)
         this.layer_id = HeadAndShoulders.ID_PREFIX + `.${Misc.generate_unique_id()}`
-        
+    }
+
+    detach() {
+        GrapherService.obj.interaction.remove_subscription(InteractionType.touch_down,this.interaction_id)
     }
     
     on_touch_down(ev: InteractionEvent) {
@@ -23,7 +29,6 @@ export class HeadAndShoulders{
         const price = this.convert_y_pos_to_price(ev.y)
         this.set_price_at_data_index(index_to_edit, price)
         GrapherService.add(this.layer_id, this.current_layer)
-        
     }
 
     private set_price_at_data_index(index: number, price: number) {

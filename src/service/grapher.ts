@@ -1,7 +1,7 @@
 import { HeadAndShoulders } from "../draw-tool/head_and_shoulders";
 import { Canvas } from "../grapher/canvas";
 import { Grapher } from "../grapher/grapher";
-import { Interaction, InteractionEvent, InteractionType } from "../grapher/interaction";
+import { Interaction, InteractionEvent, InteractionType, Subscriber } from "../grapher/interaction";
 import { Layer } from "../grapher/layer";
 import { Window } from "./window";
 
@@ -10,7 +10,8 @@ export enum GrapherMode {
     head_and_shoulders
 }
 
-export class GrapherService {
+export class GrapherService{
+    private static readonly interaction_id = 'grapher_service'
     static obj: Grapher
     private static store: Map<String, Layer> = new Map()
     private static draw_layer?: HeadAndShoulders
@@ -20,8 +21,8 @@ export class GrapherService {
         const canvas = new Canvas()
         this.obj = new Grapher(canvas)
         this.mode = GrapherMode.view
-        this.obj.interaction.register_on_event(InteractionType.scroll, (i, ev) => this.on_scroll(i, ev))
-        this.obj.interaction.register_on_event(InteractionType.touch_move, (i, ev) => this.on_touch_move(i, ev))
+        this.obj.interaction.register_on_event(InteractionType.scroll, new Subscriber(this.interaction_id, (i, ev) => this.on_scroll(i, ev)))
+        this.obj.interaction.register_on_event(InteractionType.touch_move, new Subscriber(this.interaction_id, (i, ev) => this.on_touch_move(i, ev)))
         // this.obj.interaction.register_on_event(InteractionType.touch_down, (i, ev) => this.last_x_pos = ev.x)
     }
 
@@ -30,17 +31,12 @@ export class GrapherService {
     }
 
     static set_mode(mode: GrapherMode) {
+        this.draw_layer?.detach()
         this.mode = mode
         if(mode == GrapherMode.head_and_shoulders) {
             this.draw_layer = new HeadAndShoulders()
-        
-        //     const draw_tool = new HeadAndShoulders(this.on_draw_tool_data_changed)
-        //     this.draw_layer = new InteractiveLayer(empty_val_list, draw_tool, false)
-        //     const store_id = `draw_head_and_shoulder_${Misc.generate_unique_id}`
-        //     this.add(store_id, this.draw_layer)
         }
     }
-
 
     private static on_scroll(i: Interaction, ev: InteractionEvent) {
         const delta_yscroll = ev.delta_y!

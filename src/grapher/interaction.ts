@@ -29,12 +29,20 @@ export enum InteractionType {
 
 export type InteractionEventCallback = (i: Interaction, prop: InteractionEvent) => void
 
+export class Subscriber {
+    readonly id: string
+    readonly fn: InteractionEventCallback
+    constructor(id: string, callback: InteractionEventCallback) {
+        this.id = id
+        this.fn = callback
+    }
+}
+
 export class Interaction {
     last_keyboard_event?: KeyboardEvent
     is_touch_down: boolean 
-    private registry: Map<InteractionType, InteractionEventCallback[]> = new Map()
+    private registry: Map<InteractionType, Subscriber[]> = new Map()
     grapher: Grapher
-
 
     constructor(grapher: Grapher) {
         this.grapher = grapher
@@ -48,20 +56,20 @@ export class Interaction {
         this.registry = new Map()
     }
 
-    register_on_event(event_type: InteractionType, fn: InteractionEventCallback): void {
-        const vals = this.registry[event_type]
+    register_on_event(event_type: InteractionType, sub: Subscriber): void {
+        const vals = this.registry.get(event_type)
         if (vals == undefined) {
-            this.registry[event_type] = [fn]
+            this.registry.set(event_type, [sub])
             return
         }
-        this.registry[event_type].push(fn)
+        this.registry.get(event_type)!.push(sub)
     }
 
-    remove_subscription(event_type: InteractionType, fn: InteractionEventCallback): void {
+    remove_subscription(event_type: InteractionType, id: string): void {
         const subs = this.registry.get(event_type)
-        const index_to_remove = subs?.lastIndexOf(fn)
+        const index_to_remove = subs?.findIndex((val, _i, _o) => (id == val.id))
         if(index_to_remove == undefined || subs == undefined) return
-        delete subs[index_to_remove]
+        subs.splice(index_to_remove, 1)
     }
 
     private handle_scroll(ev: WheelEvent): void {
@@ -87,10 +95,10 @@ export class Interaction {
     }
 
     private call_subscriptors(event_type: InteractionType, prop: any) {
-        const subs = this.registry[event_type] as InteractionEventCallback[]
+        const subs = this.registry.get(event_type) as Subscriber[]
         if (subs == undefined) return
         for (const sub of subs) {
-            sub(this, prop)
+            sub.fn(this, prop)
         }
     }
 

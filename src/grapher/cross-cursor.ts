@@ -1,8 +1,9 @@
 import { Canvas } from "./canvas";
 import { Grapher } from "./grapher";
-import { Interaction, InteractionEvent, InteractionType } from "./interaction";
+import { Interaction, InteractionEvent, InteractionType, Subscriber } from "./interaction";
 
 export class CrossCursor {
+    interaction_id = 'cross_cursor'
     grapher: Grapher 
     last_interaction: InteractionEvent
     color: string = '#FFFFFF40'
@@ -11,7 +12,7 @@ export class CrossCursor {
     
     constructor(grapher: Grapher) {
         this.grapher = grapher
-        this.grapher.interaction.register_on_event(InteractionType.touch_move, (i, ev) => this.handle_mouse_move(i, ev))
+        this.grapher.interaction.register_on_event(InteractionType.touch_move, new Subscriber(this.interaction_id, (i, ev) => this.handle_mouse_move(i, ev)))
     }
 
     handle_mouse_move(i: Interaction, ev: InteractionEvent) {
