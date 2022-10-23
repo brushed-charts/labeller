@@ -1,8 +1,7 @@
-import { Canvas } from "../grapher/canvas"
 import { Layer } from "../grapher/layer"
 import { GrapherService } from "./grapher"
 
-export class Window {
+export class GraphWindow {
     static readonly DEFAULT_LENGTH= 100
     private static start_index = 0
     private static end_index = this.DEFAULT_LENGTH

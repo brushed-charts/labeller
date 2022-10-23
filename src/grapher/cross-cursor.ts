@@ -12,7 +12,7 @@ export class CrossCursor {
     
     constructor(grapher: Grapher) {
         this.grapher = grapher
-        this.grapher.interaction.register_on_event(InteractionType.touch_move, new Subscriber(this.interaction_id, (i, ev) => this.handle_mouse_move(i, ev)))
+        this.grapher.interaction.register_on_event(InteractionType.hover, new Subscriber(this.interaction_id, (i, ev) => this.handle_mouse_move(i, ev)))
     }
 
     handle_mouse_move(i: Interaction, ev: InteractionEvent) {

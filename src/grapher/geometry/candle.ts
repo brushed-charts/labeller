@@ -2,9 +2,9 @@ import { Canvas } from "../canvas";
 import { Grapher, InputJSONArray } from "../grapher";
 import { Layer } from "../layer";
 import { Range } from "../utils/range";
-import { DrawTool } from "./base";
+import { Geometry } from "./base";
 
-export class Candle extends DrawTool{
+export class Candle extends Geometry{
     layer: Layer;
     data_ref: string;
     group_ref: string;

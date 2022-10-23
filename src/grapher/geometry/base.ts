@@ -3,7 +3,7 @@ import { Grapher, InputJSONArray } from "../grapher"
 import { Layer } from "../layer"
 import { Range } from "../utils/range"
 
-export abstract class DrawTool {
+export abstract class Geometry {
     layer: Layer
     get grapher(): Grapher { return this.layer.grapher }
     get canvas(): Canvas { return this.layer.grapher.canvas }

@@ -3,9 +3,9 @@ import { Grapher, InputJSONArray } from "../grapher";
 import { Layer } from "../layer";
 import { Range } from "../utils/range";
 import { VirtualAxis } from "../virtual-axis";
-import { DrawTool } from "./base";
+import { Geometry } from "./base";
 
-export class Volume extends DrawTool {
+export class Volume extends Geometry {
     cursor_x: number
     bar_width_percent: number
     height_percent: number

@@ -23,6 +23,7 @@ export enum InteractionType {
     touch_down,
     touch_up,
     touch_move,
+    hover,
     tap,
     keydown,
     keyup
@@ -98,8 +99,11 @@ export class Interaction {
 
     private handle_mouse_move(ev: MouseEvent): void {
         const relative_event = this.build_interaction_event(ev.clientX, ev.clientY, ev.movementX, ev.movementY)
+        if(!this.is_touch_down) {
+            this.call_subscriptors(InteractionType.hover, relative_event)
+            return
+        }
         this.call_subscriptors(InteractionType.touch_move, relative_event)
-        if(!this.is_touch_down) return
         this.x_movement_during_touch += ev.movementX
     }
 

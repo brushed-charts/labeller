@@ -2,9 +2,9 @@ import { InputJSONArray } from "../grapher";
 import { Layer } from "../layer";
 import { Range } from "../utils/range";
 import { VirtualAxis } from "../virtual-axis";
-import { DrawTool } from "./base";
+import { Geometry } from "./base";
 
-export class Line extends DrawTool {
+export class Line extends Geometry {
     cursor_x: number
     width: number
     color: string

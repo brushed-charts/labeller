@@ -3,11 +3,13 @@ import * as oanda_json from './assets/mock/json-oanda.json'
 import * as close from './assets/mock/json-oanda-close.json'
 import * as volume from './assets/mock/oanda_volume.json'
 import Misc from './misc'
-import { GrapherMode, GrapherService } from './service/grapher'
+import { GrapherMode, GrapherService, LayerType } from './service/grapher'
 import { Layer } from './grapher/layer'
-import { Candle } from './grapher/draw-tool/candle'
-import { Line } from './grapher/draw-tool/line'
-import { Volume } from './grapher/draw-tool/volume'
+import { Candle } from './grapher/geometry/candle'
+import { Line } from './grapher/geometry/line'
+import { Volume } from './grapher/geometry/volume'
+import { GraphStorage } from './service/storage'
+import { HeadAndShoulders } from './draw-tool/head_and_shoulders'
 
 /**
  * - Every JSON Input data should have the same length
@@ -20,8 +22,7 @@ import { Volume } from './grapher/draw-tool/volume'
 async function mock_load(imported_data, id, tool, affect_shared_axis = true) {
     const data = Misc.load_json_from_file(imported_data)
     await Misc.sleep(200)    
-    GrapherService.add(id, new Layer(data, tool, affect_shared_axis))
-    GrapherService.rebuild()
+    GraphStorage.upsert(id, new Layer(LayerType.static, data, tool, affect_shared_axis))
     GrapherService.set_mode(GrapherMode.head_and_shoulders)
 }
 GrapherService.init()
