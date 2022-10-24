@@ -18,4 +18,15 @@ export class GraphStorage {
         const empty_val_list = Layer.extract_timestamp(price)
         return empty_val_list
     }
+
+    static get_layers_by_type(type: string): Layer[] {
+        const layers = Array.from(this.store.values())
+        const matching_type_layer = layers.filter((layer) => layer.type == type)
+        
+        return matching_type_layer
+    }
+
+    static get_by_id(id: string): Layer | undefined{
+        return this.store.get(id)
+    }
 }

@@ -17,6 +17,7 @@ export class Layer {
         this.affect_shared_yaxis = affect_shared_axis
         this.range = this.tool.getRange(this.data)
         this.tool.layer = this
+        this.type = type
     }
 
     static copy_and_set_data(base: Layer, data: InputJSONArray): Layer {
