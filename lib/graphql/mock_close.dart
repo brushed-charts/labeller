@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 
-class GQLMockPrice {
-  final assetJsonPath = 'mock/oanda.json';
-  GQLMockPrice();
+class GQLMockPriceClose {
+  final assetJsonPath = 'mock/oanda-close.json';
+  GQLMockPriceClose();
 
   Future<dynamic> fetch() async {
     final assetContent = await rootBundle.loadString(assetJsonPath);
