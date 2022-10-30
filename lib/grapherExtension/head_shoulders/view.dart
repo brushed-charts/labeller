@@ -9,7 +9,7 @@ import 'package:grapher/utils/misc.dart';
 class HeadAndShouldersView extends Geometry {
   // ignore: constant_identifier_names
   static const double BODY_PERCENT = 0;
-  static const double anchorRadius = 10;
+  static const double anchorRadius = 5;
   Paint paint = Paint()..color = Misc.randomColor();
 
   HeadAndShouldersView({Paint? paint, DrawUnitObject? child})
