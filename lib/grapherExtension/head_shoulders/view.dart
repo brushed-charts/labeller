@@ -2,26 +2,32 @@ import 'dart:ui';
 
 import 'package:grapher/drawUnit/draw-unit-object.dart';
 import 'package:grapher/drawUnit/unit-draw-event.dart';
+import 'package:grapher/filter/dataStruct/anchor.dart';
 import 'package:grapher/geometry/geometry.dart';
 import 'package:grapher/utils/misc.dart';
 
 class HeadAndShouldersView extends Geometry {
   // ignore: constant_identifier_names
-  static const double BODY_PERCENT = 100;
-  // ignore: constant_identifier_names
+  static const double BODY_PERCENT = 0;
   static const double anchorRadius = 10;
   Paint paint = Paint()..color = Misc.randomColor();
 
   HeadAndShouldersView({Paint? paint, DrawUnitObject? child})
-      : super(BODY_PERCENT, child);
+      : super(BODY_PERCENT, child) {
+    if (paint != null) this.paint = paint;
+  }
 
   @override
   void draw(DrawUnitEvent event) {
     super.draw(event);
     final selfPosition = calculatePosition(event);
     drawAnchor(selfPosition);
-    if (event.logicalPrevious == null) return;
-    drawLine(event);
+    final previousAnchor =
+        (event.logicalPrevious?.baseDrawEvent as DrawUnitEvent?)?.unitData
+            as Anchor?;
+    final currentAnchor = event.unitData as Anchor;
+    if (previousAnchor == null) return;
+    if (previousAnchor.groupID == currentAnchor.groupID) drawLine(event);
   }
 
   void drawLine(DrawUnitEvent event) {
@@ -63,5 +69,5 @@ class HeadAndShouldersView extends Geometry {
 
   @override
   DrawUnitObject instanciate() =>
-      HeadAndShouldersView(child: child?.instanciate());
+      HeadAndShouldersView(paint: paint, child: child?.instanciate());
 }

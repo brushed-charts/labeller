@@ -1,5 +1,6 @@
 import 'package:grapher/filter/dataStruct/anchor.dart';
 import 'package:grapher/filter/dataStruct/point.dart';
+import 'package:grapher/filter/group-contract.dart';
 import 'package:labelling/utils/misc_function.dart';
 
 class HeadAndShouldersStruct {
@@ -12,12 +13,11 @@ class HeadAndShouldersStruct {
   HeadAndShouldersStruct() : _group = Misc.generateUniqueID();
 
   void forwardCursor() {
-    if (atEnd()) throw Exception("Can't forward, cusor is already at the end");
     _cursor = _cursor + 1;
   }
 
-  bool atEnd() {
-    if (_cursor == pointCount - 1) return true;
+  bool isCompleted() {
+    if (_cursor >= pointCount) return true;
     return false;
   }
 
@@ -31,4 +31,7 @@ class HeadAndShouldersStruct {
   String toString() {
     return points.toString();
   }
+
+  @override
+  int get groupID => _group;
 }
