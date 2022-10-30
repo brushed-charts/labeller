@@ -1,5 +1,6 @@
 import 'package:grapher/cell/cell.dart';
 import 'package:grapher/cell/event.dart';
+import 'package:grapher/drawUnit/drawunit.dart';
 import 'package:grapher/factory/factory.dart';
 import 'package:grapher/filter/data-injector.dart';
 import 'package:grapher/filter/incoming-data.dart';
@@ -52,12 +53,7 @@ class LineFragment implements FragmentContract {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
             tagName: id,
-            child: DrawUnitFactory(
-                template: Cell.template(
-                    child: Line(
-                        child: MergeBranches(
-                            child: PipeIn(
-                                name: 'pipe_cell_event',
-                                eventType: CellEvent)))))));
+            child:
+                DrawUnitFactory(template: DrawUnit.template(child: Line()))));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:grapher/cell/cell.dart';
 import 'package:grapher/cell/event.dart';
+import 'package:grapher/drawUnit/drawunit.dart';
 import 'package:grapher/factory/factory.dart';
 import 'package:grapher/filter/data-injector.dart';
 import 'package:grapher/filter/incoming-data.dart';
@@ -57,7 +58,7 @@ class CandleFragment implements FragmentContract {
                     child: Candlestick(
                         child: MergeBranches(
                             child: PipeIn(
-                                name: 'pipe_cell_event',
+                                name: 'pipe_cell_event_price',
                                 eventType: CellEvent)))))));
   }
 }
