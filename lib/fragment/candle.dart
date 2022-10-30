@@ -54,11 +54,6 @@ class CandleFragment implements FragmentContract {
         child: UnpackFromViewEvent(
             tagName: '${SourceService.broker!}_price',
             child: DrawUnitFactory(
-                template: Cell.template(
-                    child: Candlestick(
-                        child: MergeBranches(
-                            child: PipeIn(
-                                name: 'pipe_cell_event_price',
-                                eventType: CellEvent)))))));
+                template: DrawUnit.template(child: Candlestick()))));
   }
 }

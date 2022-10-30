@@ -57,7 +57,7 @@ class HeadAndShouldersFragment implements FragmentContract {
   GraphObject createInteraction() {
     return StackLayout(children: [
       PipeOut(
-          name: 'pipe_cell_event_price',
+          name: 'pipe_cell_event_hs',
           child: HeadAndShouldersCreation(
               child: PipeIn(
                   name: 'pipe_head_and_shoulders_struct',
