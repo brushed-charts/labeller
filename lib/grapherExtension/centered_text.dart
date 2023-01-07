@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:grapher/kernel/drawEvent.dart';
 import 'package:grapher/kernel/drawable.dart';
 import 'package:grapher/kernel/propagator/endline.dart';
-import 'package:grapher/view/view-event.dart';
 
 class CenteredText extends Drawable with EndlinePropagator {
   final String text;
   CenteredText(this.text) {
-    eventRegistry.add(ViewEvent, draw);
+    eventRegistry.add(DrawEvent, draw);
   }
 
   @override

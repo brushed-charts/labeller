@@ -20,6 +20,10 @@ dependencies:
   flutter_svg: ^1.1.5
   grapher:
     path: ../grapher
+  grapher_user_draw:
+    path: ../grapher_user_draw
+  firestore_figure_database:
+    path: ../firestore_figure_database
 
 
   cupertino_icons: ^1.0.2

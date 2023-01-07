@@ -1,5 +1,3 @@
-import 'package:grapher/cell/cell.dart';
-import 'package:grapher/cell/event.dart';
 import 'package:grapher/drawUnit/drawunit.dart';
 import 'package:grapher/factory/factory.dart';
 import 'package:grapher/filter/data-injector.dart';
@@ -13,7 +11,6 @@ import 'package:grapher/pack/unpack-view.dart';
 import 'package:grapher/pipe/pipeIn.dart';
 import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/tag.dart';
-import 'package:grapher/utils/merge.dart';
 import 'package:labelling/fragment/base.dart';
 import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';

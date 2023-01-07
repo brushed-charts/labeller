@@ -1,15 +1,16 @@
+import 'package:firestore_figure_database/context.dart';
+import 'package:firestore_figure_database/initializator.dart';
+import 'package:firestore_figure_database/main.dart';
 import 'package:flutter/material.dart';
-import 'package:grapher/kernel/kernel.dart';
-import 'package:grapher/kernel/widget.dart';
-import 'package:grapher/interaction/widget.dart';
-import 'package:labelling/fragment/concat.dart';
+import 'package:grapher/reference/memory_repository.dart';
+import 'package:grapher_user_draw/draw_tools/draw_tool_interface.dart';
+import 'package:grapher_user_draw/figure_database_interface.dart';
+import 'package:grapher_user_draw/store.dart';
+import 'package:labelling/drawTools/head_and_shoulders.dart';
+import 'package:labelling/figure_converter_with_tool_guess.dart';
 import 'package:labelling/fragment/candle.dart';
-import 'package:labelling/fragment/head-and-shoulders.dart';
-import 'package:labelling/fragment/line.dart';
-import 'package:labelling/fragment/volume.dart';
-import 'package:labelling/grapherExtension/axed_graph.dart';
-import 'package:labelling/grapherExtension/centered_text.dart';
-import 'package:labelling/grapherExtension/fragment_to_graph_object.dart';
+import 'package:labelling/fragment/figure.dart';
+import 'package:labelling/graph_view.dart';
 import 'package:labelling/graphql/mock_close.dart';
 import 'package:labelling/graphql/mock_price.dart';
 import 'package:labelling/linkHub/consumer_interface.dart';
@@ -19,6 +20,9 @@ import 'package:labelling/services/appmode.dart';
 import 'package:labelling/services/cache.dart';
 import 'package:labelling/services/source.dart';
 
+import 'fragment/line.dart';
+import 'fragment/volume.dart';
+
 class Chart extends StatefulWidget {
   const Chart({Key? key}) : super(key: key);
 
@@ -27,8 +31,11 @@ class Chart extends StatefulWidget {
 }
 
 class _ChartState extends State<Chart> implements HubConsumer {
-  var currentGraph = noDataScreen();
-
+  var currentGraph = GraphViewBuilder().noDataScreen();
+  final _figureStore = FigureStore();
+  final _referenceRepository = ReferenceRepositoryInMemory();
+  FigureDatabaseInterface? _figureDatabase;
+  FigureFragment? _figureFragment;
   @override
   void initState() {
     LinkHub.subscribe(SourceService.sourceChangedChannel, this);
@@ -36,13 +43,8 @@ class _ChartState extends State<Chart> implements HubConsumer {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return currentGraph;
-  }
-
   Future<void> getAppropriateView() async {
-    setState(() => currentGraph = loadingScreen());
+    setState(() => currentGraph = GraphViewBuilder().loadingScreen());
     try {
       // final jsonPrice = CacheService.load('price') ??
       //     await GraphqlService.fetch(PriceFetcher());
@@ -54,47 +56,51 @@ class _ChartState extends State<Chart> implements HubConsumer {
           CacheService.load('price_close') ?? await GQLMockPriceClose().fetch();
       CacheService.save('price_close', jsonMA);
 
-      setState(() => currentGraph = priceWidget(jsonPrice, jsonMA));
+      final figureContext =
+          FigureContext(SourceService.asset!, SourceService.broker!);
+
+      final firestoreInstance = await FirestoreInit.getEmulatorInstance();
+      _figureDatabase = FirestoreFigureDatabase(
+          firestoreInstance, FigureConverterWithToolGuess(), figureContext);
+
+      _figureFragment =
+          FigureFragment(_figureStore, _referenceRepository, _figureDatabase!);
+
+      setState(() =>
+          currentGraph = GraphViewBuilder().priceWidget(_referenceRepository, [
+            CandleFragment(jsonPrice),
+            VolumeFragment(jsonPrice),
+            LineFragment('price_close', jsonMA),
+            _figureFragment!
+          ]));
     } catch (e) {
-      setState(() => currentGraph = errorScreen());
+      setState(() => currentGraph = GraphViewBuilder().errorScreen());
     }
   }
 
-  static Widget noDataScreen() {
-    return Graph(
-        key: UniqueKey(),
-        kernel: GraphKernel(child: CenteredText('There is no data')));
-  }
-
-  static Widget loadingScreen() {
-    return Graph(
-        key: UniqueKey(),
-        kernel: GraphKernel(child: CenteredText('Loading... Please wait')));
-  }
-
-  static Widget errorScreen() {
-    return Graph(
-        key: UniqueKey(),
-        kernel: GraphKernel(
-            child: CenteredText('There is an error during the loading')));
-  }
-
-  static Widget priceWidget(
-      Map<String, dynamic> jsonInput, Map<String, dynamic> jsonMA) {
-    return GraphFullInteraction(
-        kernel: GraphKernel(
-            child: AxedGraph(
-                graph: FragmentToGraphObject(
-                    fragment: ConcatFragments(children: [
-      CandleFragment(jsonInput),
-      VolumeFragment(jsonInput),
-      LineFragment('price_close', jsonMA),
-      HeadAndShouldersFragment()
-    ])))));
+  @override
+  Widget build(BuildContext context) {
+    return currentGraph;
   }
 
   @override
-  Future handleHubEvent(HubEvent event) async {
-    await getAppropriateView();
+  Future<void> handleHubEvent(HubEvent event) async {
+    switch (event.channel) {
+      case SourceService.sourceChangedChannel:
+        await getAppropriateView();
+        break;
+      case AppModeService.channel:
+        _figureFragment?.drawTool = getDrawToolByAppMode();
+        break;
+    }
+  }
+
+  DrawToolInterface? getDrawToolByAppMode() {
+    switch (AppModeService.mode) {
+      case AppMode.headAndShoulders:
+        return HeadAndShouldersDrawTool();
+      default:
+        return null;
+    }
   }
 }
