@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../services/appmode.dart';
+import 'package:labelling/services/appmode.dart';
 
 class HeadAndShouldersAnnotation extends StatefulWidget {
   const HeadAndShouldersAnnotation({Key? key}) : super(key: key);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:labelling/services/source.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarWidget extends StatelessWidget {

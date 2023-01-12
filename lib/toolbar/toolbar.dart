@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/toolbar/source_field.dart';
-import 'package:labelling/toolbar/calendar.dart';
-import 'package:labelling/toolbar/interval.dart';
-import 'package:labelling/toolbar/head_and_shoulders.dart';
+import 'package:labelling/toolbar/controller/source_field.dart';
+import 'package:labelling/toolbar/controller/calendar.dart';
+import 'package:labelling/toolbar/controller/interval.dart';
+import 'package:labelling/toolbar/controller/head_and_shoulders.dart';
 
 class ToolBar extends StatelessWidget {
   const ToolBar({Key? key}) : super(key: key);
