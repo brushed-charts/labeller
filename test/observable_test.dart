@@ -10,21 +10,25 @@ class MockObserver extends Mock implements Observer {}
 void main() {
   registerFallbackValue(FakeObservable());
   late Observable observable;
-  late Observer observer;
+  late Observer observerA, observerB;
 
   setUp(() {
     observable = FakeObservable();
-    observer = MockObserver();
-    observable.subscribe(observer);
+    observerA = MockObserver();
+    observerB = MockObserver();
+    observable.subscribe(observerA);
+    observable.subscribe(observerB);
   });
   test("Test that observer can be added to observable object", () {
-    expect(observable.observers.length, equals(1));
-    expect(observable.observers[0], equals(observer));
+    expect(observable.observers.length, equals(2));
+    expect(observable.observers[0], equals(observerA));
+    expect(observable.observers[1], equals(observerB));
   });
 
-  test("Test observable object notify observer", () {
+  test("Test observable objects notifies every observers", () {
     observable.notify();
-    final verifResult = verify(() => observer.onObservablevent(captureAny()));
+    verify(() => observerA.onObservablevent(any())).called(1);
+    final verifResult = verify(() => observerB.onObservablevent(captureAny()));
     verifResult.called(1);
     expect(verifResult.captured[0], equals(observable));
   });
