@@ -9,7 +9,7 @@ mixin Observable {
 
   void notify() {
     for (final observer in observers) {
-      observer.onObservablevent(this);
+      observer.onObservablEvent(this);
     }
   }
 }

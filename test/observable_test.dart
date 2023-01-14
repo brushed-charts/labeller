@@ -19,7 +19,7 @@ void main() {
     observable.subscribe(observerA);
     observable.subscribe(observerB);
   });
-  test("Test that observer can be added to observable object", () {
+  test("Test that observers can be added to observable object", () {
     expect(observable.observers.length, equals(2));
     expect(observable.observers[0], equals(observerA));
     expect(observable.observers[1], equals(observerB));
@@ -27,8 +27,8 @@ void main() {
 
   test("Test observable objects notifies every observers", () {
     observable.notify();
-    verify(() => observerA.onObservablevent(any())).called(1);
-    final verifResult = verify(() => observerB.onObservablevent(captureAny()));
+    verify(() => observerA.onObservablEvent(any())).called(1);
+    final verifResult = verify(() => observerB.onObservablEvent(captureAny()));
     verifResult.called(1);
     expect(verifResult.captured[0], equals(observable));
   });
