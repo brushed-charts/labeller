@@ -8,4 +8,11 @@ class DrawToolModel with Observable {
     _tool = newTool;
     notify();
   }
+
+  @override
+  DrawToolModel copy() {
+    final cp = DrawToolModel();
+    cp._tool = _tool;
+    return cp;
+  }
 }

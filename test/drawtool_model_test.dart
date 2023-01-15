@@ -29,7 +29,7 @@ void main() {
   test("DrawTool model notify observer when tool is updated", () {
     toolModel.tool = mockTool;
     final observerCallResult =
-        verify(() => observer.onObservablEvent(captureAny()));
+        verify(() => observer.onObservableEvent(captureAny()));
     observerCallResult.called(1);
     final parameterCaptured = observerCallResult.captured[0];
     expect(parameterCaptured, equals(toolModel));
