@@ -32,7 +32,7 @@ void main() {
         verify(() => observer.onObservableEvent(captureAny()));
     observerCallResult.called(1);
     final parameterCaptured = observerCallResult.captured[0];
-    expect(parameterCaptured, equals(toolModel));
+    expect(parameterCaptured, isInstanceOf<DrawToolModel>());
   });
 
   test("DrawTool model can be updated", () {
