@@ -43,4 +43,10 @@ void main() {
   test("Expect draw tool to be null on starting", () {
     expect(DrawToolModel().tool, isNull);
   });
+
+  test('Test modification on DrawToolCopy keep original model clean', () {
+    final copiedModel = toolModel.copy();
+    copiedModel.tool = MockDrawTool();
+    expect(copiedModel.tool, isNot(equals(toolModel.copy())));
+  });
 }
