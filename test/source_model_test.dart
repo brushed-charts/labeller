@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/model/source_model.dart';
+import 'package:labelling/storage/preference/preference_io.dart';
+import 'package:mocktail/mocktail.dart';
+
+class MockPreferenceIO extends Mock implements PreferenceIO {}
 
 void main() {
   late SourceModel sourceModel;
+  late MockPreferenceIO mockPreference;
 
   setUp(() {
-    sourceModel = SourceModel();
+    mockPreference = MockPreferenceIO();
+    when(() => mockPreference.load(any())).thenAnswer((_) => Future(() => ''));
+    sourceModel = SourceModel(mockPreference);
   });
 
   test("Test the default values of source model ", () {
@@ -50,6 +57,36 @@ void main() {
           DateTimeRange(start: DateTime.now(), end: DateTime.now().toUtc());
       expect(sourceCopy.dateRange, isNot(equals(sourceModel.dateRange)));
     });
+  });
+
+  test("Expect SourceModel delegate loading to PreferenceIO", () async {
+    when(() => mockPreference.load(any()))
+        .thenAnswer((_) async => Future(() => ""));
+    await sourceModel.refresh();
+    final capturedParams =
+        verify(() => mockPreference.load(captureAny())).captured;
+    expect(
+        capturedParams,
+        containsAll([
+          'interval',
+          'dateFrom',
+          'dateTo',
+          'rawSource',
+        ]));
+  });
+
+  test("SourceModel delegate saving to PreferenceIO", () async {
+    sourceModel.save();
+    final capturedParams =
+        verify(() => mockPreference.write(captureAny(), any())).captured;
+    expect(
+        capturedParams,
+        containsAll([
+          'interval',
+          'dateFrom',
+          'dateTo',
+          'rawSource',
+        ]));
   });
 }
 

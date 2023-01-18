@@ -13,7 +13,7 @@ class ToolBar extends StatelessWidget {
         color: Theme.of(context).colorScheme.background,
         child: Row(children: [
           const SizedBox(width: 30),
-          const SourceField(width: 150),
+          SourceField(width: 150),
           const SizedBox(width: 30),
           const IntervalSelector(),
           const SizedBox(width: 30),
