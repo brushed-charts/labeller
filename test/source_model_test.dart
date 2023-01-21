@@ -3,16 +3,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/model/source_model.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MockPreferenceIO extends Mock implements PreferenceIO {}
 
 void main() {
   late SourceModel sourceModel;
   late MockPreferenceIO mockPreference;
+  const strDateStart = '2023-01-20T10:45:00Z';
+  const strDateEnd = '2023-01-21T18:45:00Z';
+  final dateStart = DateTime.parse(strDateStart);
+  final dateEnd = DateTime.parse(strDateEnd);
 
   setUp(() {
     mockPreference = MockPreferenceIO();
-    when(() => mockPreference.load(any())).thenAnswer((_) => Future(() => ''));
+    when(() => mockPreference.load(any(that: equals('interval'))))
+        .thenAnswer((_) => Future(() => 'test_interval'));
+    when(() => mockPreference.load(any(that: equals('dateFrom'))))
+        .thenAnswer((_) => Future(() => strDateStart));
+    when(() => mockPreference.load(any(that: equals('dateTo'))))
+        .thenAnswer((_) => Future(() => strDateEnd));
+    when(() => mockPreference.load(any(that: equals('rawSource'))))
+        .thenAnswer((_) => Future(() => 'TEST_BROKER:TEST_PAIR'));
     sourceModel = SourceModel(mockPreference);
   });
 
@@ -59,26 +71,38 @@ void main() {
     });
   });
 
-  test("Expect SourceModel delegate loading to PreferenceIO", () async {
-    when(() => mockPreference.load(any()))
-        .thenAnswer((_) async => Future(() => ""));
-    await sourceModel.refresh();
-    final capturedParams =
-        verify(() => mockPreference.load(captureAny())).captured;
-    expect(
-        capturedParams,
-        containsAll([
-          'interval',
-          'dateFrom',
-          'dateTo',
-          'rawSource',
-        ]));
+  group("Source model loading ->", () {
+    test("Expect it delegate loading to PreferenceIO", () async {
+      await sourceModel.refresh();
+      final capturedParams =
+          verify(() => mockPreference.load(captureAny())).captured;
+      expect(
+          capturedParams,
+          containsAll([
+            'interval',
+            'dateFrom',
+            'dateTo',
+            'rawSource',
+          ]));
+    });
+
+    test("Assert state is retrieved by loading preference ", () async {
+      await sourceModel.refresh();
+      expect(sourceModel.interval, equals('test_interval'));
+      expect(sourceModel.rawSource, equals('TEST_BROKER:TEST_PAIR'));
+      expect(sourceModel.dateRange.start, dateStart);
+      expect(sourceModel.dateRange.end, dateEnd);
+    });
   });
 
-  test("SourceModel delegate saving to PreferenceIO", () async {
+  test("Test that SourceModel delegate saving to PreferenceIO", () async {
+    when(() => mockPreference.write(any(), any()))
+        .thenAnswer((_) async => Future(() => ""));
+
     sourceModel.save();
     final capturedParams =
         verify(() => mockPreference.write(captureAny(), any())).captured;
+
     expect(
         capturedParams,
         containsAll([
