@@ -38,6 +38,13 @@ class SourceModel with Observable {
     dateRange = _makeDatetimeRange(strDateFrom, strDateTo);
   }
 
+  Future<void> save() async {
+    preferenceStorage.write('interval', interval);
+    preferenceStorage.write('rawSource', rawSource);
+    preferenceStorage.write('dateFrom', dateRange.start.toIso8601String());
+    preferenceStorage.write('dateTo', dateRange.end.toIso8601String());
+  }
+
   DateTimeRange _makeDatetimeRange(String? strFrom, String? strTo) {
     if (strFrom == null || strTo == null) return defaultDateRange;
     if (strFrom == '' || strTo == '') return defaultDateRange;
@@ -45,12 +52,5 @@ class SourceModel with Observable {
     final to = DateTime.parse(strTo);
     final datetimeRange = DateTimeRange(start: from, end: to);
     return datetimeRange;
-  }
-
-  Future<void> save() async {
-    preferenceStorage.write('interval', interval);
-    preferenceStorage.write('rawSource', rawSource);
-    preferenceStorage.write('dateFrom', dateRange.start.toIso8601String());
-    preferenceStorage.write('dateTo', dateRange.end.toIso8601String());
   }
 }

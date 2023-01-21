@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/services/source.dart';
-// ignore: implementation_imports
-import 'package:provider/src/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class IntervalSelector extends StatefulWidget {
-  const IntervalSelector({Key? key}) : super(key: key);
+  const IntervalSelector({required this.chartModel, Key? key})
+      : super(key: key);
+
+  final ChartModel chartModel;
 
   @override
   State<StatefulWidget> createState() => _IntervalSelector();
@@ -13,16 +14,10 @@ class IntervalSelector extends StatefulWidget {
 
 class _IntervalSelector extends State<IntervalSelector> {
   @override
-  void initState() {
-    super.initState();
-    _loadPref();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DropdownButton(
         onChanged: _onInterval,
-        value: SourceService.interval,
+        value: widget.chartModel.sourceModel.interval,
         items: <String>[
           '1s',
           '2s',
@@ -46,25 +41,13 @@ class _IntervalSelector extends State<IntervalSelector> {
             .toList());
   }
 
-  Future<void> _loadPref() async {
-    final prefs = await SharedPreferences.getInstance();
-    var savedInterval = prefs.getString('interval');
-    savedInterval ??= SourceService.defaultInterval;
-    setState(() {
-      SourceService.interval = savedInterval!;
-    });
-    SourceService.update();
-  }
-
   void _onInterval(String? interval) {
     if (interval == null) return;
-    setState(() => SourceService.interval = interval);
+    setState(() {
+      SourceService.interval = interval;
+      widget.chartModel.sourceModel.interval = interval;
+    });
     SourceService.update();
-    _savePref();
-  }
-
-  Future<void> _savePref() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('interval', SourceService.interval ?? '');
+    widget.chartModel.sourceModel.save();
   }
 }

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
 import 'chart.dart';
 
 void main() {
-  runApp(const Labeller());
+  runApp(Labeller());
 }
 
 class Labeller extends StatelessWidget {
-  const Labeller({Key? key}) : super(key: key);
+  Labeller({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +19,22 @@ class Labeller extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme.dark(),
       ),
-      home: const MainView(),
+      home: MainView(),
     );
   }
 }
 
 class MainView extends StatelessWidget {
-  const MainView({Key? key}) : super(key: key);
+  final chartModel = ChartModel();
+
+  MainView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            children: [ToolBar(key: key), const Expanded(child: Chart())]));
+        body: Column(children: [
+      ToolBar(key: key, model: chartModel),
+      const Expanded(child: Chart())
+    ]));
   }
 }
 

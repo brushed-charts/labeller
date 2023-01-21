@@ -2,16 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:labelling/services/source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SourceField extends StatelessWidget {
-  SourceField({Key? key, this.width = 90}) : super(key: key);
-
-  final _controller = TextEditingController();
+class SourceField extends StatefulWidget {
   final double width;
+  const SourceField({this.width = 90, Key? key}) : super(key: key);
+
+  @override
+  SourceFieldState createState() => SourceFieldState();
+}
+
+class SourceFieldState extends State<SourceField> {
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPref();
+  }
+
+  Future<void> _loadPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    var savedSource = prefs.getString('rawSource');
+    savedSource ??= SourceService.defaultRawSource;
+    setState(() {
+      SourceService.rawSource = savedSource!;
+      _controller.text = SourceService.rawSource!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: width,
+        width: widget.width,
         child: TextField(
           autofocus: true,
           decoration: const InputDecoration(
@@ -22,7 +43,7 @@ class SourceField extends StatelessWidget {
   }
 
   void _onEdited(String rawSource) {
-    SourceService.rawSource = rawSource;
+    setState(() => SourceService.rawSource = rawSource);
     SourceService.update();
     _savePref();
   }
