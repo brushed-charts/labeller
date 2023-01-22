@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/model/source_model.dart';
+import 'package:labelling/observation/observer.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MockPreferenceIO extends Mock implements PreferenceIO {}
 
+class MockObserver extends Mock implements Observer {}
+
 void main() {
+  registerFallbackValue(SourceModel(MockPreferenceIO()));
   late SourceModel sourceModel;
   late MockPreferenceIO mockPreference;
   const strDateStart = '2023-01-20T10:45:00Z';
@@ -25,6 +28,8 @@ void main() {
         .thenAnswer((_) => Future(() => strDateEnd));
     when(() => mockPreference.load(any(that: equals('rawSource'))))
         .thenAnswer((_) => Future(() => 'TEST_BROKER:TEST_PAIR'));
+    when(() => mockPreference.write(any(), any()))
+        .thenAnswer((_) async => Future(() => ""));
     sourceModel = SourceModel(mockPreference);
   });
 
@@ -95,22 +100,29 @@ void main() {
     });
   });
 
-  test("Test that SourceModel delegate saving to PreferenceIO", () async {
-    when(() => mockPreference.write(any(), any()))
-        .thenAnswer((_) async => Future(() => ""));
+  group("SourceModel saving ->", () {
+    test("Test it delegate to PreferenceIO", () async {
+      await sourceModel.save();
+      final capturedParams =
+          verify(() => mockPreference.write(captureAny(), any())).captured;
 
-    sourceModel.save();
-    final capturedParams =
-        verify(() => mockPreference.write(captureAny(), any())).captured;
+      expect(
+          capturedParams,
+          containsAll([
+            'interval',
+            'dateFrom',
+            'dateTo',
+            'rawSource',
+          ]));
+    });
 
-    expect(
-        capturedParams,
-        containsAll([
-          'interval',
-          'dateFrom',
-          'dateTo',
-          'rawSource',
-        ]));
+    test("Assert SourceModel notify observers on saving", () async {
+      final mockObserver = MockObserver();
+      sourceModel.subscribe(mockObserver);
+      await sourceModel.save();
+      verify(() => mockObserver
+          .onObservableEvent(any(that: isInstanceOf<SourceModel>()))).called(1);
+    });
   });
 }
 

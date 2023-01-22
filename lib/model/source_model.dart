@@ -45,6 +45,7 @@ class SourceModel with Observable {
     await preferenceStorage.write(
         'dateFrom', dateRange.start.toIso8601String());
     await preferenceStorage.write('dateTo', dateRange.end.toIso8601String());
+    notify();
   }
 
   DateTimeRange _makeDatetimeRange(String? strFrom, String? strTo) {
