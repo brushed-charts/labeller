@@ -4,6 +4,7 @@ import 'package:labelling/storage/preference/preference_io_interface.dart';
 
 class SourceModel with Observable {
   SourceModel(this.preferenceStorage);
+
   static const defaultInterval = '30m';
   static const defaultSource = 'OANDA:EUR_USD';
   static DateTimeRange get defaultDateRange => DateTimeRange(
@@ -39,10 +40,11 @@ class SourceModel with Observable {
   }
 
   Future<void> save() async {
-    preferenceStorage.write('interval', interval);
-    preferenceStorage.write('rawSource', rawSource);
-    preferenceStorage.write('dateFrom', dateRange.start.toIso8601String());
-    preferenceStorage.write('dateTo', dateRange.end.toIso8601String());
+    await preferenceStorage.write('interval', interval);
+    await preferenceStorage.write('rawSource', rawSource);
+    await preferenceStorage.write(
+        'dateFrom', dateRange.start.toIso8601String());
+    await preferenceStorage.write('dateTo', dateRange.end.toIso8601String());
   }
 
   DateTimeRange _makeDatetimeRange(String? strFrom, String? strTo) {

@@ -5,11 +5,11 @@ import 'package:labelling/toolbar/toolbar.dart';
 import 'chart.dart';
 
 void main() {
-  runApp(Labeller());
+  runApp(const Labeller());
 }
 
 class Labeller extends StatelessWidget {
-  Labeller({Key? key}) : super(key: key);
+  const Labeller({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class Labeller extends StatelessWidget {
       theme: ThemeData(
         colorScheme: const ColorScheme.dark(),
       ),
-      home: MainView(),
+      home: MainView(key: key),
     );
   }
 }
@@ -28,13 +28,26 @@ class MainView extends StatelessWidget {
   final chartModel = ChartModel();
 
   MainView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(children: [
-      ToolBar(key: key, model: chartModel),
-      const Expanded(child: Chart())
-    ]));
+    return FutureBuilder<bool>(
+        future: chartModel.sourceModel.refresh().then((_) => true),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: Center(
+                    child: CircularProgressIndicator(
+                  color: Theme.of(context).progressIndicatorTheme.color,
+                )));
+          }
+          return Scaffold(
+              body: Column(children: [
+            ToolBar(key: key, model: chartModel),
+            const Expanded(child: Chart())
+          ]));
+        });
   }
 }
 

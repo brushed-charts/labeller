@@ -44,10 +44,9 @@ class _IntervalSelector extends State<IntervalSelector> {
   void _onInterval(String? interval) {
     if (interval == null) return;
     setState(() {
-      SourceService.interval = interval;
       widget.chartModel.sourceModel.interval = interval;
     });
-    SourceService.update();
     widget.chartModel.sourceModel.save();
+    print(widget.chartModel.sourceModel.interval);
   }
 }
