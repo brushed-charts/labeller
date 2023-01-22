@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:labelling/model/chart_model.dart';
-import 'package:labelling/services/source.dart';
+import 'package:labelling/observation/observable.dart';
+import 'package:labelling/observation/observer.dart';
 
 class IntervalSelector extends StatefulWidget {
   const IntervalSelector({required this.chartModel, Key? key})
@@ -12,7 +13,13 @@ class IntervalSelector extends StatefulWidget {
   State<StatefulWidget> createState() => _IntervalSelector();
 }
 
-class _IntervalSelector extends State<IntervalSelector> {
+class _IntervalSelector extends State<IntervalSelector> implements Observer {
+  @override
+  void initState() {
+    widget.chartModel.sourceModel.subscribe(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DropdownButton(
@@ -43,10 +50,13 @@ class _IntervalSelector extends State<IntervalSelector> {
 
   void _onInterval(String? interval) {
     if (interval == null) return;
-    setState(() {
-      widget.chartModel.sourceModel.interval = interval;
-    });
+    widget.chartModel.sourceModel.interval = interval;
     widget.chartModel.sourceModel.save();
-    print(widget.chartModel.sourceModel.interval);
+    // print(widget.chartModel.sourceModel.interval);
+  }
+
+  @override
+  void onObservableEvent(Observable observable) {
+    setState(() {/* source model have changed */});
   }
 }
