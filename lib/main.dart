@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/model/chart_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
 import 'chart.dart';
 
 void main() {
-  runApp(const Labeller());
+  runApp(const ProviderScope(child: Labeller()));
 }
 
 class Labeller extends StatelessWidget {
@@ -25,29 +25,13 @@ class Labeller extends StatelessWidget {
 }
 
 class MainView extends StatelessWidget {
-  final chartModel = ChartModel();
-
-  MainView({Key? key}) : super(key: key);
+  const MainView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-        future: chartModel.sourceModel.refresh().then((_) => true),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).progressIndicatorTheme.color,
-                )));
-          }
-          return Scaffold(
-              body: Column(children: [
-            ToolBar(key: key, model: chartModel),
-            const Expanded(child: Chart())
-          ]));
-        });
+    return Scaffold(
+        body: Column(
+            children: [ToolBar(key: key), const Expanded(child: Chart())]));
   }
 }
 
