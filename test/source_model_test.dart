@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:labelling/model/interval_model.dart';
 import 'package:labelling/model/source_model.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:mocktail/mocktail.dart';
@@ -19,40 +18,44 @@ void main() {
     ]);
     when(() => mockPreference.load(any()))
         .thenAnswer((_) => Future(() => 'test_source'));
-    when(() => mockPreference.write('interval', any()))
+    when(() => mockPreference.write('source', any()))
         .thenAnswer((invocation) => Future(() {}));
   });
 
-  test("Test the default values of source model ", () {
-    expect(providerContainer.read(intervalModelProvider), equals("30m"));
+  test("Test the default values of source model", () {
+    expect(
+        providerContainer.read(sourceModelProvider), equals("OANDA:EUR_USD"));
   });
 
-  group("Interval model loading ->", () {
-    test("Assert loading is done asynchronously at instanciation", () async {
-      // Read provider to activate model instanciation (lazy)
-      providerContainer.read(intervalModelProvider);
-      verify(() => mockPreference.load('interval')).called(1);
-    });
+  group("source model loading ->", () {
     test("Expect loading is delegate to PreferencIO", () async {
-      await providerContainer.read(intervalModelProvider.notifier).refresh();
-      // Called 2 times at init + here with refresh
-      verify(() => mockPreference.load('interval')).called(2);
+      await providerContainer.read(sourceModelProvider.notifier).refresh();
+      verify(() => mockPreference.load('source')).called(1);
     });
-
     test("Assert state is retrieved by loading preference ", () async {
-      await providerContainer.read(intervalModelProvider.notifier).refresh();
-      expect(providerContainer.read(intervalModelProvider),
-          equals('test_interval'));
+      await providerContainer.read(sourceModelProvider.notifier).refresh();
+      expect(
+        providerContainer.read(sourceModelProvider),
+        equals('test_source'),
+      );
     });
   });
 
-  group("SourceModel saving ->", () {
-    test("Test it delegate to PreferenceIO", () async {
-      final intervalModel =
-          providerContainer.read(intervalModelProvider.notifier);
-      intervalModel.setInterval('10m');
-      await intervalModel.save();
-      verify(() => mockPreference.write('interval', '10m')).called(1);
-    });
+  test(
+      "Test that source model saving call PreferenceIO "
+      "with good parameters", () async {
+    final intervalModel = providerContainer.read(sourceModelProvider.notifier);
+    intervalModel.setSource('A_BROKER:TEST_PAIR');
+    await intervalModel.save();
+    verify(() => mockPreference.write('source', 'A_BROKER:TEST_PAIR'))
+        .called(1);
+  });
+
+  test("Expect setSource from source model update its state", () {
+    final state = providerContainer.read(sourceModelProvider);
+    expect(state, equals(SourceModel.defaultSource));
+    providerContainer.read(sourceModelProvider.notifier).setSource('BR:PAIR');
+    final editedState = providerContainer.read(sourceModelProvider);
+    expect(editedState, equals('BR:PAIR'));
   });
 }
