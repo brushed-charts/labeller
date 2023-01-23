@@ -13,6 +13,10 @@ class SourceModel extends StateNotifier<String> {
   String get broker => state.split(':')[0].toLowerCase();
   String get assetPair => state.split(':')[1].toLowerCase();
 
+  void setSource(String newValue) {
+    state = newValue;
+  }
+
   Future<void> refresh() async {
     state = (await preferenceStorage.load('source')) ?? defaultSource;
   }

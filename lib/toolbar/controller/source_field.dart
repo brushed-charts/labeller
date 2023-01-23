@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:labelling/model/source_model.dart';
-import 'package:labelling/services/source.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SourceField extends ConsumerStatefulWidget {
   final double width;
@@ -17,6 +15,7 @@ class SourceFieldState extends ConsumerState<SourceField> {
 
   @override
   Widget build(BuildContext context) {
+    ref.watch(sourceModelProvider.notifier).refresh();
     _controller.text = ref.watch(sourceModelProvider);
     return SizedBox(
         width: widget.width,
@@ -31,7 +30,7 @@ class SourceFieldState extends ConsumerState<SourceField> {
 
   void _onEdited(String rawSource) {
     final sourceModel = ref.read(sourceModelProvider.notifier);
-    setState(() => sourceModel.state = rawSource);
+    setState(() => sourceModel.setSource(rawSource));
     sourceModel.save();
   }
 }
