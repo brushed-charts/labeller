@@ -32,7 +32,6 @@ void main() {
       await providerContainer.read(intervalModelProvider.notifier).refresh();
       verify(() => mockPreference.load('interval')).called(1);
     });
-
     test("Assert state is retrieved by loading preference ", () async {
       await providerContainer.read(intervalModelProvider.notifier).refresh();
       expect(providerContainer.read(intervalModelProvider),
@@ -40,13 +39,21 @@ void main() {
     });
   });
 
-  group("SourceModel saving ->", () {
-    test("Test it delegate to PreferenceIO", () async {
-      final intervalModel =
-          providerContainer.read(intervalModelProvider.notifier);
-      intervalModel.setInterval('10m');
-      await intervalModel.save();
-      verify(() => mockPreference.write('interval', '10m')).called(1);
-    });
+  test(
+      "Test that interval model use PreferenceIO "
+      "with good parameters on saving ", () async {
+    final intervalModel =
+        providerContainer.read(intervalModelProvider.notifier);
+    intervalModel.setInterval('10m');
+    await intervalModel.save();
+    verify(() => mockPreference.write('interval', '10m')).called(1);
+  });
+
+  test("Expect setInterval from interval model update its state", () {
+    final state = providerContainer.read(intervalModelProvider);
+    expect(state, equals(IntervalModel.defaultInterval));
+    providerContainer.read(intervalModelProvider.notifier).setInterval('10m');
+    final editedState = providerContainer.read(intervalModelProvider);
+    expect(editedState, equals('10m'));
   });
 }
