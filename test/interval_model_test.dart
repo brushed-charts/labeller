@@ -28,15 +28,9 @@ void main() {
   });
 
   group("Interval model loading ->", () {
-    test("Assert loading is done asynchronously at instanciation", () async {
-      // Read provider to activate model instanciation (lazy)
-      providerContainer.read(intervalModelProvider);
-      verify(() => mockPreference.load('interval')).called(1);
-    });
     test("Expect loading is delegate to PreferencIO", () async {
       await providerContainer.read(intervalModelProvider.notifier).refresh();
-      // Called 2 times at init + here with refresh
-      verify(() => mockPreference.load('interval')).called(2);
+      verify(() => mockPreference.load('interval')).called(1);
     });
 
     test("Assert state is retrieved by loading preference ", () async {

@@ -12,6 +12,7 @@ class IntervalSelector extends ConsumerStatefulWidget {
 class IntervalSelectorState extends ConsumerState<IntervalSelector> {
   @override
   Widget build(BuildContext context) {
+    ref.watch(intervalModelProvider.notifier).refresh();
     return DropdownButton<String>(
         onChanged: _onInterval,
         value: ref.watch(intervalModelProvider),

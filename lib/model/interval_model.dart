@@ -6,9 +6,7 @@ final intervalModelProvider = StateNotifierProvider<IntervalModel, String>(
     (_) => IntervalModel(PreferenceIO()));
 
 class IntervalModel extends StateNotifier<String> {
-  IntervalModel(this.preferenceStorage) : super(IntervalModel.defaultInterval) {
-    refresh();
-  }
+  IntervalModel(this.preferenceStorage) : super(IntervalModel.defaultInterval);
 
   static const defaultInterval = '30m';
   final PreferenceIOInterface preferenceStorage;
