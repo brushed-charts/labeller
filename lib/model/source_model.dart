@@ -10,15 +10,14 @@ class SourceModel extends StateNotifier<String> {
 
   static const defaultSource = 'OANDA:EUR_USD';
   final PreferenceIOInterface preferenceStorage;
-  String rawSource = defaultSource;
-  String get broker => rawSource.split(':')[0].toLowerCase();
-  String get assetPair => rawSource.split(':')[1].toLowerCase();
+  String get broker => state.split(':')[0].toLowerCase();
+  String get assetPair => state.split(':')[1].toLowerCase();
 
-  Future<void> load() async {
-    rawSource = (await preferenceStorage.load('source')) ?? defaultSource;
+  Future<void> refresh() async {
+    state = (await preferenceStorage.load('source')) ?? defaultSource;
   }
 
   Future<void> save() async {
-    await preferenceStorage.write('source', rawSource);
+    await preferenceStorage.write('source', state);
   }
 }

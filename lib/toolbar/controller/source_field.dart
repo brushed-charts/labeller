@@ -30,13 +30,8 @@ class SourceFieldState extends ConsumerState<SourceField> {
   }
 
   void _onEdited(String rawSource) {
-    setState(() => SourceService.rawSource = rawSource);
-    SourceService.update();
-    _savePref();
-  }
-
-  Future<void> _savePref() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('rawSource', SourceService.rawSource ?? '');
+    final sourceModel = ref.read(sourceModelProvider.notifier);
+    setState(() => sourceModel.state = rawSource);
+    sourceModel.save();
   }
 }
