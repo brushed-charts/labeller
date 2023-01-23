@@ -16,6 +16,20 @@ class DateRangeModel extends StateNotifier<DateTimeRange> {
 
   final PreferenceIOInterface preferenceStorage;
 
+  void setDateRange(DateTimeRange range) {
+    if (!validate(range)) return;
+    state = range;
+  }
+
+  bool validate(DateTimeRange? range) {
+    if (range == null) return false;
+    if (range.start.millisecondsSinceEpoch >=
+        range.end.millisecondsSinceEpoch) {
+      return false;
+    }
+    return true;
+  }
+
   Future<void> load() async {
     final strDateFrom = await preferenceStorage.load('dateFrom');
     final strDateTo = await preferenceStorage.load('dateTo');

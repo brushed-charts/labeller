@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:labelling/model/source_model.dart';
 import 'package:labelling/services/source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SourceField extends StatefulWidget {
+class SourceField extends ConsumerStatefulWidget {
   final double width;
   const SourceField({this.width = 90, Key? key}) : super(key: key);
 
@@ -10,27 +12,12 @@ class SourceField extends StatefulWidget {
   SourceFieldState createState() => SourceFieldState();
 }
 
-class SourceFieldState extends State<SourceField> {
+class SourceFieldState extends ConsumerState<SourceField> {
   final _controller = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _loadPref();
-  }
-
-  Future<void> _loadPref() async {
-    final prefs = await SharedPreferences.getInstance();
-    var savedSource = prefs.getString('rawSource');
-    savedSource ??= SourceService.defaultRawSource;
-    setState(() {
-      SourceService.rawSource = savedSource!;
-      _controller.text = SourceService.rawSource!;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _controller.text = ref.watch(sourceModelProvider);
     return SizedBox(
         width: widget.width,
         child: TextField(

@@ -1,12 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:labelling/storage/preference/preference_io_interface.dart';
-import 'package:riverpod/riverpod.dart';
 
-final sourceModelProvider =
-    Provider<SourceModel>((_) => SourceModel(PreferenceIO()));
+final sourceModelProvider = StateNotifierProvider<SourceModel, String>(
+    (_) => SourceModel(PreferenceIO()));
 
-class SourceModel {
-  SourceModel(this.preferenceStorage);
+class SourceModel extends StateNotifier<String> {
+  SourceModel(this.preferenceStorage) : super(defaultSource);
 
   static const defaultSource = 'OANDA:EUR_USD';
   final PreferenceIOInterface preferenceStorage;
