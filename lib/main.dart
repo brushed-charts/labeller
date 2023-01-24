@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:labelling/conditionnal_chart_view.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
 import 'chart.dart';
@@ -30,8 +31,17 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-            children: [ToolBar(key: key), const Expanded(child: Chart())]));
+        body: Column(children: [
+      ToolBar(key: key),
+      Expanded(
+          child: ConditionnalChartView(
+        key: key,
+        noData: Container(),
+        loading: Container(),
+        error: Container(),
+        onData: Container(),
+      ))
+    ]));
   }
 }
 

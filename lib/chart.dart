@@ -37,11 +37,17 @@ class _ChartState extends ConsumerState<Chart> implements HubConsumer {
   final _referenceRepository = ReferenceRepositoryInMemory();
   FigureDatabaseInterface? _figureDatabase;
   FigureFragment? _figureFragment;
+
   @override
   void initState() {
     LinkHub.subscribe(SourceService.sourceChangedChannel, this);
     LinkHub.subscribe(AppModeService.channel, this);
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 
   Future<void> getAppropriateView() async {
@@ -77,11 +83,6 @@ class _ChartState extends ConsumerState<Chart> implements HubConsumer {
     } catch (e) {
       setState(() => currentGraph = GraphViewBuilder().errorScreen());
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return currentGraph;
   }
 
   @override
