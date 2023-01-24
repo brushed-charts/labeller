@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/model/date_range_model.dart';
@@ -9,6 +10,10 @@ class MockPreferenceIO extends Mock implements PreferenceIO {}
 
 void main() {
   registerFallbackValue(DateRangeModel(MockPreferenceIO()));
+  final dateTimeRangeA = DateTimeRange(
+    start: DateTime.utc(2023, 01, 01),
+    end: DateTime.utc(2023, 01, 20),
+  );
   const strDateFrom = '2023-01-23T21:15:00.000Z';
   const strDateTo = '2023-01-23T22:00:00.000Z';
   late MockPreferenceIO mockPreference;
@@ -36,36 +41,43 @@ void main() {
         allOf(lessThan(10), greaterThan(2)));
   });
 
-  group("date range model loading ->", () {
+  group("Date range model loading ->", () {
     test("Expect loading is delegate to PreferencIO", () async {
       await providerContainer.read(dateRangeProvider.notifier).load();
       verify(() => mockPreference.load('dateFrom')).called(1);
       verify(() => mockPreference.load('dateTo')).called(1);
     });
-    test("Assert state is retrieved by loading preference ", () async { continue here
+    test("Assert state is retrieved by loading preference ", () async {
       await providerContainer.read(dateRangeProvider.notifier).load();
       expect(
-        providerContainer.read(dateRangeProvider.notifier),
-        equals(''),
+        providerContainer.read(dateRangeProvider).start.toIso8601String(),
+        equals(strDateFrom),
+      );
+      expect(
+        providerContainer.read(dateRangeProvider).end.toIso8601String(),
+        equals(strDateTo),
       );
     });
   });
 
   test(
-      "Test that source model saving call PreferenceIO "
+      "Test that date range saving call PreferenceIO "
       "with good parameters", () async {
-    final intervalModel = providerContainer.read(sourceModelProvider.notifier);
-    intervalModel.setSource('A_BROKER:TEST_PAIR');
+    final intervalModel = providerContainer.read(dateRangeProvider.notifier);
+    intervalModel.setDateRange(dateTimeRangeA);
     await intervalModel.save();
-    verify(() => mockPreference.write('source', 'A_BROKER:TEST_PAIR'))
+
+    verify(() => mockPreference.write('dateFrom', '2023-01-01T00:00:00.000Z'))
+        .called(1);
+    verify(() => mockPreference.write('dateTo', '2023-01-20T00:00:00.000Z'))
         .called(1);
   });
 
-  test("Expect setSource from source model update its state", () {
-    final state = providerContainer.read(sourceModelProvider);
-    expect(state, equals(SourceModel.defaultSource));
-    providerContainer.read(sourceModelProvider.notifier).setSource('BR:PAIR');
-    final editedState = providerContainer.read(sourceModelProvider);
-    expect(editedState, equals('BR:PAIR'));
+  test("Expect setDateRange in date range model update it self its state", () {
+    providerContainer
+        .read(dateRangeProvider.notifier)
+        .setDateRange(dateTimeRangeA);
+    final editedState = providerContainer.read(dateRangeProvider);
+    expect(editedState, equals(dateTimeRangeA));
   });
 }
