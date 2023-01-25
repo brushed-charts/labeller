@@ -7,7 +7,7 @@ class CalendarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(dateRangeProvider.notifier).load();
+    ref.read(dateRangeProvider.notifier).refresh();
     return IconButton(
       onPressed: () async {
         final range = await _onCalendar(context, ref);

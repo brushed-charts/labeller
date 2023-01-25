@@ -42,12 +42,12 @@ void main() {
 
   group("Date range model loading ->", () {
     test("Expect loading is delegate to PreferencIO", () async {
-      await providerContainer.read(dateRangeProvider.notifier).load();
+      await providerContainer.read(dateRangeProvider.notifier).refresh();
       verify(() => mockPreference.load('dateFrom')).called(1);
       verify(() => mockPreference.load('dateTo')).called(1);
     });
     test("Assert state is retrieved by loading preference ", () async {
-      await providerContainer.read(dateRangeProvider.notifier).load();
+      await providerContainer.read(dateRangeProvider.notifier).refresh();
       expect(
         providerContainer.read(dateRangeProvider).start.toIso8601String(),
         equals(strDateFrom),

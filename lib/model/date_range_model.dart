@@ -31,7 +31,7 @@ class DateRangeModel extends StateNotifier<DateTimeRange> {
     return true;
   }
 
-  Future<void> load() async {
+  Future<void> refresh() async {
     final strDateFrom = await preferenceStorage.load('dateFrom');
     final strDateTo = await preferenceStorage.load('dateTo');
     state = _makeDatetimeRange(strDateFrom, strDateTo);
