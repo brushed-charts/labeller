@@ -7,19 +7,23 @@ import 'package:labelling/model/source_model.dart';
 enum ChartViewState { noData, loading, error, onData }
 
 final isChartMetadataReady = Provider<bool>((ref) {
-  final source = ref.read(sourceModelProvider.notifier);
-  final interval = ref.read(intervalModelProvider.notifier);
-  final dateRange = ref.read(dateRangeProvider.notifier);
+  final source = ref.watch(sourceModelProvider.notifier);
+  final interval = ref.watch(intervalModelProvider.notifier);
+  final dateRange = ref.watch(dateRangeProvider.notifier);
   if (!source.isLoaded || !interval.isLoaded || !dateRange.isLoaded) {
     return false;
   }
   return true;
 });
 
-final chartViewStateProvider = Provider((ref) {
+final chartStateProvider = Provider((ref) {
   final source = ref.watch(sourceModelProvider);
   final interval = ref.watch(intervalModelProvider);
   final dateRange = ref.watch(dateRangeProvider);
+  final isMetadataLoaded = ref.watch(isChartMetadataReady);
+  print(isMetadataLoaded);
+  if (!isMetadataLoaded) return ChartViewState.noData;
+  return ChartViewState.onData;
 });
 
 class ConditionnalChartView extends ConsumerWidget {
