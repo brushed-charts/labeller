@@ -41,5 +41,10 @@ void main() {
     expect(providerContainer.refresh(isChartMetadataReady), isTrue);
   });
 
-  test("", () => null);
+  test("Expect chart state to be 'noData' when metadata are not ready", () {
+    final isMetadataReady = providerContainer.refresh(isChartMetadataReady);
+    expect(isMetadataReady, isFalse);
+    expect(providerContainer.refresh(chartStateProvider),
+        equals(ChartViewState.noData));
+  });
 }

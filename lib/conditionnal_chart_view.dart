@@ -17,11 +17,7 @@ final isChartMetadataReady = Provider<bool>((ref) {
 });
 
 final chartStateProvider = Provider((ref) {
-  final source = ref.watch(sourceModelProvider);
-  final interval = ref.watch(intervalModelProvider);
-  final dateRange = ref.watch(dateRangeProvider);
   final isMetadataLoaded = ref.watch(isChartMetadataReady);
-  print(isMetadataLoaded);
   if (!isMetadataLoaded) return ChartViewState.noData;
   return ChartViewState.onData;
 });
