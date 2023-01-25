@@ -10,6 +10,7 @@ class IntervalModel extends StateNotifier<String> {
 
   static const defaultInterval = '30m';
   final PreferenceIOInterface preferenceStorage;
+  bool isLoaded = false;
 
   void setInterval(String newState) {
     state = newState;
@@ -17,6 +18,7 @@ class IntervalModel extends StateNotifier<String> {
 
   Future<void> refresh() async {
     state = (await preferenceStorage.load('interval')) ?? defaultInterval;
+    isLoaded = true;
   }
 
   Future<void> save() async {

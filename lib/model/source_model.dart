@@ -8,6 +8,8 @@ final sourceModelProvider = StateNotifierProvider<SourceModel, String>(
 class SourceModel extends StateNotifier<String> {
   SourceModel(this.preferenceStorage) : super(defaultSource);
 
+  bool isLoaded = false;
+
   static const defaultSource = 'OANDA:EUR_USD';
   final PreferenceIOInterface preferenceStorage;
   String get broker => state.split(':')[0].toLowerCase();
@@ -19,6 +21,7 @@ class SourceModel extends StateNotifier<String> {
 
   Future<void> refresh() async {
     state = (await preferenceStorage.load('source')) ?? defaultSource;
+    isLoaded = true;
   }
 
   Future<void> save() async {

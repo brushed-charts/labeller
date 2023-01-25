@@ -15,6 +15,7 @@ class DateRangeModel extends StateNotifier<DateTimeRange> {
       end: DateTime.now().toUtc());
 
   final PreferenceIOInterface preferenceStorage;
+  bool isLoaded = false;
 
   void setDateRange(DateTimeRange range) {
     if (!validate(range)) return;
@@ -34,6 +35,7 @@ class DateRangeModel extends StateNotifier<DateTimeRange> {
     final strDateFrom = await preferenceStorage.load('dateFrom');
     final strDateTo = await preferenceStorage.load('dateTo');
     state = _makeDatetimeRange(strDateFrom, strDateTo);
+    isLoaded = true;
   }
 
   Future<void> save() async {
