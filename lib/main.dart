@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:labelling/conditionnal_chart_view.dart';
+import 'package:labelling/loading_screen.dart';
+import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
 import 'chart.dart';
@@ -36,8 +38,8 @@ class MainView extends StatelessWidget {
       Expanded(
           child: ConditionnalChartView(
         key: key,
-        noData: Container(),
-        loading: Container(),
+        noData: const NoDataWidget(),
+        loading: const LoadingScreen(),
         error: Container(),
         onData: Container(),
       ))
