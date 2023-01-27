@@ -7,32 +7,37 @@ import 'package:labelling/model/source_model.dart';
 enum ChartViewState { noData, loading, error, onData }
 
 final isChartMetadataReady = Provider<bool>((ref) {
-  final source = ref.watch(sourceModelProvider.notifier);
-  final interval = ref.watch(intervalModelProvider.notifier);
-  final dateRange = ref.watch(dateRangeProvider.notifier);
+  final source = ref.read(sourceModelProvider.notifier);
+  final interval = ref.read(intervalModelProvider.notifier);
+  final dateRange = ref.read(dateRangeProvider.notifier);
   if (!source.isLoaded || !interval.isLoaded || !dateRange.isLoaded) {
     return false;
   }
   return true;
 });
 
-final chartStateProvider = Provider((ref) {
-  final isMetadataLoaded = ref.watch(isChartMetadataReady);
-  if (!isMetadataLoaded) return ChartViewState.noData;
-  return ChartViewState.onData;
+final chartViewStateProvider = Provider((ref) {
+  final isModelsLoaded = ref.watch(isChartMetadataReady);
+  if (!isModelsLoaded) return ChartViewState.noData;
+  return ChartViewState.loading;
 });
 
 class ConditionnalChartView extends ConsumerWidget {
+  final Widget? onData;
+  final Widget noData;
+  final Widget? loading;
+  final Widget? error;
+
   const ConditionnalChartView({
-    required Widget onData,
-    Widget? noData,
-    Widget? loading,
-    Widget? error,
+    this.onData,
+    required this.noData,
+    this.loading,
+    this.error,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Placeholder();
+    return noData;
   }
 }

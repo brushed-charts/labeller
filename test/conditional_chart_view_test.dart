@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/conditionnal_chart_view.dart';
 import 'package:labelling/model/date_range_model.dart';
 import 'package:labelling/model/interval_model.dart';
 import 'package:labelling/model/source_model.dart';
+import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -44,7 +46,23 @@ void main() {
   test("Expect chart state to be 'noData' when metadata are not ready", () {
     final isMetadataReady = providerContainer.refresh(isChartMetadataReady);
     expect(isMetadataReady, isFalse);
-    expect(providerContainer.refresh(chartStateProvider),
+    expect(providerContainer.refresh(chartViewStateProvider),
         equals(ChartViewState.noData));
   });
+
+  testWidgets(
+      "Assert conditionnal chart state view "
+      "display NoData screen when models are not loaded", (tester) async {
+    await tester.pumpWidget(const Directionality(
+        textDirection: TextDirection.ltr,
+        child: ConditionnalChartView(
+            noData: NoDataWidget(), onData: Placeholder())));
+    expect(find.byType(NoDataWidget), findsOneWidget);
+  });
+
+  // testWidgets(
+  //     "Assert conditionnal chart state view "
+  //     "display loading screen when query is started", (tester) {
+  //   // tester.pumpWidget()
+  // });
 }
