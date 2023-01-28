@@ -39,5 +39,10 @@ class ConditionnalChartView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return noData;
+    // switch (ref.watch(chartViewStateProvider)) {
+    //   case value:
+    //     break;
+    //   default:
+    // }
   }
 }

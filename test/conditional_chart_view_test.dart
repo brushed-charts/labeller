@@ -51,8 +51,8 @@ void main() {
   });
 
   testWidgets(
-      "Assert conditionnal chart state view "
-      "display NoData screen when models are not loaded", (tester) async {
+      "Assert conditionnal chart state view display NoData screen "
+      "at start", (tester) async {
     await tester.pumpWidget(const Directionality(
         textDirection: TextDirection.ltr,
         child: ConditionnalChartView(
