@@ -5,6 +5,6 @@ class MarketMetadata {
   final String assetPairs;
   final int intervalInSeconds;
   final DateTimeRange dateRange;
-  MarketMetadata(
+  const MarketMetadata(
       this.broker, this.assetPairs, this.intervalInSeconds, this.dateRange);
 }
