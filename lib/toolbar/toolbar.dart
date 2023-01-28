@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/toolbar/controller/source_field.dart';
 import 'package:labelling/toolbar/controller/calendar.dart';
 import 'package:labelling/toolbar/controller/interval.dart';
 import 'package:labelling/toolbar/controller/head_and_shoulders.dart';
 
 class ToolBar extends StatelessWidget {
-  final ChartModel model;
-  const ToolBar({Key? key, required this.model}) : super(key: key);
+  const ToolBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +13,9 @@ class ToolBar extends StatelessWidget {
         color: Theme.of(context).colorScheme.background,
         child: Row(children: [
           const SizedBox(width: 30),
-          SourceField(width: 150),
+          const SourceField(width: 150),
           const SizedBox(width: 30),
-          IntervalSelector(chartModel: model),
+          const IntervalSelector(),
           const SizedBox(width: 30),
           CalendarWidget(),
           const SizedBox(width: 30),

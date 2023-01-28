@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/model/chart_model.dart';
-import 'package:labelling/observation/observable.dart';
-import 'package:labelling/observation/observer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:labelling/model/interval_model.dart';
 
-class IntervalSelector extends StatefulWidget {
-  const IntervalSelector({required this.chartModel, Key? key})
-      : super(key: key);
-
-  final ChartModel chartModel;
+class IntervalSelector extends ConsumerStatefulWidget {
+  const IntervalSelector({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _IntervalSelector();
+  IntervalSelectorState createState() => IntervalSelectorState();
 }
 
-class _IntervalSelector extends State<IntervalSelector> implements Observer {
-  @override
-  void initState() {
-    widget.chartModel.sourceModel.subscribe(this);
-    super.initState();
-  }
-
+class IntervalSelectorState extends ConsumerState<IntervalSelector> {
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
+    ref.watch(intervalModelProvider.notifier).refresh();
+    return DropdownButton<String>(
         onChanged: _onInterval,
-        value: widget.chartModel.sourceModel.interval,
+        value: ref.watch(intervalModelProvider),
         items: <String>[
           '1s',
           '2s',
@@ -50,13 +41,8 @@ class _IntervalSelector extends State<IntervalSelector> implements Observer {
 
   void _onInterval(String? interval) {
     if (interval == null) return;
-    widget.chartModel.sourceModel.interval = interval;
-    widget.chartModel.sourceModel.save();
-    // print(widget.chartModel.sourceModel.interval);
-  }
-
-  @override
-  void onObservableEvent(Observable observable) {
-    setState(() {/* source model have changed */});
+    final intervalModel = ref.read(intervalModelProvider.notifier);
+    intervalModel.setInterval(interval);
+    intervalModel.save();
   }
 }

@@ -9,5 +9,5 @@ class CacheServiceInterface implements CacheContract {
   void remove(String key) => CacheService.remove(key);
 
   @override
-  void save(String key, value) => CacheService.save(key, value);
+  void save(String key, dynamic value) => CacheService.save(key, value);
 }

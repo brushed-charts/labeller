@@ -2,6 +2,7 @@ import 'package:firestore_figure_database/context.dart';
 import 'package:firestore_figure_database/initializator.dart';
 import 'package:firestore_figure_database/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grapher/reference/memory_repository.dart';
 import 'package:grapher_user_draw/draw_tools/draw_tool_interface.dart';
 import 'package:grapher_user_draw/figure_database_interface.dart';
@@ -23,24 +24,30 @@ import 'package:labelling/services/source.dart';
 import 'fragment/line.dart';
 import 'fragment/volume.dart';
 
-class Chart extends StatefulWidget {
+class Chart extends ConsumerStatefulWidget {
   const Chart({Key? key}) : super(key: key);
 
   @override
-  State<Chart> createState() => _ChartState();
+  ConsumerState<Chart> createState() => _ChartState();
 }
 
-class _ChartState extends State<Chart> implements HubConsumer {
+class _ChartState extends ConsumerState<Chart> implements HubConsumer {
   var currentGraph = GraphViewBuilder().noDataScreen();
   final _figureStore = FigureStore();
   final _referenceRepository = ReferenceRepositoryInMemory();
   FigureDatabaseInterface? _figureDatabase;
   FigureFragment? _figureFragment;
+
   @override
   void initState() {
     LinkHub.subscribe(SourceService.sourceChangedChannel, this);
     LinkHub.subscribe(AppModeService.channel, this);
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 
   Future<void> getAppropriateView() async {
@@ -76,11 +83,6 @@ class _ChartState extends State<Chart> implements HubConsumer {
     } catch (e) {
       setState(() => currentGraph = GraphViewBuilder().errorScreen());
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return currentGraph;
   }
 
   @override
