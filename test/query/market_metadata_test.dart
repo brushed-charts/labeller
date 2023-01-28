@@ -15,6 +15,6 @@ void main() {
     expect(marketMetadata.broker, equals("broker"));
     expect(marketMetadata.assetPairs, equals("asset_pairs"));
     expect(marketMetadata.intervalInSeconds, equals(tenMinutes));
-    expect(marketMetadata.range, equals(dateTimeRange));
+    expect(marketMetadata.dateRange, equals(dateTimeRange));
   });
 }

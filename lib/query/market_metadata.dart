@@ -4,7 +4,7 @@ class MarketMetadata {
   final String broker;
   final String assetPairs;
   final int intervalInSeconds;
-  final DateTimeRange range;
+  final DateTimeRange dateRange;
   MarketMetadata(
-      this.broker, this.assetPairs, this.intervalInSeconds, this.range);
+      this.broker, this.assetPairs, this.intervalInSeconds, this.dateRange);
 }
