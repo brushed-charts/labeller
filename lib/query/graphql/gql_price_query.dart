@@ -29,7 +29,7 @@ class GQLPriceQuery implements GQLQueryMaker {
   @override
   String makeQueryBody(MarketMetadata metadata) {
     final queryWithAliasName =
-        _templateQuery.replaceAll('{{alias}}', metadata.broker);
+        _templateQuery.replaceAll('{{alias}}', metadata.broker.toLowerCase());
     return queryWithAliasName;
   }
 
@@ -40,7 +40,7 @@ class GQLPriceQuery implements GQLQueryMaker {
         "dateFrom": metadata.dateRange.start,
         "dateTo": metadata.dateRange.end,
         "asset": metadata.assetPairs.toUpperCase(),
-        "source": metadata.broker.toUpperCase(),
+        "source": metadata.broker.toLowerCase(),
         "granularity": metadata.intervalInSeconds,
       }
     };

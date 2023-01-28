@@ -14,7 +14,7 @@ void main() {
       "GQL Price query have the broker name "
       "and the functiion name in the query body", () {
     final queryStr = const GQLPriceQuery().makeQueryBody(marketMetadata);
-    expect(queryStr, contains("A_BROKER_TEST"));
+    expect(queryStr, contains("a_broker_test")); // alias is in lower case
     expect(queryStr, contains("ohlc_price"));
   });
 
@@ -26,7 +26,8 @@ void main() {
     expect(sourceVariablesMap['dateFrom'], equals(dateRange.start));
     expect(sourceVariablesMap['dateTo'], equals(dateRange.end));
     expect(sourceVariablesMap['asset'], equals('ASSET_PAIRS'));
-    expect(sourceVariablesMap['source'], equals('A_BROKER_TEST'));
+    // in result broker must be transformed to lower case
+    expect(sourceVariablesMap['source'], equals('a_broker_test'));
     expect(sourceVariablesMap['granularity'],
         equals(marketMetadata.intervalInSeconds));
   });
