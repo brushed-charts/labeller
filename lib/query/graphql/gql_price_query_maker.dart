@@ -1,11 +1,10 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:labelling/query/graphql/gql_query_builder.dart';
+import 'package:labelling/query/graphql/gql_query_maker_contract.dart';
 import 'package:labelling/query/market_metadata.dart';
 
-class GQLPriceQueryMaker implements GQLQueryBuilder {
-  GQLPriceQueryMaker(this.metadata);
+class GQLPriceQueryMaker implements GQLQueryMaker {
+  const GQLPriceQueryMaker();
 
-  final MarketMetadata metadata;
   final String _templateQuery = """
   query(\$sourceSelector: SourceSelector!) {
     {{alias}}: ohlc_price(sourceSelector:\$sourceSelector){
@@ -28,14 +27,14 @@ class GQLPriceQueryMaker implements GQLQueryBuilder {
   }
 
   @override
-  String makeQueryBody() {
+  String makeQueryBody(MarketMetadata metadata) {
     final queryWithAliasName =
         _templateQuery.replaceAll('{{alias}}', metadata.broker);
     return queryWithAliasName;
   }
 
   @override
-  Map<String, dynamic> makeVariables() {
+  Map<String, dynamic> makeVariables(MarketMetadata metadata) {
     return {
       "sourceSelector": {
         "dateFrom": metadata.dateRange.start,
