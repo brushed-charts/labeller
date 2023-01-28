@@ -5,8 +5,6 @@ import 'package:labelling/loading_screen.dart';
 import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
-import 'chart.dart';
-
 void main() {
   runApp(const ProviderScope(child: Labeller()));
 }

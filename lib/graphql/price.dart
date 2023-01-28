@@ -19,6 +19,7 @@ class PriceFetcher with GQLTemplate {
 }
 """;
 
+  @override
   QueryOptions build() {
     final query = prepareQuery(SourceService.broker!);
     final vars = makeVariables();
