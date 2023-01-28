@@ -2,8 +2,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:labelling/query/graphql/gql_query_maker_contract.dart';
 import 'package:labelling/query/market_metadata.dart';
 
-class GQLPriceQueryMaker implements GQLQueryMaker {
-  const GQLPriceQueryMaker();
+class GQLPriceQuery implements GQLQueryMaker {
+  const GQLPriceQuery();
 
   final String _templateQuery = """
   query(\$sourceSelector: SourceSelector!) {
