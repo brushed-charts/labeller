@@ -25,10 +25,12 @@ class FigureFragment implements FragmentContract {
   @override
   GraphObject? interaction, parser, visualisation;
 
-  set drawTool(DrawToolInterface? tool) => ReferenceReader<DrawToolPropagator>(
-          repository: _referenceRepository, refName: 'draw_tool_propagator')
-      .read()!
-      .propagateDrawTool(tool);
+  set drawTool(DrawToolInterface? tool) {
+    return ReferenceReader<DrawToolPropagator>(
+            repository: _referenceRepository, refName: 'draw_tool_propagator')
+        .read()!
+        .propagateDrawTool(tool);
+  }
 
   GraphObject createVisual() {
     return SubGraphKernel(
