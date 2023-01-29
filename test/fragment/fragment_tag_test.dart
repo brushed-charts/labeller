@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:labelling/fragment/base.dart';
 import 'package:labelling/fragment/fragment_tag.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockFragment extends Mock implements Fragment {}
+class MockFragment extends Mock implements FragmentContract {}
 
 void main() {
   test("Check that tag name associate a given name to fragment", () {
