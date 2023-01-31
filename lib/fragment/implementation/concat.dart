@@ -15,12 +15,12 @@ class ConcatFragments implements FragmentContract {
 
   ConcatFragments({List<FragmentContract>? children})
       : _fragments = children ?? [] {
-    extractSubgraphFromFragment();
-    removeNullValues();
-    makeUnifiedFragment();
+    _extractSubgraphFromFragment();
+    _removeNullValues();
+    _makeUnifiedFragment();
   }
 
-  void extractSubgraphFromFragment() {
+  void _extractSubgraphFromFragment() {
     for (final fragment in _fragments) {
       _parserList.add(fragment.parser);
       _visualList.add(fragment.visualisation);
@@ -28,19 +28,19 @@ class ConcatFragments implements FragmentContract {
     }
   }
 
-  void removeNullValues() {
+  void _removeNullValues() {
     _parserList.removeWhere((element) => element == null);
     _visualList.removeWhere((element) => element == null);
     _interactionList.removeWhere((element) => element == null);
   }
 
-  makeUnifiedFragment() {
-    parser = listToStackLayout(_parserList);
-    visualisation = listToStackLayout(_visualList);
-    interaction = listToStackLayout(_interactionList);
+  _makeUnifiedFragment() {
+    parser = _listToStackLayout(_parserList);
+    visualisation = _listToStackLayout(_visualList);
+    interaction = _listToStackLayout(_interactionList);
   }
 
-  GraphObject listToStackLayout(List<GraphObject?> inputs) {
+  GraphObject _listToStackLayout(List<GraphObject?> inputs) {
     if (inputs.isEmpty) return NullGraphObject();
     return StackLayout(children: inputs.cast<GraphObject>());
   }
