@@ -1,4 +1,4 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:labelling/fragment/base.dart';
 import 'package:labelling/fragment/fragment_tag.dart';
 
 class FragmentModel {
@@ -8,7 +8,7 @@ class FragmentModel {
     _fragmentList.add(fragmentTag);
   }
 
-  List<FragmentTag> getAll() {
-    return List.from(_fragmentList);
+  List<FragmentContract> getAllFragment() {
+    return List.from(_fragmentList.map<FragmentContract>((e) => e.fragment));
   }
 }
