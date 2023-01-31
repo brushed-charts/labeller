@@ -9,10 +9,10 @@ import 'package:grapher_user_draw/figure_database_interface.dart';
 import 'package:grapher_user_draw/presenter.dart';
 import 'package:grapher_user_draw/store.dart';
 import 'package:grapher_user_draw/user_interaction/main_userinteraction.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/draw_tool_propagator.dart';
 
-class FigureFragment implements FragmentContract {
+class FigureFragment implements FragmentInterface {
   FigureFragment(
       this._figureStore, this._referenceRepository, this._figureDatabase) {
     visualisation = createVisual();

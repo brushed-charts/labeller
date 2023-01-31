@@ -15,7 +15,7 @@ import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/property.dart';
 import 'package:grapher/tag/tag.dart';
 import 'package:grapher/utils/y-virtual-range.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
@@ -23,7 +23,7 @@ import 'package:grapher/detachedPanel/align-options.dart';
 import 'package:grapher/detachedPanel/panel.dart';
 import 'package:grapher/geometry/barchart.dart';
 
-class VolumeFragment implements FragmentContract {
+class VolumeFragment implements FragmentInterface {
   @override
   GraphObject? interaction, parser, visualisation;
 

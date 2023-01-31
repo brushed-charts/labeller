@@ -11,12 +11,12 @@ import 'package:grapher/pack/unpack-view.dart';
 import 'package:grapher/pipe/pipeIn.dart';
 import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/tag.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
-class CandleFragment implements FragmentContract {
+class CandleFragment implements FragmentInterface {
   @override
   GraphObject? interaction, parser, visualisation;
 

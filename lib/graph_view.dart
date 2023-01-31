@@ -3,7 +3,7 @@ import 'package:grapher/interaction/widget.dart';
 import 'package:grapher/kernel/kernel.dart';
 import 'package:grapher/kernel/widget.dart';
 import 'package:grapher/reference/contract.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 
 import 'fragment/implementation/concat.dart';
 import 'grapherExtension/axed_graph.dart';
@@ -31,7 +31,7 @@ class GraphViewBuilder {
   }
 
   Widget priceWidget(ReferenceRepositoryInterface referenceRepository,
-      List<FragmentContract> children) {
+      List<FragmentInterface> children) {
     return GraphFullInteraction(
         kernel: GraphKernel(
             child: AxedGraph(

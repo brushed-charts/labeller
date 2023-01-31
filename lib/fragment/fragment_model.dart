@@ -1,4 +1,4 @@
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/fragment/fragment_tag.dart';
 
 class FragmentModel {
@@ -8,7 +8,7 @@ class FragmentModel {
     _fragmentList.add(fragmentTag);
   }
 
-  List<FragmentContract> getAllFragment() {
-    return List.from(_fragmentList.map<FragmentContract>((e) => e.fragment));
+  List<FragmentInterface> getAllFragment() {
+    return List.from(_fragmentList.map<FragmentInterface>((e) => e.fragment));
   }
 }

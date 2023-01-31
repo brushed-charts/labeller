@@ -12,7 +12,7 @@ import 'package:grapher/staticLayout/stack.dart';
 import 'package:grapher/view/view-event.dart';
 import 'package:grapher/view/window.dart';
 import 'package:grapher_user_draw/user_interaction/bypass_pointer_event.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/utils/cache_interface.dart';
 import 'package:labelling/utils/null_graph_object.dart';
 
@@ -20,14 +20,14 @@ class FragmentToGraphObject extends GraphObject with SinglePropagator {
   final ReferenceRepositoryInterface _referenceRepository;
 
   FragmentToGraphObject(
-      {required FragmentContract fragment,
+      {required FragmentInterface fragment,
       required ReferenceRepositoryInterface referenceRepository})
       : _referenceRepository = referenceRepository {
     child = buildCoreGraph(fragment);
   }
 
   GraphObject buildCoreGraph(
-    FragmentContract fragmentStruct,
+    FragmentInterface fragmentStruct,
   ) {
     return StackLayout(children: [
       buildParser(fragmentStruct),
@@ -36,11 +36,11 @@ class FragmentToGraphObject extends GraphObject with SinglePropagator {
     ]);
   }
 
-  GraphObject buildParser(FragmentContract struct) {
+  GraphObject buildParser(FragmentInterface struct) {
     return struct.parser ?? NullGraphObject();
   }
 
-  GraphObject buildVisualization(FragmentContract struct) {
+  GraphObject buildVisualization(FragmentInterface struct) {
     return PipeOut(
         name: 'pipe_main',
         child: Pack(
@@ -60,7 +60,7 @@ class FragmentToGraphObject extends GraphObject with SinglePropagator {
                         ]))))))));
   }
 
-  GraphObject buildInteraction(FragmentContract struct) {
+  GraphObject buildInteraction(FragmentInterface struct) {
     return struct.interaction ?? NullGraphObject();
   }
 }

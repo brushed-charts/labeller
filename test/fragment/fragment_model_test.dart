@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/fragment/fragment_model.dart';
 import 'package:labelling/fragment/fragment_tag.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockFragment extends Mock implements FragmentContract {}
+class MockFragment extends Mock implements FragmentInterface {}
 
 class MockFragmentTag extends Mock implements FragmentTag {
   @override
