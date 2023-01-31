@@ -8,7 +8,7 @@ import 'package:labelling/fragment/fragment_interface.dart';
 import 'fragment/implementation/concat.dart';
 import 'grapherExtension/axed_graph.dart';
 import 'grapherExtension/centered_text.dart';
-import 'grapherExtension/fragment_to_graph_object.dart';
+import 'fragment/fragment_to_graph_object.dart';
 
 class GraphViewBuilder {
   Widget noDataScreen() {
