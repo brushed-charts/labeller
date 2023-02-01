@@ -56,4 +56,51 @@ void main() {
     final editedState = providerContainer.read(intervalModelProvider);
     expect(editedState, equals('10m'));
   });
+
+  group("Check seconds conversion for IntervalModel ->", () {
+    test("from seconds", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("100s");
+      expect(intervalModel.intervalToSeconds, equals(100));
+    });
+    test("from minutes", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("30m");
+      expect(intervalModel.intervalToSeconds, equals(1800));
+      intervalModel.setInterval("2m");
+      expect(intervalModel.intervalToSeconds, equals(120));
+    });
+    test("from hours", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("3h");
+      expect(intervalModel.intervalToSeconds, equals(10800));
+    });
+    test("from days", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("3d");
+      expect(intervalModel.intervalToSeconds, equals(259200));
+    });
+    test("from weeks", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("2w");
+      expect(intervalModel.intervalToSeconds, equals(1209600));
+    });
+    test("from months", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("2M");
+      expect(intervalModel.intervalToSeconds, equals(5256000));
+    });
+    test("from years", () {
+      final intervalModel =
+          providerContainer.read(intervalModelProvider.notifier);
+      intervalModel.setInterval("4y");
+      expect(intervalModel.intervalToSeconds, equals(126144000));
+    });
+  });
 }
