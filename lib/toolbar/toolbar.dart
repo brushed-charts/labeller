@@ -17,7 +17,7 @@ class ToolBar extends StatelessWidget {
           const SizedBox(width: 30),
           const IntervalSelector(),
           const SizedBox(width: 30),
-          CalendarWidget(),
+          const CalendarWidget(),
           const SizedBox(width: 30),
           const HeadAndShouldersAnnotation(),
         ]));

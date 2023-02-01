@@ -12,7 +12,7 @@ import 'package:grapher/staticLayout/stack.dart';
 import 'package:grapher/view/view-event.dart';
 import 'package:grapher/view/window.dart';
 import 'package:grapher_user_draw/user_interaction/bypass_pointer_event.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/utils/cache_interface.dart';
 import 'package:labelling/utils/null_graph_object.dart';
 
@@ -20,27 +20,25 @@ class FragmentToGraphObject extends GraphObject with SinglePropagator {
   final ReferenceRepositoryInterface _referenceRepository;
 
   FragmentToGraphObject(
-      {required FragmentContract fragment,
+      {required FragmentInterface fragment,
       required ReferenceRepositoryInterface referenceRepository})
       : _referenceRepository = referenceRepository {
-    child = buildCoreGraph(fragment);
+    child = _buildCoreGraph(fragment);
   }
 
-  GraphObject buildCoreGraph(
-    FragmentContract fragmentStruct,
-  ) {
+  GraphObject _buildCoreGraph(FragmentInterface fragmentStruct) {
     return StackLayout(children: [
-      buildParser(fragmentStruct),
-      buildVisualization(fragmentStruct),
-      buildInteraction(fragmentStruct),
+      _buildParser(fragmentStruct),
+      _buildVisualization(fragmentStruct),
+      _buildInteraction(fragmentStruct),
     ]);
   }
 
-  GraphObject buildParser(FragmentContract struct) {
+  GraphObject _buildParser(FragmentInterface struct) {
     return struct.parser ?? NullGraphObject();
   }
 
-  GraphObject buildVisualization(FragmentContract struct) {
+  GraphObject _buildVisualization(FragmentInterface struct) {
     return PipeOut(
         name: 'pipe_main',
         child: Pack(
@@ -60,7 +58,7 @@ class FragmentToGraphObject extends GraphObject with SinglePropagator {
                         ]))))))));
   }
 
-  GraphObject buildInteraction(FragmentContract struct) {
+  GraphObject _buildInteraction(FragmentInterface struct) {
     return struct.interaction ?? NullGraphObject();
   }
 }

@@ -9,8 +9,10 @@ import 'package:grapher_user_draw/figure_database_interface.dart';
 import 'package:grapher_user_draw/store.dart';
 import 'package:labelling/drawTools/head_and_shoulders.dart';
 import 'package:labelling/figure_converter_with_tool_guess.dart';
-import 'package:labelling/fragment/candle.dart';
-import 'package:labelling/fragment/figure.dart';
+import 'package:labelling/fragment/implementation/candle.dart';
+import 'package:labelling/fragment/implementation/figure.dart';
+import 'package:labelling/fragment/implementation/line.dart';
+import 'package:labelling/fragment/implementation/volume.dart';
 import 'package:labelling/graph_view.dart';
 import 'package:labelling/graphql/mock_close.dart';
 import 'package:labelling/graphql/mock_price.dart';
@@ -20,9 +22,6 @@ import 'package:labelling/linkHub/main.dart';
 import 'package:labelling/services/appmode.dart';
 import 'package:labelling/services/cache.dart';
 import 'package:labelling/services/source.dart';
-
-import 'fragment/line.dart';
-import 'fragment/volume.dart';
 
 class Chart extends ConsumerStatefulWidget {
   const Chart({Key? key}) : super(key: key);
