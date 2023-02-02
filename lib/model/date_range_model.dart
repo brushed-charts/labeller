@@ -16,6 +16,7 @@ class DateRangeModel extends StateNotifier<DateTimeRange> {
 
   final PreferenceIOInterface preferenceStorage;
   bool isLoaded = false;
+  DateTimeRange get getDateRange => state;
 
   void setDateRange(DateTimeRange range) {
     if (!validate(range)) return;
