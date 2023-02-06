@@ -4,24 +4,24 @@ import 'package:grapher/filter/data-injector.dart';
 import 'package:grapher/filter/incoming-data.dart';
 import 'package:grapher/filter/json/explode.dart';
 import 'package:grapher/filter/json/extract.dart';
-import 'package:grapher/filter/json/to-point2D.dart';
-import 'package:grapher/geometry/line.dart';
+import 'package:grapher/filter/json/to-candle2D.dart';
+import 'package:grapher/geometry/candlestick.dart';
 import 'package:grapher/kernel/object.dart';
 import 'package:grapher/pack/unpack-view.dart';
 import 'package:grapher/pipe/pipeIn.dart';
 import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/tag.dart';
-import 'package:labelling/fragment/base.dart';
+import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/block_same_map.dart';
+import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
-class LineFragment implements FragmentContract {
+class CandleFragment implements FragmentInterface {
   @override
   GraphObject? interaction, parser, visualisation;
-  final String id;
 
   @override
-  LineFragment(this.id, Map<String, dynamic>? data) {
+  CandleFragment(Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
@@ -32,15 +32,15 @@ class LineFragment implements FragmentContract {
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
-                id: id,
+                id: 'price',
                 child: Extract(
-                    options: id,
+                    options: SourceService.broker!,
                     child: Explode(
-                        child: ToPoint2D(
+                        child: ToCandle2D(
                             xLabel: "datetime",
-                            yLabel: "value",
+                            yLabel: "price",
                             child: Tag(
-                                name: id,
+                                name: '${SourceService.broker!}_price',
                                 child: PipeIn(
                                     eventType: IncomingData,
                                     name: 'pipe_main'))))))));
@@ -49,8 +49,8 @@ class LineFragment implements FragmentContract {
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: id,
-            child:
-                DrawUnitFactory(template: DrawUnit.template(child: Line()))));
+            tagName: '${SourceService.broker!}_price',
+            child: DrawUnitFactory(
+                template: DrawUnit.template(child: Candlestick()))));
   }
 }
