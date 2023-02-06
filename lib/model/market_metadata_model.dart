@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/storage/preference/preference_io_interface.dart';
 
-class SourceModel with Observable {
-  SourceModel(this.preferenceStorage);
+class MarketMetadataModel with Observable {
+  MarketMetadataModel(this.preferenceStorage);
 
   static const defaultInterval = '30m';
   static const defaultSource = 'OANDA:EUR_USD';
@@ -20,8 +20,8 @@ class SourceModel with Observable {
   String get assetPair => rawSource.split(':')[1].toLowerCase();
 
   @override
-  SourceModel copy() {
-    final cp = SourceModel(preferenceStorage);
+  MarketMetadataModel copy() {
+    final cp = MarketMetadataModel(preferenceStorage);
     cp.rawSource = rawSource;
     cp.interval = interval;
     cp.dateRange = DateTimeRange(

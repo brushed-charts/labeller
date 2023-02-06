@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/services/source.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:labelling/model/market_metadata_model.dart';
 
 class SourceField extends StatefulWidget {
+  const SourceField(
+      {required this.marketMetadataModel, this.width = 90, Key? key})
+      : super(key: key);
+
   final double width;
-  const SourceField({this.width = 90, Key? key}) : super(key: key);
+  final MarketMetadataModel marketMetadataModel;
 
   @override
   SourceFieldState createState() => SourceFieldState();
@@ -14,23 +17,8 @@ class SourceFieldState extends State<SourceField> {
   final _controller = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    _loadPref();
-  }
-
-  Future<void> _loadPref() async {
-    final prefs = await SharedPreferences.getInstance();
-    var savedSource = prefs.getString('rawSource');
-    savedSource ??= SourceService.defaultRawSource;
-    setState(() {
-      SourceService.rawSource = savedSource!;
-      _controller.text = SourceService.rawSource!;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _controller.text = widget.marketMetadataModel.rawSource;
     return SizedBox(
         width: widget.width,
         child: TextField(
@@ -43,13 +31,6 @@ class SourceFieldState extends State<SourceField> {
   }
 
   void _onEdited(String rawSource) {
-    setState(() => SourceService.rawSource = rawSource);
-    SourceService.update();
-    _savePref();
-  }
-
-  Future<void> _savePref() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('rawSource', SourceService.rawSource ?? '');
+    // setState(() => widget.sourceModel.);
   }
 }

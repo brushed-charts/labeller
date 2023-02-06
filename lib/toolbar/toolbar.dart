@@ -15,7 +15,8 @@ class ToolBar extends StatelessWidget {
         color: Theme.of(context).colorScheme.background,
         child: Row(children: [
           const SizedBox(width: 30),
-          SourceField(width: 150),
+          SourceField(
+              marketMetadataModel: model.marketMetadataModel, width: 150),
           const SizedBox(width: 30),
           IntervalSelector(chartModel: model),
           const SizedBox(width: 30),

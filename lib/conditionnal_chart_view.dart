@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:labelling/model/source_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
 
 enum ChartViewState { noData, loading, error, onData }
 

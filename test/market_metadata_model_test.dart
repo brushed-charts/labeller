@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:labelling/model/source_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/observation/observer.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,8 +10,8 @@ class MockPreferenceIO extends Mock implements PreferenceIO {}
 class MockObserver extends Mock implements Observer {}
 
 void main() {
-  registerFallbackValue(SourceModel(MockPreferenceIO()));
-  late SourceModel sourceModel;
+  registerFallbackValue(MarketMetadataModel(MockPreferenceIO()));
+  late MarketMetadataModel sourceModel;
   late MockPreferenceIO mockPreference;
   const strDateStart = '2023-01-20T10:45:00Z';
   const strDateEnd = '2023-01-21T18:45:00Z';
@@ -30,7 +30,7 @@ void main() {
         .thenAnswer((_) => Future(() => 'TEST_BROKER:TEST_PAIR'));
     when(() => mockPreference.write(any(), any()))
         .thenAnswer((_) async => Future(() => ""));
-    sourceModel = SourceModel(mockPreference);
+    sourceModel = MarketMetadataModel(mockPreference);
   });
 
   test("Test the default values of source model ", () {
@@ -120,8 +120,8 @@ void main() {
       final mockObserver = MockObserver();
       sourceModel.subscribe(mockObserver);
       await sourceModel.save();
-      verify(() => mockObserver
-          .onObservableEvent(any(that: isInstanceOf<SourceModel>()))).called(1);
+      verify(() => mockObserver.onObservableEvent(
+          any(that: isInstanceOf<MarketMetadataModel>()))).called(1);
     });
   });
 }

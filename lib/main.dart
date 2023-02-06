@@ -32,7 +32,7 @@ class MainView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-        future: chartModel.sourceModel.refresh().then((_) => true),
+        future: chartModel.marketMetadataModel.refresh().then((_) => true),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Container(

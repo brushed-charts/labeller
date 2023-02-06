@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/conditionnal_chart_view.dart';
-import 'package:labelling/model/source_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,7 +10,7 @@ class MockPreferenceIO extends Mock implements PreferenceIO {}
 
 void main() {
   late MockPreferenceIO mockPreference;
-  late SourceModel sourceModel;
+  late MarketMetadataModel sourceModel;
 
   setUp(() {});
 

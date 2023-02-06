@@ -16,7 +16,7 @@ class IntervalSelector extends StatefulWidget {
 class _IntervalSelector extends State<IntervalSelector> implements Observer {
   @override
   void initState() {
-    widget.chartModel.sourceModel.subscribe(this);
+    widget.chartModel.marketMetadataModel.subscribe(this);
     super.initState();
   }
 
@@ -24,7 +24,7 @@ class _IntervalSelector extends State<IntervalSelector> implements Observer {
   Widget build(BuildContext context) {
     return DropdownButton(
         onChanged: _onInterval,
-        value: widget.chartModel.sourceModel.interval,
+        value: widget.chartModel.marketMetadataModel.interval,
         items: <String>[
           '1s',
           '2s',
@@ -50,8 +50,8 @@ class _IntervalSelector extends State<IntervalSelector> implements Observer {
 
   void _onInterval(String? interval) {
     if (interval == null) return;
-    widget.chartModel.sourceModel.interval = interval;
-    widget.chartModel.sourceModel.save();
+    widget.chartModel.marketMetadataModel.interval = interval;
+    widget.chartModel.marketMetadataModel.save();
     // print(widget.chartModel.sourceModel.interval);
   }
 
