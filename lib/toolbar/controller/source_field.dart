@@ -31,6 +31,7 @@ class SourceFieldState extends State<SourceField> {
   }
 
   void _onEdited(String rawSource) {
-    // setState(() => widget.sourceModel.);
+    setState(() => widget.marketMetadataModel.rawSource = rawSource);
+    widget.marketMetadataModel.save();
   }
 }

@@ -7,6 +7,11 @@ import 'package:mocktail/mocktail.dart';
 
 class MockPreferenceIO extends Mock implements PreferenceIO {}
 
+class MockMarketMetadataModel extends Mock implements MarketMetadataModel {
+  @override
+  String rawSource = "BROKER:ASSET";
+}
+
 void main() {
   testWidgets(
       "Toolbar's source field, display "
@@ -19,8 +24,19 @@ void main() {
     expect(find.text("BROKER:ASSET_PAIR"), findsOneWidget);
   });
 
-  testWidgets("Toolbar source fields, update model on change", (tester) {
-    var mockModel;
-    verify(() => mockModel.save(any())).called(1);
+  testWidgets("Toolbar source fields, update model on change", (tester) async {
+    final mockModel = MockMarketMetadataModel();
+    when(() => mockModel.save()).thenAnswer((_) async {});
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: SourceField(
+      marketMetadataModel: mockModel,
+    ))));
+    await tester.tap(find.byType(SourceField));
+    await tester.enterText(find.byType(SourceField), 'USER_BROKER:USER_ASSET');
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    expect(find.text('USER_BROKER:USER_ASSET'), findsOneWidget);
+    expect(mockModel.rawSource, equals('USER_BROKER:USER_ASSET'));
+    verify(() => mockModel.save()).called(1);
   });
 }
