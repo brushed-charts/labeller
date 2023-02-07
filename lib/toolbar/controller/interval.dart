@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:labelling/model/chart_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
 
 class IntervalSelector extends StatefulWidget {
-  const IntervalSelector({required this.chartModel, Key? key})
+  const IntervalSelector({required this.marketMetadataModel, Key? key})
       : super(key: key);
 
-  final ChartModel chartModel;
+  final MarketMetadataModel marketMetadataModel;
 
   @override
   State<StatefulWidget> createState() => _IntervalSelector();
@@ -15,16 +15,10 @@ class IntervalSelector extends StatefulWidget {
 
 class _IntervalSelector extends State<IntervalSelector> implements Observer {
   @override
-  void initState() {
-    widget.chartModel.marketMetadataModel.subscribe(this);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DropdownButton(
         onChanged: _onInterval,
-        value: widget.chartModel.marketMetadataModel.interval,
+        value: widget.marketMetadataModel.interval,
         items: <String>[
           '1s',
           '2s',
@@ -50,8 +44,8 @@ class _IntervalSelector extends State<IntervalSelector> implements Observer {
 
   void _onInterval(String? interval) {
     if (interval == null) return;
-    widget.chartModel.marketMetadataModel.interval = interval;
-    widget.chartModel.marketMetadataModel.save();
+    widget.marketMetadataModel.interval = interval;
+    widget.marketMetadataModel.save();
     // print(widget.chartModel.sourceModel.interval);
   }
 
