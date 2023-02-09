@@ -10,7 +10,7 @@ class MockPreferenceIO extends Mock implements PreferenceIO {}
 
 void main() {
   late MockPreferenceIO mockPreference;
-  late MarketMetadataModel sourceModel;
+  late MarketMetadataModel marketMetadataModel;
 
   setUp(() {});
 
