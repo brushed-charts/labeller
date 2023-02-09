@@ -25,7 +25,7 @@ class Labeller extends StatelessWidget {
 }
 
 class MainView extends StatelessWidget {
-  final chartModel = ChartModel();
+  final chartModel = ChartModel.initWithDefault();
 
   MainView({Key? key}) : super(key: key);
 
