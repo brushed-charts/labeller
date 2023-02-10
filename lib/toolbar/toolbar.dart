@@ -20,7 +20,7 @@ class ToolBar extends StatelessWidget {
           const SizedBox(width: 30),
           IntervalSelector(marketMetadataModel: model.marketMetadataModel),
           const SizedBox(width: 30),
-          CalendarWidget(),
+          CalendarWidget(marketMetadataModel: model.marketMetadataModel),
           const SizedBox(width: 30),
           const HeadAndShouldersAnnotation(),
         ]));

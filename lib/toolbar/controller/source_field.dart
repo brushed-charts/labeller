@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:labelling/model/market_metadata_model.dart';
+import 'package:labelling/observation/observable.dart';
+import 'package:labelling/observation/observer.dart';
 
 class SourceField extends StatefulWidget {
   const SourceField(
@@ -13,8 +15,15 @@ class SourceField extends StatefulWidget {
   SourceFieldState createState() => SourceFieldState();
 }
 
-class SourceFieldState extends State<SourceField> {
+class SourceFieldState extends State<SourceField> implements Observer {
   final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    widget.marketMetadataModel.subscribe(this);
+    widget.marketMetadataModel.refresh();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,5 +42,11 @@ class SourceFieldState extends State<SourceField> {
   void _onEdited(String rawSource) {
     setState(() => widget.marketMetadataModel.rawSource = rawSource);
     widget.marketMetadataModel.save();
+  }
+
+  @override
+  void onObservableEvent(Observable observable) {
+    if (observable is! MarketMetadataModel) return;
+    setState(() {});
   }
 }
