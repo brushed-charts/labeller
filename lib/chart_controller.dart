@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/observation/observable.dart';
@@ -5,28 +6,37 @@ import 'package:labelling/observation/observer.dart';
 import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/query/market_query_contract.dart';
 
-class ChartController implements Observer {
-  ChartController(ChartModel chartModel, MarketQuery marketQuery)
-      : _chartModel = chartModel,
-        _marketQuery = marketQuery {
-    _chartModel.marketMetadataModel.subscribe(this);
+class ChartController extends StatelessWidget implements Observer {
+  ChartController(
+      {Key? key,
+      required this.child,
+      required this.chartModel,
+      required this.marketQuery})
+      : super(key: key) {
+    chartModel.marketMetadataModel.subscribe(this);
   }
 
-  final ChartModel _chartModel;
-  final MarketQuery _marketQuery;
+  final ChartModel chartModel;
+  final MarketQuery marketQuery;
+  final Widget child;
 
   void onMarketMetadataChange() async {
     final queryMetadataMarket = MarketMetadata(
-        _chartModel.marketMetadataModel.broker,
-        _chartModel.marketMetadataModel.assetPair,
-        _chartModel.marketMetadataModel.intervalToSeconds,
-        _chartModel.marketMetadataModel.dateRange);
-    _marketQuery.getJsonPrice(queryMetadataMarket);
+        chartModel.marketMetadataModel.broker,
+        chartModel.marketMetadataModel.assetPair,
+        chartModel.marketMetadataModel.intervalToSeconds,
+        chartModel.marketMetadataModel.dateRange);
+    marketQuery.getJsonPrice(queryMetadataMarket);
   }
 
   @override
   void onObservableEvent(Observable observable) {
     if (observable is! MarketMetadataModel) return;
     onMarketMetadataChange();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
   }
 }

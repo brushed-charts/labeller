@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:labelling/chart_controller.dart';
 import 'package:labelling/model/chart_model.dart';
+import 'package:labelling/query/graphql/gql_query.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
 import 'chart.dart';
@@ -45,7 +47,12 @@ class MainView extends StatelessWidget {
           return Scaffold(
               body: Column(children: [
             ToolBar(key: key, model: chartModel),
-            const Expanded(child: Chart())
+            Expanded(
+                child: ChartController(
+              chartModel: chartModel,
+              marketQuery: GQLQuery.initWithDefaultValue(),
+              child: Chart(),
+            ))
           ]));
         });
   }

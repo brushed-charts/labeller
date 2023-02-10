@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/chart_controller.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
-import 'package:labelling/observation/observable.dart';
-import 'package:labelling/observation/observer.dart';
 import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/query/market_query_contract.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
@@ -31,7 +29,11 @@ void main() {
   test(
       "Assert the controller call getJsonPrice query "
       "on model market metadata notifications", () async {
-    final _ = ChartController(chartModel, mockMarketQuery);
+    final _ = ChartController(
+      chartModel: chartModel,
+      marketQuery: mockMarketQuery,
+      child: Container(),
+    );
     chartModel.marketMetadataModel.notify();
     verify(() => mockMarketQuery.getJsonPrice(any())).called(1);
   });
