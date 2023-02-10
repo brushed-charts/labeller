@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:labelling/model/chart_model.dart';
+import 'package:labelling/model/chart_state.dart';
 import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
@@ -26,7 +27,9 @@ class ChartController extends StatelessWidget implements Observer {
         chartModel.marketMetadataModel.assetPair,
         chartModel.marketMetadataModel.intervalToSeconds,
         chartModel.marketMetadataModel.dateRange);
-    marketQuery.getJsonPrice(queryMetadataMarket);
+    chartModel.stateModel.state = ChartViewState.loading;
+    await marketQuery.getJsonPrice(queryMetadataMarket);
+    chartModel.stateModel.state = ChartViewState.onData;
   }
 
   @override

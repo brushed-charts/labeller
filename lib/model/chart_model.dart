@@ -4,7 +4,7 @@ import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/storage/preference/preference_io.dart';
 
-class ChartModel with Observable {
+class ChartModel {
   ChartModel(this.toolModel, this.marketMetadataModel, this.stateModel);
 
   final DrawToolModel toolModel;
@@ -17,11 +17,5 @@ class ChartModel with Observable {
       MarketMetadataModel(PreferenceIO()),
       ChartStateModel(),
     );
-  }
-
-  @override
-  Observable copy() {
-    return ChartModel(
-        toolModel.copy(), marketMetadataModel.copy(), stateModel.copy());
   }
 }
