@@ -22,14 +22,19 @@ class ChartController extends StatelessWidget implements Observer {
   final Widget child;
 
   void onMarketMetadataChange() async {
+    final queryMetadataMarket = convertModelToMarketMetadataQuery();
+    chartModel.stateModel.state = ChartViewState.loading;
+    await chartService.marketQuery.getJsonPrice(queryMetadataMarket);
+    chartModel.stateModel.state = ChartViewState.onData;
+  }
+
+  MarketMetadata convertModelToMarketMetadataQuery() {
     final queryMetadataMarket = MarketMetadata(
         chartModel.marketMetadataModel.broker,
         chartModel.marketMetadataModel.assetPair,
         chartModel.marketMetadataModel.intervalToSeconds,
         chartModel.marketMetadataModel.dateRange);
-    chartModel.stateModel.state = ChartViewState.loading;
-    await chartService.marketQuery.getJsonPrice(queryMetadataMarket);
-    chartModel.stateModel.state = ChartViewState.onData;
+    return queryMetadataMarket;
   }
 
   @override
