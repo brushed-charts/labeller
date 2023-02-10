@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:labelling/chart_controller.dart';
 import 'package:labelling/model/chart_model.dart';
-import 'package:labelling/query/graphql/gql_query.dart';
+import 'package:labelling/services/chart_service.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 
 import 'chart.dart';
@@ -28,6 +28,7 @@ class Labeller extends StatelessWidget {
 
 class MainView extends StatelessWidget {
   final chartModel = ChartModel.initWithDefault();
+  final chartService = ChartService.initWithDefault();
 
   MainView({Key? key}) : super(key: key);
 
@@ -40,7 +41,7 @@ class MainView extends StatelessWidget {
       Expanded(
           child: ChartController(
         chartModel: chartModel,
-        marketQuery: GQLQuery.initWithDefaultValue(),
+        chartService: chartService,
         child: Chart(),
       ))
     ]));

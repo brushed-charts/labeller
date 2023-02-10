@@ -5,20 +5,20 @@ import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
 import 'package:labelling/query/market_metadata.dart';
-import 'package:labelling/query/market_query_contract.dart';
+import 'package:labelling/services/chart_service.dart';
 
 class ChartController extends StatelessWidget implements Observer {
   ChartController(
       {Key? key,
       required this.child,
       required this.chartModel,
-      required this.marketQuery})
+      required this.chartService})
       : super(key: key) {
     chartModel.marketMetadataModel.subscribe(this);
   }
 
   final ChartModel chartModel;
-  final MarketQuery marketQuery;
+  final ChartService chartService;
   final Widget child;
 
   void onMarketMetadataChange() async {
@@ -28,7 +28,7 @@ class ChartController extends StatelessWidget implements Observer {
         chartModel.marketMetadataModel.intervalToSeconds,
         chartModel.marketMetadataModel.dateRange);
     chartModel.stateModel.state = ChartViewState.loading;
-    await marketQuery.getJsonPrice(queryMetadataMarket);
+    await chartService.marketQuery.getJsonPrice(queryMetadataMarket);
     chartModel.stateModel.state = ChartViewState.onData;
   }
 
