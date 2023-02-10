@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:labelling/model/source_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
+import 'package:labelling/observation/observable.dart';
+import 'package:labelling/observation/observer.dart';
 
-class SourceField extends ConsumerStatefulWidget {
+class SourceField extends StatefulWidget {
+  const SourceField(
+      {required this.marketMetadataModel, this.width = 90, Key? key})
+      : super(key: key);
+
   final double width;
-  const SourceField({this.width = 90, Key? key}) : super(key: key);
+  final MarketMetadataModel marketMetadataModel;
 
   @override
   SourceFieldState createState() => SourceFieldState();
 }
 
-class SourceFieldState extends ConsumerState<SourceField> {
+class SourceFieldState extends State<SourceField> implements Observer {
   final _controller = TextEditingController();
 
   @override
+  void initState() {
+    widget.marketMetadataModel.subscribe(this);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ref.watch(sourceModelProvider.notifier).refresh();
-    _controller.text = ref.watch(sourceModelProvider);
+    _controller.text = widget.marketMetadataModel.rawSource;
     return SizedBox(
         width: widget.width,
         child: TextField(
@@ -29,8 +39,13 @@ class SourceFieldState extends ConsumerState<SourceField> {
   }
 
   void _onEdited(String rawSource) {
-    final sourceModel = ref.read(sourceModelProvider.notifier);
-    setState(() => sourceModel.setSource(rawSource));
-    sourceModel.save();
+    setState(() => widget.marketMetadataModel.rawSource = rawSource);
+    widget.marketMetadataModel.save();
+  }
+
+  @override
+  void onObservableEvent(Observable observable) {
+    if (observable is! MarketMetadataModel) return;
+    setState(() {/* Update when metadataModel change*/});
   }
 }

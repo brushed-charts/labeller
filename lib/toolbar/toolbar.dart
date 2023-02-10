@@ -13,11 +13,12 @@ class ToolBar extends StatelessWidget {
         color: Theme.of(context).colorScheme.background,
         child: Row(children: [
           const SizedBox(width: 30),
-          const SourceField(width: 150),
+          SourceField(
+              marketMetadataModel: model.marketMetadataModel, width: 150),
           const SizedBox(width: 30),
-          const IntervalSelector(),
+          IntervalSelector(marketMetadataModel: model.marketMetadataModel),
           const SizedBox(width: 30),
-          const CalendarWidget(),
+          CalendarWidget(marketMetadataModel: model.marketMetadataModel),
           const SizedBox(width: 30),
           const HeadAndShouldersAnnotation(),
         ]));

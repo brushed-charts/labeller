@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:labelling/model/interval_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
+import 'package:labelling/observation/observable.dart';
+import 'package:labelling/observation/observer.dart';
 
-class IntervalSelector extends ConsumerStatefulWidget {
-  const IntervalSelector({Key? key}) : super(key: key);
+class IntervalSelector extends StatefulWidget {
+  const IntervalSelector({required this.marketMetadataModel, Key? key})
+      : super(key: key);
+
+  final MarketMetadataModel marketMetadataModel;
 
   @override
   IntervalSelectorState createState() => IntervalSelectorState();
 }
 
-class IntervalSelectorState extends ConsumerState<IntervalSelector> {
+class _IntervalSelector extends State<IntervalSelector> implements Observer {
+  @override
+  void initState() {
+    widget.marketMetadataModel.subscribe(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.watch(intervalModelProvider.notifier).refresh();
     return DropdownButton<String>(
         onChanged: _onInterval,
-        value: ref.watch(intervalModelProvider),
+        value: widget.marketMetadataModel.interval,
         items: <String>[
           '1s',
           '2s',
@@ -41,8 +51,18 @@ class IntervalSelectorState extends ConsumerState<IntervalSelector> {
 
   void _onInterval(String? interval) {
     if (interval == null) return;
+<<<<<<< HEAD
     final intervalModel = ref.read(intervalModelProvider.notifier);
     intervalModel.setInterval(interval);
     intervalModel.save();
+=======
+    widget.marketMetadataModel.interval = interval;
+    widget.marketMetadataModel.save();
+  }
+
+  @override
+  void onObservableEvent(Observable observable) {
+    setState(() {/* source model have changed */});
+>>>>>>> observer_subscriber
   }
 }

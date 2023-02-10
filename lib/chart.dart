@@ -23,7 +23,7 @@ import 'package:labelling/services/appmode.dart';
 import 'package:labelling/services/cache.dart';
 import 'package:labelling/services/source.dart';
 
-class Chart extends ConsumerStatefulWidget {
+class Chart extends StatefulWidget {
   const Chart({Key? key}) : super(key: key);
 
   @override

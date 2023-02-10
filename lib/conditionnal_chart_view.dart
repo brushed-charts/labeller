@@ -1,28 +1,9 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:labelling/model/date_range_model.dart';
-import 'package:labelling/model/interval_model.dart';
-import 'package:labelling/model/source_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
 
 enum ChartViewState { noData, loading, error, onData }
 
-final isChartMetadataReady = Provider<bool>((ref) {
-  final source = ref.read(sourceModelProvider.notifier);
-  final interval = ref.read(intervalModelProvider.notifier);
-  final dateRange = ref.read(dateRangeProvider.notifier);
-  if (!source.isLoaded || !interval.isLoaded || !dateRange.isLoaded) {
-    return false;
-  }
-  return true;
-});
-
-final chartViewStateProvider = Provider((ref) {
-  final isModelsLoaded = ref.watch(isChartMetadataReady);
-  if (!isModelsLoaded) return ChartViewState.noData;
-  return ChartViewState.loading;
-});
-
-class ConditionnalChartView extends ConsumerWidget {
+class ConditionnalChartView extends StatelessWidget {
   final Widget? onData;
   final Widget noData;
   final Widget? loading;
@@ -37,7 +18,7 @@ class ConditionnalChartView extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return noData;
     // switch (ref.watch(chartViewStateProvider)) {
     //   case value:

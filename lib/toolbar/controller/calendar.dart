@@ -1,13 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:labelling/model/date_range_model.dart';
+import 'dart:html';
 
-class CalendarWidget extends ConsumerWidget {
-  const CalendarWidget({Key? key}) : super(key: key);
+import 'package:flutter/material.dart';
+import 'package:labelling/model/chart_model.dart';
+import 'package:labelling/model/market_metadata_model.dart';
+import 'package:labelling/observation/observable.dart';
+import 'package:labelling/observation/observer.dart';
+import 'package:labelling/services/source.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class CalendarWidget extends StatelessWidget {
+  // ignore: prefer_const_constructors_in_immutables
+  CalendarWidget({Key? key, required this.marketMetadataModel})
+      : super(key: key);
+
+  late final SourceService source;
+  final MarketMetadataModel marketMetadataModel;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(dateRangeProvider.notifier).refresh();
+  Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
         final range = await _onCalendar(context, ref);
@@ -21,20 +31,18 @@ class CalendarWidget extends ConsumerWidget {
     );
   }
 
-  Future<DateTimeRange?> _onCalendar(
-      BuildContext context, WidgetRef ref) async {
+  void _onCalendar(BuildContext context) async {
     final range = await showDateRangePicker(
         context: context,
-        initialDateRange: ref.watch(dateRangeProvider),
+        initialDateRange: marketMetadataModel.dateRange,
         firstDate: DateTime(2018),
         lastDate: DateTime.now());
     return range;
   }
 
-  void saveIfDateIsCorrect(DateTimeRange? range, WidgetRef ref) {
-    final dateRangeModel = ref.read(dateRangeProvider.notifier);
-    if (!dateRangeModel.validate(range)) return;
-    dateRangeModel.setDateRange(range!);
-    dateRangeModel.save();
+  void saveIfDateIsCorrect(DateTimeRange? range) {
+    if (range == null) return;
+    marketMetadataModel.dateRange = range;
+    marketMetadataModel.save();
   }
 }
