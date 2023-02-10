@@ -37,6 +37,7 @@ class MarketMetadataModel with Observable {
     final strDateFrom = await preferenceStorage.load('dateFrom');
     final strDateTo = await preferenceStorage.load('dateTo');
     dateRange = _makeDatetimeRange(strDateFrom, strDateTo);
+    notify();
   }
 
   Future<void> save() async {

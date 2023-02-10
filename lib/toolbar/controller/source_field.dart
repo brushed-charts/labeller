@@ -21,7 +21,6 @@ class SourceFieldState extends State<SourceField> implements Observer {
   @override
   void initState() {
     widget.marketMetadataModel.subscribe(this);
-    widget.marketMetadataModel.refresh();
     super.initState();
   }
 
@@ -47,6 +46,6 @@ class SourceFieldState extends State<SourceField> implements Observer {
   @override
   void onObservableEvent(Observable observable) {
     if (observable is! MarketMetadataModel) return;
-    setState(() {});
+    setState(() {/* Update when metadataModel change*/});
   }
 }

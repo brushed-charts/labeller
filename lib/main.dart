@@ -33,28 +33,17 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-        future: chartModel.marketMetadataModel.refresh().then((_) => true),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Center(
-                    child: CircularProgressIndicator(
-                  color: Theme.of(context).progressIndicatorTheme.color,
-                )));
-          }
-          return Scaffold(
-              body: Column(children: [
-            ToolBar(key: key, model: chartModel),
-            Expanded(
-                child: ChartController(
-              chartModel: chartModel,
-              marketQuery: GQLQuery.initWithDefaultValue(),
-              child: Chart(),
-            ))
-          ]));
-        });
+    chartModel.marketMetadataModel.refresh();
+    return Scaffold(
+        body: Column(children: [
+      ToolBar(key: key, model: chartModel),
+      Expanded(
+          child: ChartController(
+        chartModel: chartModel,
+        marketQuery: GQLQuery.initWithDefaultValue(),
+        child: Chart(),
+      ))
+    ]));
   }
 }
 
