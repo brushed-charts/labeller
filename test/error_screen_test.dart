@@ -29,19 +29,18 @@ void main() {
   testWidgets(
       "Expect error screen to display "
       "explanation error text", (widgetTester) async {
-    final stateModel = ChartStateModel();
     stateModel.updateState(ChartViewState.error, "A mock error occured");
     await widgetTester.pumpWidget(errorScreen);
-    expect(find.textContaining("A mock error occured"), findsOneWidget);
+    expect(find.text("A mock error occured"), findsOneWidget);
   });
 
   testWidgets(
-      "Expect error screen to display default message when "
+      "Expect error screen to display only the error title when "
       "error state have no explication", (widgetTester) async {
     final stateModel = ChartStateModel();
     stateModel.updateState(ChartViewState.error);
     await widgetTester.pumpWidget(errorScreen);
-    expect(find.textContaining("An error occured"), findsOneWidget);
+    expect(find.text("An error occured"), findsOneWidget);
   });
 
   testWidgets(

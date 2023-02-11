@@ -8,7 +8,7 @@ class ErrorScreen extends StatefulWidget {
       : super(key: key);
 
   static const defaultOKText = "No error occured, everything is fine";
-  static const defaultErrorText = "An error occured";
+  static const errorTitle = "An error occured";
   final ChartStateModel chartStateModel;
 
   @override
@@ -24,15 +24,29 @@ class _ErrorScreenState extends State<ErrorScreen> implements Observer {
 
   @override
   Widget build(BuildContext context) {
-    final messageToDisplay = getAppropriateErrorMessage();
-    return Center(child: Text(messageToDisplay));
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.error, color: Colors.red, size: 70),
+        const SizedBox(height: 20),
+        const Text(ErrorScreen.errorTitle, style: TextStyle(fontSize: 25)),
+        Container(
+          margin: const EdgeInsets.fromLTRB(30, 5, 30, 0),
+          child: Text(
+            getAppropriateErrorMessage(),
+            softWrap: true,
+          ),
+        )
+      ],
+    ));
   }
 
   String getAppropriateErrorMessage() {
     if (widget.chartStateModel.state != ChartViewState.error) {
       return ErrorScreen.defaultOKText;
     }
-    return widget.chartStateModel.explanation ?? ErrorScreen.defaultErrorText;
+    return widget.chartStateModel.explanation ?? "";
   }
 
   @override
