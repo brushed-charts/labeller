@@ -19,7 +19,7 @@ class TesterObservable implements Observer {
 void main() {
   test("Assert charts state model copy is conform", () {
     final model = ChartStateModel();
-    model.state = ChartViewState.loading;
+    model.updateState(ChartViewState.loading);
     final copiedModel = model.copy();
     expect(model, isNot(equals(copiedModel)));
     expect(copiedModel.state, equals(ChartViewState.loading));
@@ -32,7 +32,7 @@ void main() {
 
   test("Chart state model can be updated", () {
     final model = ChartStateModel();
-    model.state = ChartViewState.loading;
+    model.updateState(ChartViewState.loading);
     expect(model.state, equals(ChartViewState.loading));
   });
 
@@ -40,7 +40,21 @@ void main() {
     final model = ChartStateModel();
     final observableTester = TesterObservable(observableToSubscribe: model);
     expect(observableTester.isEventTrigger, isFalse);
-    model.state = ChartViewState.loading;
+    model.updateState(ChartViewState.loading);
     expect(observableTester.isEventTrigger, isTrue);
+  });
+
+  test("Test updating state with explanation", () {
+    final model = ChartStateModel();
+    model.updateState(ChartViewState.error, 'A mock error occured');
+    expect(model.explanation, equals('A mock error occured'));
+  });
+
+  test(
+      "Test updating state with no explanation "
+      "result to null explanation", () {
+    final model = ChartStateModel();
+    model.updateState(ChartViewState.loading);
+    expect(model.explanation, isNull);
   });
 }
