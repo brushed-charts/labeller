@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/conditionnal_chart_view.dart';
+import 'package:labelling/error_screen.dart';
 import 'package:labelling/loading_screen.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/chart_state.dart';
@@ -17,9 +18,8 @@ void main() {
     chartModel = ChartModel.initWithDefault();
   });
 
-  testWidgets(
-      "Assert conditionnal chart state view display NoData screen "
-      "at start", (tester) async {
+  testWidgets("Assert conditionnal view display input no data screen at start",
+      (tester) async {
     await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: ConditionnalChartView(
@@ -31,8 +31,9 @@ void main() {
     expect(find.byType(NoDataWidget), findsOneWidget);
   });
 
-  testWidgets("Assert loading screen is displayed when chart state is loading",
-      (tester) async {
+  testWidgets(
+      "Assert conditionnal view display input loading screen "
+      "and circular loading when chart state is loading", (tester) async {
     await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
         child: ConditionnalChartView(
@@ -41,8 +42,24 @@ void main() {
             error: const Placeholder(),
             onData: const Placeholder(),
             loading: const LoadingScreen())));
-    chartModel.stateModel.state = ChartViewState.loading;
+    chartModel.stateModel.updateState(ChartViewState.loading);
     await tester.pump();
     expect(find.byType(LoadingScreen), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  });
+
+  testWidgets(
+      "Assert conditionnal view display input error screen "
+      "with error explanation", (tester) async {
+    chartModel.stateModel.updateState(ChartViewState.error);
+    await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: ConditionnalChartView(
+            chartModel: chartModel,
+            noData: const NoDataWidget(),
+            error: ErrorScreen(chartStateModel: chartModel.stateModel),
+            onData: const Placeholder(),
+            loading: const LoadingScreen())));
+    expect(find.byType(ErrorScreen), findsOneWidget);
   });
 }
