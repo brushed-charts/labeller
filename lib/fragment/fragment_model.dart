@@ -9,6 +9,7 @@ class FragmentModel {
   }
 
   List<FragmentInterface> getAllFragment() {
+    /// Make a copy of internal fragment list
     return List.from(_fragmentList.map<FragmentInterface>((e) => e.fragment));
   }
 }

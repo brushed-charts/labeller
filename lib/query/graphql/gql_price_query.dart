@@ -18,7 +18,7 @@ class GQLPriceQuery implements GQLQueryMaker {
           close
       }
     }
-}
+  }
 """;
 
   @override

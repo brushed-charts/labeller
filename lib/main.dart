@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:labelling/chart_controller.dart';
 import 'package:labelling/conditionnal_chart_view.dart';
@@ -7,9 +9,17 @@ import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/services/chart_service.dart';
 import 'package:labelling/toolbar/toolbar.dart';
+import 'package:logging/logging.dart';
+
+const LOGGER_NAME = "LABELLER";
 
 void main() {
   runApp(const Labeller());
+  final logger = Logger(LOGGER_NAME);
+  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
 }
 
 class Labeller extends StatelessWidget {

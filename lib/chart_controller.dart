@@ -8,12 +8,12 @@ import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/services/chart_service.dart';
 
 class ChartController extends StatelessWidget implements Observer {
-  ChartController(
-      {Key? key,
-      required this.child,
-      required this.chartModel,
-      required this.chartService})
-      : super(key: key) {
+  ChartController({
+    Key? key,
+    required this.child,
+    required this.chartModel,
+    required this.chartService,
+  }) : super(key: key) {
     chartModel.marketMetadataModel.subscribe(this);
   }
 
@@ -22,10 +22,14 @@ class ChartController extends StatelessWidget implements Observer {
   final Widget child;
 
   void onMarketMetadataChange() async {
-    final queryMetadataMarket = convertModelToMarketMetadataQuery();
+    final queryMetadata = convertModelToMarketMetadataQuery();
     chartModel.stateModel.updateState(ChartViewState.loading);
-    await chartService.marketQuery.getJsonPrice(queryMetadataMarket);
-    chartModel.stateModel.updateState(ChartViewState.onData);
+    final price = await chartService.marketQuery
+        .getJsonPrice(queryMetadata)
+        .catchError((err) {
+      chartModel.stateModel.updateState(ChartViewState.error, err.toString());
+      return null;
+    });
   }
 
   MarketMetadata convertModelToMarketMetadataQuery() {
@@ -38,13 +42,11 @@ class ChartController extends StatelessWidget implements Observer {
   }
 
   @override
-  void onObservableEvent(Observable observable) {
+  void onObservableEvent(Observable observable) async {
     if (observable is! MarketMetadataModel) return;
     onMarketMetadataChange();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return child;
-  }
+  Widget build(BuildContext context) => child;
 }
