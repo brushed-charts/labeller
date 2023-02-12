@@ -7,14 +7,12 @@ import 'package:labelling/fragment/fragment_to_graph_object.dart';
 import '../implementation/concat.dart';
 
 class SinglePanelResolser implements FragmentResolverInterface {
-  SinglePanelResolser(this.model, this.referenceRepository);
+  SinglePanelResolser(this.referenceRepository);
 
-  @override
-  final FragmentModel model;
   final ReferenceRepositoryInterface referenceRepository;
 
   @override
-  GraphObject reduceToGraphObject() {
+  GraphObject reduceToGraphObject(FragmentModel model) {
     final concatedFragment = ConcatFragments(children: model.getAllFragment());
     return FragmentToGraphObject(
       fragment: concatedFragment,
