@@ -4,11 +4,13 @@ class QueryException implements Exception {
   final String? rawException;
 
   String getFullMessage() {
-    return "$message\nRawException: $rawException";
+    return "$message\nRawException: ${rawException ?? 'null'}";
   }
 
   @override
   String toString() {
-    return message ?? 'QueryException';
+    if (message == null) return "QueryException";
+    if (rawException == null) return message!;
+    return getFullMessage();
   }
 }
