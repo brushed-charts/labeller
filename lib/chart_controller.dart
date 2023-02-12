@@ -6,6 +6,7 @@ import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
 import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/services/chart_service.dart';
+import 'package:logging/logging.dart';
 
 class ChartController extends StatelessWidget implements Observer {
   ChartController({
@@ -20,14 +21,17 @@ class ChartController extends StatelessWidget implements Observer {
   final ChartModel chartModel;
   final ChartService chartService;
   final Widget child;
+  final logger = Logger("ChartController");
 
   void onMarketMetadataChange() async {
     final queryMetadata = convertModelToMarketMetadataQuery();
     chartModel.stateModel.updateState(ChartViewState.loading);
     final price = await chartService.marketQuery
         .getJsonPrice(queryMetadata)
-        .catchError((err) {
-      chartModel.stateModel.updateState(ChartViewState.error, err.toString());
+        .catchError((err, stacktrace) {
+      logger.severe(err.toString(), err, stacktrace);
+      chartModel.stateModel.updateState(
+          ChartViewState.error, "Error while retrieving JSON Price");
       return null;
     });
   }

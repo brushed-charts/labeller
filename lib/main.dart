@@ -11,14 +11,11 @@ import 'package:labelling/services/chart_service.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 import 'package:logging/logging.dart';
 
-const LOGGER_NAME = "LABELLER";
-
 void main() {
   runApp(const Labeller());
-  final logger = Logger(LOGGER_NAME);
   Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((record) {
-    print('${record.level.name}: ${record.time}: ${record.message}');
+    debugPrint('${record.level.name}: ${record.time}: ${record.message}');
   });
 }
 
