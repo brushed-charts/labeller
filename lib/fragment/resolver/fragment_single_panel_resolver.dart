@@ -4,7 +4,7 @@ import 'package:grapher/kernel/object.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
 import 'package:labelling/fragment/fragment_to_graph_object.dart';
 
-import 'implementation/concat.dart';
+import '../implementation/concat.dart';
 
 class SinglePanelResolser implements FragmentResolverInterface {
   SinglePanelResolser(this.model, this.referenceRepository);

@@ -1,36 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/fragment/fragment_model.dart';
-import 'package:labelling/fragment/fragment_tag.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFragment extends Mock implements FragmentInterface {}
 
-class MockFragmentTag extends Mock implements FragmentTag {
-  @override
-  final fragment = MockFragment();
-}
-
 void main() {
   test("Assert fragment can be added to model and retrieved", () {
     final model = FragmentModel();
-    final fragmentTagA = MockFragmentTag();
-    final fragmentTagB = MockFragmentTag();
-    model.add(fragmentTagA);
-    model.add(fragmentTagB);
-    expect(
-        model.getAllFragment(),
-        equals([
-          fragmentTagA.fragment,
-          fragmentTagB.fragment,
-        ]));
+    final fragmentA = MockFragment();
+    final fragmentB = MockFragment();
+    model.add(fragmentA);
+    model.add(fragmentB);
+    expect(model.getAllFragment(), equals([fragmentA, fragmentB]));
   });
 
   test(
       "Assert model getAll function return "
       "a shallow copy of the internal list. It will avoid side effect", () {
     final model = FragmentModel();
-    model.add(MockFragmentTag());
+    model.add(MockFragment());
     final fragmentList = model.getAllFragment();
     expect(fragmentList.length, equals(1));
     fragmentList.add(MockFragment());

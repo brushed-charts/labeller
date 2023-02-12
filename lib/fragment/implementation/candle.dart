@@ -17,15 +17,16 @@ import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class CandleFragment implements FragmentInterface {
-  @override
-  GraphObject? interaction, parser, visualisation;
-
-  @override
-  CandleFragment(Map<String, dynamic>? data) {
+  CandleFragment(this.name, Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
   }
+
+  @override
+  GraphObject? interaction, parser, visualisation;
+  @override
+  final String name;
 
   GraphObject createParser(Map jsonInput) {
     return SubGraphKernel(

@@ -4,4 +4,5 @@ abstract class FragmentInterface {
   GraphObject? parser;
   GraphObject? visualisation;
   GraphObject? interaction;
+  String get name;
 }

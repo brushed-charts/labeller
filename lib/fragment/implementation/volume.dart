@@ -24,15 +24,16 @@ import 'package:grapher/detachedPanel/panel.dart';
 import 'package:grapher/geometry/barchart.dart';
 
 class VolumeFragment implements FragmentInterface {
-  @override
-  GraphObject? interaction, parser, visualisation;
-
-  @override
-  VolumeFragment(Map<String, dynamic>? data) {
+  VolumeFragment(this.name, Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
   }
+
+  @override
+  GraphObject? interaction, parser, visualisation;
+  @override
+  final String name;
 
   GraphObject createParser(Map jsonInput) {
     return SubGraphKernel(

@@ -16,16 +16,16 @@ import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class LineFragment implements FragmentInterface {
-  @override
-  GraphObject? interaction, parser, visualisation;
-  final String id;
-
-  @override
-  LineFragment(this.id, Map<String, dynamic>? data) {
+  LineFragment(this.name, this.id, Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
   }
+
+  @override
+  GraphObject? interaction, parser, visualisation;
+  final String id;
+  final String name;
 
   GraphObject createParser(Map jsonInput) {
     return SubGraphKernel(
