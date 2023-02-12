@@ -37,8 +37,8 @@ class GQLPriceQuery implements GQLQueryMaker {
   Map<String, dynamic> makeVariables(MarketMetadata metadata) {
     return {
       "sourceSelector": {
-        "dateFrom": metadata.dateRange.start,
-        "dateTo": metadata.dateRange.end,
+        "dateFrom": metadata.dateRange.start.toIso8601String(),
+        "dateTo": metadata.dateRange.end.toIso8601String(),
         "asset": metadata.assetPairs.toUpperCase(),
         "source": metadata.broker.toLowerCase(),
         "granularity": metadata.intervalInSeconds,

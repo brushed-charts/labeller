@@ -11,7 +11,10 @@ class MockGQLClient extends Mock implements GraphQLClient {}
 
 class MockQueryOptions extends Mock implements QueryOptions {}
 
-class MockQueryResult extends Mock implements QueryResult {}
+class MockQueryResult extends Mock implements QueryResult {
+  @override
+  bool get hasException => false;
+}
 
 class FakeGQLPriceQuery extends Fake implements GQLPriceQuery {
   var isBuildMethodeCalled = false;

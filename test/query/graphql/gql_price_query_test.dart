@@ -23,8 +23,10 @@ void main() {
         const GQLPriceQuery().makeVariables(marketMetadata);
     expect(queryVariableMap.containsKey('sourceSelector'), isTrue);
     final sourceVariablesMap = queryVariableMap['sourceSelector'];
-    expect(sourceVariablesMap['dateFrom'], equals(dateRange.start));
-    expect(sourceVariablesMap['dateTo'], equals(dateRange.end));
+    expect(sourceVariablesMap['dateFrom'],
+        equals(dateRange.start.toIso8601String()));
+    expect(
+        sourceVariablesMap['dateTo'], equals(dateRange.end.toIso8601String()));
     expect(sourceVariablesMap['asset'], equals('ASSET_PAIRS'));
     // in result broker must be transformed to lower case
     expect(sourceVariablesMap['source'], equals('a_broker_test'));
