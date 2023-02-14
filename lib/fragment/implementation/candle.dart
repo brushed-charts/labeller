@@ -13,11 +13,10 @@ import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/tag.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/block_same_map.dart';
-import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class CandleFragment implements FragmentInterface {
-  CandleFragment(this.name, Map<String, dynamic>? data) {
+  CandleFragment(this.name, this._broker, Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
@@ -27,21 +26,22 @@ class CandleFragment implements FragmentInterface {
   GraphObject? interaction, parser, visualisation;
   @override
   final String name;
+  final String _broker;
 
-  GraphObject createParser(Map jsonInput) {
+  GraphObject createParser(Map<String, dynamic> jsonInput) {
     return SubGraphKernel(
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
                 id: 'price',
                 child: Extract(
-                    options: SourceService.broker!,
+                    options: _broker,
                     child: Explode(
                         child: ToCandle2D(
                             xLabel: "datetime",
                             yLabel: "price",
                             child: Tag(
-                                name: '${SourceService.broker!}_price',
+                                name: '${_broker}_price',
                                 child: PipeIn(
                                     eventType: IncomingData,
                                     name: 'pipe_main'))))))));
@@ -50,7 +50,7 @@ class CandleFragment implements FragmentInterface {
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: '${SourceService.broker!}_price',
+            tagName: '${_broker}_price',
             child: DrawUnitFactory(
                 template: DrawUnit.template(child: Candlestick()))));
   }

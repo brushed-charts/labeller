@@ -13,8 +13,12 @@ import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/draw_tool_propagator.dart';
 
 class FigureFragment implements FragmentInterface {
-  FigureFragment(this.name, this._figureStore, this._referenceRepository,
-      this._figureDatabase) {
+  FigureFragment(
+    this.name,
+    this._figureStore,
+    this._referenceRepository,
+    this._figureDatabase,
+  ) {
     visualisation = createVisual();
   }
 
