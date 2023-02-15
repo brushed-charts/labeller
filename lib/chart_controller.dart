@@ -28,6 +28,7 @@ class ChartController extends StatelessWidget implements Observer {
     final queryMetadata = convertModelToMarketMetadataQuery();
     chartModel.stateModel.updateState(ChartViewState.loading);
     final price = await _getOHLCVPrice(queryMetadata);
+    if (price == null) return;
     final candleFragment = CandleFragment(
         "candle_ohlc", chartModel.marketMetadataModel.broker, price);
     chartModel.fragmentModel.add(candleFragment);
