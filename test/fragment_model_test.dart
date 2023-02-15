@@ -14,7 +14,7 @@ void main() {
   final mockResolver = MockFragmentResolver();
 
   setUp(() {
-    fragmentModel = FragmentModel(resolver: mockResolver);
+    fragmentModel = FragmentModel();
   });
 
   test("Assert fragment can be added to model and retrieved", () {
@@ -34,14 +34,5 @@ void main() {
     fragmentList.add(MockFragment());
     expect(fragmentList.length, equals(2));
     expect(fragmentModel.getAllFragment().length, equals(1));
-  });
-
-  test(
-      "Test that fragment model call the resolver "
-      "to obtain a graphObject", () {
-    when(() => mockResolver.reduceToGraphObject(fragmentModel))
-        .thenReturn(NullGraphObject());
-    fragmentModel.toGraphObject();
-    verify(() => mockResolver.reduceToGraphObject(fragmentModel)).called(1);
   });
 }
