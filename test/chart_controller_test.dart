@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/chart_controller.dart';
 import 'package:labelling/fragment/fragment_controller.dart';
-import 'package:labelling/fragment/fragment_model.dart';
+import 'package:labelling/model/fragment_model.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/query/market_metadata.dart';
@@ -43,7 +43,6 @@ void main() {
     chartController = ChartController(
       chartModel: chartModel,
       chartService: chartService,
-      // fragmentController: mockFragmentController,
       child: Container(),
     );
   });

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:labelling/fragment/fragment_controller.dart';
 import 'package:labelling/fragment/implementation/candle.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/chart_state.dart';
@@ -16,13 +15,11 @@ class ChartController extends StatelessWidget implements Observer {
     required this.child,
     required this.chartModel,
     required this.chartService,
-    required this.fragmentController,
   }) : super(key: key) {
     chartModel.marketMetadataModel.subscribe(this);
   }
 
   final ChartModel chartModel;
-  final FragmentController fragmentController;
   final ChartService chartService;
   final Widget child;
   final logger = Logger("ChartController");
@@ -31,9 +28,6 @@ class ChartController extends StatelessWidget implements Observer {
     final queryMetadata = convertModelToMarketMetadataQuery();
     chartModel.stateModel.updateState(ChartViewState.loading);
     final price = await _getOHLCVPrice(queryMetadata);
-    fragmentController.add(CandleFragment(
-        "ohlc_price", chartModel.marketMetadataModel.broker, price));
-    final concatedGraphObject = fragmentController.toGraphObject();
   }
 
   Future<Map<String, dynamic>?> _getOHLCVPrice(

@@ -1,5 +1,5 @@
 import 'package:grapher/reference/contract.dart';
-import 'package:labelling/fragment/fragment_model.dart';
+import 'package:labelling/model/fragment_model.dart';
 import 'package:grapher/kernel/object.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
 import 'package:labelling/fragment/fragment_to_graph_object.dart';
