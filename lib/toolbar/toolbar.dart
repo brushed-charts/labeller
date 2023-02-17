@@ -22,7 +22,7 @@ class ToolBar extends StatelessWidget {
           const SizedBox(width: 30),
           CalendarWidget(marketMetadataModel: model.marketMetadataModel),
           const SizedBox(width: 30),
-          const HeadAndShouldersAnnotation(),
+          HeadAndShouldersAnnotation(drawToolModel: model.drawToolModel),
         ]));
   }
 }

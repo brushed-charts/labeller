@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:labelling/services/appmode.dart';
+import 'package:labelling/drawTools/head_and_shoulders.dart';
+import 'package:labelling/model/drawtool_model.dart';
+import 'package:labelling/observation/observable.dart';
+import 'package:labelling/observation/observer.dart';
 
 class HeadAndShouldersAnnotation extends StatefulWidget {
-  const HeadAndShouldersAnnotation({Key? key}) : super(key: key);
+  const HeadAndShouldersAnnotation({required this.drawToolModel, Key? key})
+      : super(key: key);
+
+  static final drawTool = HeadAndShouldersDrawTool();
+  final DrawToolModel drawToolModel;
 
   @override
   createState() => _HeadAndShouldersAnnotationState();
 }
 
-class _HeadAndShouldersAnnotationState
-    extends State<HeadAndShouldersAnnotation> {
-  bool isSelected = false;
+class _HeadAndShouldersAnnotationState extends State<HeadAndShouldersAnnotation>
+    implements Observer {
+  @override
+  void initState() {
+    widget.drawToolModel.subscribe(this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +36,24 @@ class _HeadAndShouldersAnnotationState
   }
 
   void _onButtonPressed(BuildContext context) {
-    setState(() => isSelected = !isSelected);
-    AppModeService.mode =
-        (isSelected) ? AppMode.headAndShoulders : AppMode.free;
+    if (widget.drawToolModel.tool == HeadAndShouldersAnnotation.drawTool) {
+      widget.drawToolModel.tool = null;
+      return;
+    }
+    widget.drawToolModel.tool = HeadAndShouldersAnnotation.drawTool;
   }
 
   Color _getIconColor(BuildContext context) {
-    return isSelected
+    return widget.drawToolModel.tool == HeadAndShouldersAnnotation.drawTool
         ? Theme.of(context).colorScheme.primary
         : Theme.of(context).disabledColor;
+  }
+
+  @override
+  void onObservableEvent(Observable observable) {
+    if (observable is! DrawToolModel) return;
+    setState(() {
+      /* Update on drawToolModel events */
+    });
   }
 }
