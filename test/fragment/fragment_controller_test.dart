@@ -11,7 +11,7 @@
 
 // class MockFragment extends Mock implements FragmentInterface {}
 
-// void main() {
+void main() {
 //   registerFallbackValue(FragmentModel());
 //   late FragmentResolverInterface resolver;
 //   late FragmentModel model;
@@ -36,4 +36,4 @@
 //     final graphObject = controller.toGraphObject();
 //     expect(graphObject, isInstanceOf<GraphObject>());
 //   });
-// }
+}
