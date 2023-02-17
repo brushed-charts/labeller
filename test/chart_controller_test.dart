@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:grapher/reference/memory_repository.dart';
 import 'package:labelling/chart_controller.dart';
 import 'package:labelling/fragment/fragment_controller.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
@@ -40,7 +41,9 @@ void main() {
   setUp(() {
     chartModel = ChartModel.initWithDefault();
     mockMarketQuery = MockMarketQuery();
-    chartService = ChartService(marketQuery: mockMarketQuery);
+    chartService = ChartService(
+        marketQuery: mockMarketQuery,
+        referenceRepository: ReferenceRepositoryInMemory());
     chartController = ChartController(
       chartModel: chartModel,
       chartService: chartService,
