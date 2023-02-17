@@ -44,7 +44,7 @@ class ConditionnalChartViewState extends State<ConditionnalChartView>
       case ChartViewState.error:
         return widget.error;
       case ChartViewState.onData:
-        return Text("OnData");
+        return widget.onData;
       default:
         throw ArgumentError("Chart model state have an invalid view state");
     }

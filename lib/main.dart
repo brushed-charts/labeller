@@ -2,13 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:labelling/chart_controller.dart';
+import 'package:labelling/chart_presenter.dart';
 import 'package:labelling/conditionnal_chart_view.dart';
 import 'package:labelling/error_screen.dart';
+import 'package:labelling/fragment/resolver/fragment_single_panel_resolver.dart';
 import 'package:labelling/loading_screen.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/services/chart_service.dart';
 import 'package:labelling/toolbar/toolbar.dart';
+import 'package:grapher/reference/memory_repository.dart';
 import 'package:logging/logging.dart';
 
 void main() {
@@ -48,17 +51,21 @@ class MainView extends StatelessWidget {
         body: Column(children: [
       ToolBar(key: key, model: chartModel),
       Expanded(
-          child: ChartController(
-        chartModel: chartModel,
-        chartService: chartService,
-        child: ConditionnalChartView(
-            key: key,
+        child: ChartController(
             chartModel: chartModel,
-            noData: const NoDataWidget(),
-            loading: const LoadingScreen(),
-            error: ErrorScreen(chartStateModel: chartModel.stateModel),
-            onData: const Placeholder()),
-      ))
+            chartService: chartService,
+            child: ConditionnalChartView(
+                key: key,
+                chartModel: chartModel,
+                noData: const NoDataWidget(),
+                loading: const LoadingScreen(),
+                error: ErrorScreen(chartStateModel: chartModel.stateModel),
+                onData: ChartPresenter(
+                  fragmentModel: chartModel.fragmentModel,
+                  fragmentResolver:
+                      SinglePanelResolser(chartService.referenceRepository),
+                ))),
+      )
     ]));
   }
 }
