@@ -4,6 +4,8 @@ import 'package:grapher/reference/memory_repository.dart';
 import 'package:labelling/chart_controller.dart';
 import 'package:labelling/fragment/fragment_controller.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
+import 'package:labelling/fragment/implementation/figure.dart';
+import 'package:labelling/main.dart';
 import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/chart_state.dart';
 import 'package:labelling/model/market_metadata_model.dart';
@@ -72,5 +74,17 @@ void main() {
     expect(chartModel.stateModel.state, equals(ChartViewState.loading));
     await Future.delayed(const Duration(milliseconds: 100));
     expect(chartModel.stateModel.state, equals(ChartViewState.onData));
+  });
+
+  test(
+      "Assert chart controller create a figure fragment "
+      "on draw tool model event", () async {
+    APP_PROFIL = "unit-test";
+    expect(chartModel.fragmentModel.getAllFragment(), isEmpty);
+    chartModel.toolModel.notify();
+    await Future.delayed(const Duration(milliseconds: 1000));
+    expect(chartModel.fragmentModel.getAllFragment().length, equals(1));
+    expect(chartModel.fragmentModel.getAllFragment().first,
+        isInstanceOf<FigureFragment>());
   });
 }

@@ -11,8 +11,9 @@ import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/no_data_screen.dart';
 import 'package:labelling/services/chart_service.dart';
 import 'package:labelling/toolbar/toolbar.dart';
-import 'package:grapher/reference/memory_repository.dart';
 import 'package:logging/logging.dart';
+
+String APP_PROFIL = "dev";
 
 void main() {
   runApp(const Labeller());

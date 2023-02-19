@@ -1,12 +1,6 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:labelling/model/chart_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
-import 'package:labelling/observation/observable.dart';
-import 'package:labelling/observation/observer.dart';
 import 'package:labelling/services/source.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CalendarWidget extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -32,7 +26,7 @@ class CalendarWidget extends StatelessWidget {
     final range = await showDateRangePicker(
         context: context,
         initialDateRange: marketMetadataModel.dateRange,
-        firstDate: DateTime(2018),
+        firstDate: DateTime(2020),
         lastDate: DateTime.now());
     saveIfDateIsCorrect(range);
   }
