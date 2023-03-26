@@ -57,4 +57,11 @@ void main() {
     expect(copiedModel.getAllFragment().length, equals(1));
     expect(fragmentModel.getAllFragment().length, equals(2));
   });
+
+  test("Assert fragment model return fragment by name", () {
+    final fragmentA = MockFragment('fragmentA');
+    fragmentModel.upsert(fragmentA);
+    fragmentModel.upsert(MockFragment('fragB'));
+    expect(fragmentModel.getByName('fragmentA'), equals(fragmentA));
+  });
 }

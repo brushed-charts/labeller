@@ -7,6 +7,7 @@ class FragmentModel with Observable {
   void upsert(FragmentInterface fragment) {
     _fragmentList.removeWhere((element) => element.name == fragment.name);
     _fragmentList.add(fragment);
+    notify();
   }
 
   List<FragmentInterface> getAllFragment() {
@@ -21,5 +22,16 @@ class FragmentModel with Observable {
       copiedModel.upsert(fragment);
     }
     return copiedModel;
+  }
+
+  FragmentInterface? getByName(String fragmentName) {
+    FragmentInterface? matchingFragment;
+    try {
+      matchingFragment =
+          _fragmentList.singleWhere((item) => item.name == fragmentName);
+    } on StateError {
+      matchingFragment = null;
+    }
+    return matchingFragment;
   }
 }
