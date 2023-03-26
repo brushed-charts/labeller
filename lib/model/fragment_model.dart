@@ -4,7 +4,8 @@ import 'package:labelling/observation/observable.dart';
 class FragmentModel with Observable {
   final List<FragmentInterface> _fragmentList = [];
 
-  void add(FragmentInterface fragment) {
+  void upsert(FragmentInterface fragment) {
+    _fragmentList.removeWhere((element) => element.name == fragment.name);
     _fragmentList.add(fragment);
   }
 
@@ -17,7 +18,7 @@ class FragmentModel with Observable {
   FragmentModel copy() {
     final copiedModel = FragmentModel();
     for (final fragment in _fragmentList) {
-      copiedModel.add(fragment);
+      copiedModel.upsert(fragment);
     }
     return copiedModel;
   }

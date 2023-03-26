@@ -81,7 +81,7 @@ void main() {
       "on draw tool model event", () async {
     APP_PROFIL = "unit-test";
     expect(chartModel.fragmentModel.getAllFragment(), isEmpty);
-    chartModel.toolModel.notify();
+    chartModel.drawToolModel.notify();
     await Future.delayed(const Duration(milliseconds: 1000));
     expect(chartModel.fragmentModel.getAllFragment().length, equals(1));
     expect(chartModel.fragmentModel.getAllFragment().first,

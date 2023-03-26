@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:grapher_user_draw/figure_database_interface.dart';
 import 'package:grapher_user_draw/store.dart';
 import 'package:labelling/drawTools/figure_from_text_factory.dart';
-import 'package:labelling/fragment/implementation/candle.dart';
 import 'package:labelling/fragment/implementation/figure.dart';
 import 'package:labelling/main.dart';
 import 'package:labelling/model/chart_model.dart';
@@ -18,6 +17,8 @@ import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/services/chart_service.dart';
 import 'package:logging/logging.dart';
 
+import 'fragment/implementation/candle.dart';
+
 class ChartController extends StatelessWidget implements Observer {
   ChartController({
     Key? key,
@@ -25,8 +26,9 @@ class ChartController extends StatelessWidget implements Observer {
     required this.chartModel,
     required this.chartService,
   }) : super(key: key) {
+    logger.info("ChartController starting");
     chartModel.marketMetadataModel.subscribe(this);
-    chartModel.toolModel.subscribe(this);
+    chartModel.drawToolModel.subscribe(this);
   }
 
   final ChartModel chartModel;
@@ -41,6 +43,7 @@ class ChartController extends StatelessWidget implements Observer {
       onMarketMetadataChange();
     } else if (observable is DrawToolModel) {
       logger.finer("draw tool model has changed");
+      print("tool updates");
       onDrawToolChange();
     }
   }
@@ -52,16 +55,18 @@ class ChartController extends StatelessWidget implements Observer {
     if (price == null) return;
     final candleFragment = CandleFragment(
         "candle_ohlc", chartModel.marketMetadataModel.broker, price);
-    chartModel.fragmentModel.add(candleFragment);
+    chartModel.fragmentModel.upsert(candleFragment);
     chartService.referenceRepository.reset();
-    chartModel.stateModel.updateState(ChartViewState.onData);
+    chartModel.stateModel.updateState(ChartViewState.onData, 'display price');
   }
 
   void onDrawToolChange() async {
     final figureDB = await _createFigureDatabase();
-    final figureFragment = FigureFragment("figure_element", FigureStore(),
+    final fragmentList = chartModel.fragmentModel.getAllFragment();
+    final figureFragment = FigureFragment("figure_label", FigureStore(),
         chartService.referenceRepository, figureDB);
-    chartModel.fragmentModel.add(figureFragment);
+    chartModel.fragmentModel.upsert(figureFragment);
+    chartModel.stateModel.updateState(ChartViewState.onData, 'drawtool change');
   }
 
   Future<FigureDatabaseInterface> _createFigureDatabase() async {

@@ -18,7 +18,7 @@ class FragmentController {
   void add(FragmentInterface fragment) {
     _logger.finest("Adding to model fragment "
         "(${fragment.name} whith hash ${fragment.hashCode})");
-    _model.add(fragment);
+    _model.upsert(fragment);
   }
 
   GraphObject toGraphObject() {

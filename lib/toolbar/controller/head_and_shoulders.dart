@@ -4,6 +4,7 @@ import 'package:labelling/drawTools/head_and_shoulders.dart';
 import 'package:labelling/model/drawtool_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
+import 'package:logging/logging.dart';
 
 class HeadAndShouldersAnnotation extends StatefulWidget {
   const HeadAndShouldersAnnotation({required this.drawToolModel, Key? key})
@@ -36,11 +37,14 @@ class _HeadAndShouldersAnnotationState extends State<HeadAndShouldersAnnotation>
   }
 
   void _onButtonPressed(BuildContext context) {
+    final logger = Logger('HeadAndShouldersToolbarButton');
     if (widget.drawToolModel.tool == HeadAndShouldersAnnotation.drawTool) {
       widget.drawToolModel.tool = null;
+      logger.info('Head and shoulders anotation is disabled');
       return;
     }
     widget.drawToolModel.tool = HeadAndShouldersAnnotation.drawTool;
+    logger.info('Head and shoulders anotation is enabled');
   }
 
   Color _getIconColor(BuildContext context) {
