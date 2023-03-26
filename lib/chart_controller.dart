@@ -37,13 +37,12 @@ class ChartController extends StatelessWidget implements Observer {
   final logger = Logger("ChartController");
 
   @override
-  void onObservableEvent(Observable observable) async {
+  void onObservableEvent(Observable observable) {
     if (observable is MarketMetadataModel) {
       logger.finer("market metadata model has changed");
       onMarketMetadataChange();
     } else if (observable is DrawToolModel) {
       logger.finer("draw tool model has changed");
-      print("tool updates");
       onDrawToolChange();
     }
   }
@@ -51,22 +50,25 @@ class ChartController extends StatelessWidget implements Observer {
   void onMarketMetadataChange() async {
     final queryMetadata = _convertModelToMarketMetadataQuery();
     chartModel.stateModel.updateState(ChartViewState.loading);
+
     final price = await _getOHLCVPrice(queryMetadata);
     if (price == null) return;
-    final candleFragment = CandleFragment(
-        "candle_ohlc", chartModel.marketMetadataModel.broker, price);
-    chartModel.fragmentModel.upsert(candleFragment);
+    final figureDB = await _createFigureDatabase();
     chartService.referenceRepository.reset();
+
+    chartModel.fragmentModel.upsert(CandleFragment(
+        "candle_ohlc", chartModel.marketMetadataModel.broker, price));
+
+    chartModel.fragmentModel.upsert(FigureFragment("figure_label",
+        FigureStore(), chartService.referenceRepository, figureDB));
+
     chartModel.stateModel.updateState(ChartViewState.onData, 'display price');
   }
 
-  void onDrawToolChange() async {
-    final figureDB = await _createFigureDatabase();
-    final fragmentList = chartModel.fragmentModel.getAllFragment();
-    final figureFragment = FigureFragment("figure_label", FigureStore(),
-        chartService.referenceRepository, figureDB);
-    chartModel.fragmentModel.upsert(figureFragment);
-    chartModel.stateModel.updateState(ChartViewState.onData, 'drawtool change');
+  void onDrawToolChange() {
+    final figureFragment =
+        chartModel.fragmentModel.getByName('figure_label') as FigureFragment;
+    figureFragment.drawTool = chartModel.drawToolModel.tool;
   }
 
   Future<FigureDatabaseInterface> _createFigureDatabase() async {

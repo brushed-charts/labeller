@@ -18,9 +18,9 @@ String APP_PROFIL = "dev";
 void main() {
   runApp(const Labeller());
   Logger.root.level = Level.ALL; // defaults to Level.INFO
-  Logger.root.onRecord.listen((record) {
-    debugPrint('${record.level.name}: ${record.time}: ${record.message}');
-  });
+  // Logger.root.onRecord.listen((record) {
+  // debugPrint('${record.level.name}: ${record.time}: ${record.message}');
+  // });
 }
 
 class Labeller extends StatelessWidget {

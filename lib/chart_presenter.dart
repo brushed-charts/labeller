@@ -33,10 +33,13 @@ class _ChartPresenterState extends State<ChartPresenter> implements Observer {
   @override
   Widget build(BuildContext context) {
     return GraphFullInteraction(
-        kernel: GraphKernel(
-            child: AxedGraph(
-                graph: widget._fragmentResolver
-                    .reduceToGraphObject(widget._fragmentModel))));
+      kernel: GraphKernel(
+        child: AxedGraph(
+          graph: widget._fragmentResolver
+              .reduceToGraphObject(widget._fragmentModel),
+        ),
+      ),
+    );
   }
 
   @override
