@@ -124,6 +124,15 @@ void main() {
           any(that: isInstanceOf<MarketMetadataModel>()))).called(1);
     });
   });
+
+  test("Assert SourceModel frozen data is correct", () {
+    final marketMetadata = sourceModel.frozenAttributes;
+    expect(marketMetadata.assetPairs, equals(sourceModel.assetPair));
+    expect(marketMetadata.broker, equals(sourceModel.broker));
+    expect(marketMetadata.dateRange, equals(sourceModel.dateRange));
+    expect(marketMetadata.intervalInSeconds,
+        equals(sourceModel.intervalToSeconds));
+  });
 }
 
 String limitDateToMinute(DateTime dt) {

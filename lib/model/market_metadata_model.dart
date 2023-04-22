@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:labelling/observation/observable.dart';
+import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/storage/preference/preference_io_interface.dart';
 
 class MarketMetadataModel with Observable {
@@ -57,6 +58,9 @@ class MarketMetadataModel with Observable {
     final datetimeRange = DateTimeRange(start: from, end: to);
     return datetimeRange;
   }
+
+  MarketMetadata get frozenAttributes =>
+      MarketMetadata(broker, assetPair, intervalToSeconds, dateRange);
 
   int get intervalToSeconds {
     final number = int.parse(interval.substring(0, interval.length - 1));
