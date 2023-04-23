@@ -1,20 +1,19 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/model/fragment_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
+import 'package:labelling/query/market_query_contract.dart';
 
 abstract class ChartLayerInterface implements Observer {
   ChartLayerInterface(
-      {required this.sourceOfChange, required this.fragmentDepositBox}) {
+      {required this.sourceOfChange,
+      required this.fragmentDepositBox,
+      required this.marketQuery}) {
     sourceOfChange.subscribe(this);
   }
 
   final Observable sourceOfChange;
   final FragmentModel fragmentDepositBox;
+  final MarketQuery marketQuery;
 
-  Future<FragmentInterface> createFragment();
-  void pushFragmentToDepositBox(FragmentInterface fragment) {
-    fragmentDepositBox.upsert(fragment);
-  }
+  void updateFragmentModel();
 }
