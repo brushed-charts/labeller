@@ -1,4 +1,4 @@
-import 'package:labelling/chartLayer/layer_interface.dart';
+import 'package:labelling/chartLayer/interface.dart';
 import 'package:labelling/fragment/implementation/candle.dart';
 import 'package:labelling/fragment/model/fragment_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
