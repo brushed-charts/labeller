@@ -13,15 +13,6 @@ import 'package:labelling/services/chart_service.dart';
 import 'package:labelling/toolbar/toolbar.dart';
 import 'package:logging/logging.dart';
 
-/// TODO: Add ChartLayer. A chart layer automate all the process of getting the data 
-/// update on change, and create a fragment
-/// ChartLayer has a SourceOfChanges that is a list of observables.
-/// when the observable notify the layer is updated
-/// 
-/// ChartLayer has a model that allow to query data required to do a request on the server
-/// 
-/// ChartLayer use the GrphQL query module to get the result of the processing work
-
 // ignore: non_constant_identifier_names
 String APP_PROFIL = "dev";
 
