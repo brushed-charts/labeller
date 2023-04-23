@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
-import 'package:labelling/model/fragment_model.dart';
+import 'package:labelling/fragment/model/fragment_model.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFragment extends Fake implements FragmentInterface {

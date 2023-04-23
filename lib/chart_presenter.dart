@@ -3,7 +3,7 @@ import 'package:grapher/interaction/widget.dart';
 import 'package:grapher/kernel/kernel.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
 import 'package:labelling/grapherExtension/axed_graph.dart';
-import 'package:labelling/model/fragment_model.dart';
+import 'package:labelling/fragment/model/fragment_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
 

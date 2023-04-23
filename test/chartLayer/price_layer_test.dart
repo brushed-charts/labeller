@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/chartLayer/price.dart';
 import 'package:labelling/fragment/implementation/candle.dart';
-import 'package:labelling/model/fragment_model.dart';
+import 'package:labelling/fragment/model/fragment_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/query/market_metadata.dart';
 import 'package:labelling/query/market_query_contract.dart';

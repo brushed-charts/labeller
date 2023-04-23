@@ -1,4 +1,4 @@
-import 'package:labelling/model/fragment_model.dart';
+import 'package:labelling/fragment/model/fragment_model.dart';
 import 'package:labelling/observation/observable.dart';
 import 'package:labelling/observation/observer.dart';
 import 'package:labelling/query/market_query_contract.dart';
