@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:labelling/chartLayer/implementation/price.dart';
-import 'package:labelling/fragment/implementation/candle.dart';
+import 'package:labelling/chartLayer/implementation/volume.dart';
+import 'package:labelling/fragment/implementation/bar.dart';
 import 'package:labelling/fragment/model/fragment_model.dart';
 import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/query/market_metadata.dart';
@@ -17,36 +17,37 @@ void main() {
   final marketModel = MarketMetadataModel(PreferenceIO());
   late FragmentModel fragmentModel;
   late MockMarketQuery mockMarketQuery;
-  late PriceLayer priceLayer;
+  late VolumeLayer volumeLayer;
 
   setUp(() {
     fragmentModel = FragmentModel();
     mockMarketQuery = MockMarketQuery();
-    priceLayer = PriceLayer(marketModel, fragmentModel, mockMarketQuery);
+    volumeLayer = VolumeLayer(marketModel, fragmentModel, mockMarketQuery);
     when(() => mockMarketQuery.getJsonPrice(any()))
         .thenAnswer((invocation) async => {});
   });
 
   test(
-      "Check that PriceLayer update"
-      "the fragment model with a Candle fragment", () async {
-    await priceLayer.updateFragmentModel();
-    expect(fragmentModel.getByName('price'), isNotNull);
-    expect(fragmentModel.getByName('price'), isInstanceOf<CandleFragment>());
+      "Check that VolumeLayer update"
+      "the fragment model with a bar fragment", () async {
+    await volumeLayer.updateFragmentModel();
+    expect(fragmentModel.getByName('volume'), isNotNull);
+    expect(fragmentModel.getByName('volume'), isInstanceOf<BarFragment>());
     // Check if parser is not null because if input map data is null
     // So the parser and visualisation are not created and are null
-    expect(fragmentModel.getByName('price')!.parser, isNotNull);
+    expect(fragmentModel.getByName('volume')!.parser, isNotNull);
   });
 
-  test("Check that PriceLayer use marketQuery to get the price", () async {
-    await priceLayer.updateFragmentModel();
+  test("Check that VolumeLayer use marketQuery to get the volume", () async {
+    await volumeLayer.updateFragmentModel();
     verify(() => mockMarketQuery.getJsonPrice(any())).called(1);
   });
 
-  test("Assert PriceLayer update the model on metadata model notify", () async {
-    expect(fragmentModel.getByName('price'), isNull);
+  test("Assert VolumeLayer update the model on metadata model notify",
+      () async {
+    expect(fragmentModel.getByName('volume'), isNull);
     marketModel.notify();
     await Future.delayed(const Duration(milliseconds: 50));
-    expect(fragmentModel.getByName('price'), isNotNull);
+    expect(fragmentModel.getByName('volume'), isNotNull);
   });
 }

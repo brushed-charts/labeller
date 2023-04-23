@@ -14,17 +14,13 @@ import 'package:grapher/pipe/pipeIn.dart';
 import 'package:grapher/subgraph/subgraph-kernel.dart';
 import 'package:grapher/tag/property.dart';
 import 'package:grapher/tag/tag.dart';
-import 'package:grapher/utils/y-virtual-range.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/grapherExtension/block_same_map.dart';
-import 'package:labelling/services/source.dart';
 import 'package:labelling/utils/map_to_stream.dart';
-import 'package:grapher/detachedPanel/align-options.dart';
-import 'package:grapher/detachedPanel/panel.dart';
 import 'package:grapher/geometry/barchart.dart';
 
-class VolumeFragment implements FragmentInterface {
-  VolumeFragment(this.name, Map<String, dynamic>? data) {
+class BarFragment implements FragmentInterface {
+  BarFragment(this.name, this.id, this._broker, Map<String, dynamic>? data) {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
@@ -34,21 +30,23 @@ class VolumeFragment implements FragmentInterface {
   GraphObject? interaction, parser, visualisation;
   @override
   final String name;
+  final String id;
+  final String _broker;
 
-  GraphObject createParser(Map jsonInput) {
+  GraphObject createParser(Map<String, dynamic> jsonInput) {
     return SubGraphKernel(
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
-                id: 'volume',
+                id: id,
                 child: Extract(
-                    options: SourceService.broker!,
+                    options: _broker,
                     child: Explode(
                         child: ToPoint2D(
                             xLabel: "datetime",
-                            yLabel: "uniform_volume",
+                            yLabel: "value",
                             child: Tag(
-                                name: '${SourceService.broker!}_volume',
+                                name: '${_broker}_$id',
                                 property: TagProperty.neutralRange,
                                 child: PipeIn(
                                     eventType: IncomingData,
@@ -58,17 +56,12 @@ class VolumeFragment implements FragmentInterface {
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: '${SourceService.broker!}_volume',
-            child: YVirtualRangeUpdate(
-                child: DetachedPanel(
-                    height: 70,
-                    vAlignment: VAlign.bottom,
-                    vBias: 3,
-                    child: DrawUnitFactory(
-                        template: DrawUnit.template(
-                            child: BarChart(
-                                paint: Paint()
-                                  ..color = const Color.fromARGB(
-                                      131, 224, 138, 32))))))));
+            tagName: '${_broker}_$id',
+            child: DrawUnitFactory(
+                template: DrawUnit.template(
+                    child: BarChart(
+                        paint: Paint()
+                          ..color =
+                              const Color.fromARGB(131, 224, 138, 32))))));
   }
 }
