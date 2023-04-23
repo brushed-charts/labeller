@@ -25,6 +25,7 @@ class LineFragment implements FragmentInterface {
   @override
   GraphObject? interaction, parser, visualisation;
   final String id;
+  @override
   final String name;
 
   GraphObject createParser(Map jsonInput) {
