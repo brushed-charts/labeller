@@ -34,7 +34,7 @@ class PriceLayer extends ChartLayerInterface {
   Future<void> updateFragmentModel() async {
     final ohlcPrice = await _getPrice();
     final fragment = CandleFragment(
-        'candle', (sourceOfChange as MarketMetadataModel).broker, ohlcPrice);
+        id, (sourceOfChange as MarketMetadataModel).broker, ohlcPrice);
     _logger.finest("Update the fragment model");
     fragmentModel.upsert(fragment);
   }

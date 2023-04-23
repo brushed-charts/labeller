@@ -31,11 +31,11 @@ void main() {
       "Check that PriceLayer update"
       "the fragment model with a Candle fragment", () async {
     await priceLayer.updateFragmentModel();
-    expect(fragmentModel.getByName('candle'), isNotNull);
-    expect(fragmentModel.getByName('candle'), isInstanceOf<CandleFragment>());
+    expect(fragmentModel.getByName('price'), isNotNull);
+    expect(fragmentModel.getByName('price'), isInstanceOf<CandleFragment>());
     // Check if parser is not null because if input map data is null
     // So the parser and visualisation are not created and are null
-    expect(fragmentModel.getByName('candle')!.parser, isNotNull);
+    expect(fragmentModel.getByName('price')!.parser, isNotNull);
   });
 
   test("Check that PriceLayer use marketQuery to get the price", () async {
