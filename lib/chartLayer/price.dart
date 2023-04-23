@@ -5,13 +5,15 @@ import 'package:labelling/model/market_metadata_model.dart';
 import 'package:labelling/query/market_query_contract.dart';
 
 class PriceLayer extends ChartLayerInterface {
-  Map<String, dynamic>? price;
   PriceLayer(MarketMetadataModel marketMetadataModel,
-      FragmentModel fragmentDepositBox, MarketQuery marketQuery)
+      FragmentModel fragmentModel, MarketQuery marketQuery)
       : super(
             sourceOfChange: marketMetadataModel,
-            fragmentDepositBox: fragmentDepositBox,
+            fragmentModel: fragmentModel,
             marketQuery: marketQuery);
+
+  @override
+  final String id = 'price';
 
   @override
   void onObservableEvent(covariant MarketMetadataModel marketModel) {
@@ -30,6 +32,6 @@ class PriceLayer extends ChartLayerInterface {
     final ohlcPrice = await _getPrice();
     final fragment = CandleFragment(
         'candle', (sourceOfChange as MarketMetadataModel).broker, ohlcPrice);
-    fragmentDepositBox.upsert(fragment);
+    fragmentModel.upsert(fragment);
   }
 }
