@@ -1,10 +1,12 @@
 import 'package:grapher/kernel/object.dart';
 import 'package:grapher/staticLayout/stack.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
+import 'package:labelling/fragment/layout/interface.dart';
 import 'package:labelling/utils/null_graph_object.dart';
 
-class ConcatFragments implements FragmentInterface {
-  ConcatFragments({List<FragmentInterface>? children})
+class StackLayoutFragment
+    implements FragmentInterface, FragmentLayoutInterface {
+  StackLayoutFragment({List<FragmentInterface>? children})
       : _fragments = children ?? [] {
     _extractSubgraphFromFragment();
     _removeNullValues();

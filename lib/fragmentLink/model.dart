@@ -1,6 +1,8 @@
 import 'fragment_link.dart';
 
 class FragmentLinkModel {
+  FragmentLinkModel(FragmentLink);
+
   final _linkList = <FragmentLink>[];
 
   void upsert(FragmentLink linkToAdd) {
@@ -11,5 +13,9 @@ class FragmentLinkModel {
 
   List<FragmentLink> getAll() {
     return _linkList;
+  }
+
+  FragmentLink? getByID(String idToRetrieve) {
+    return _linkList.where((link) => link.id == idToRetrieve).firstOrNull;
   }
 }

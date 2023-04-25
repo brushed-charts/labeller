@@ -2,7 +2,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:labelling/graphql/template.dart';
 import 'package:labelling/services/source.dart';
 
-class PriceFetcher with GQLTemplate {
+class PriceFetcher implements GQLTemplate {
   final String templateQuery = """
   query(\$sourceSelector: SourceSelector!) {
     {{alias}}: ohlc_price(sourceSelector:\$sourceSelector){

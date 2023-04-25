@@ -36,8 +36,21 @@ void main() {
 
   test(
       "Expect the LinkedFragmentModel to be able to "
-      "get a LinkedFragment bu its name",
-      () {});
+      "get a LinkedFragment with its name", () {
+    model.upsert(linkA);
+    model.upsert(linkB);
+    expect(model.getByID('linkA'), equals(linkA));
+    expect(model.getByID('linkB'), equals(linkB));
+  });
+
+  test(
+      "Expect the LinkedFragmentModel "
+      "return null when retrieving wrong ID", () {
+    expect(model.getByID('linkUnknow'), isNull); // model is empty
+    model.upsert(linkA);
+    expect(model.getByID('linkUnknow'), isNull);
+  });
+
   test(
       "Giving a resolver, expect the LinkedFragmentModel"
       "to output classic Fragment",
