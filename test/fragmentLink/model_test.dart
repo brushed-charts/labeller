@@ -1,22 +1,22 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
-import 'package:labelling/fragmentLink/fragment_link.dart';
-import 'package:labelling/fragmentLink/model.dart';
+import 'package:labelling/layout/fragment_link_tree.dart';
+import 'package:labelling/layout/fragment_link.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFragment extends Mock implements FragmentInterface {}
 
 void main() {
-  late FragmentLinkModel model;
+  late FragmentLinkTree model;
   late FragmentLink linkA, linkB, linkA2;
 
   setUp(() {
-    model = FragmentLinkModel();
+    model = FragmentLinkTree();
     linkA = FragmentLink(id: 'linkA', fragmentToLink: MockFragment());
     linkA2 = FragmentLink(id: 'linkA', fragmentToLink: MockFragment());
     linkB = FragmentLink(id: 'linkB', fragmentToLink: MockFragment());
   });
-  test("Assert LinkedFragment can be added to LinkedFragmentModel", () {
+  test("Assert LinkedFragment can be added to ChartLayoutModel", () {
     expect(model.getAll(), isEmpty);
     model.upsert(linkA);
     expect(model.getAll(), containsAll([linkA]));
@@ -25,7 +25,7 @@ void main() {
     expect(model.getAll().length, equals(2));
   });
   test(
-      "Assert in LinkedFragmentModel LinkedFragment"
+      "Assert in ChartLayoutModel LinkedFragment"
       "with the same name is replaced  ", () {
     model.upsert(linkA);
     expect(model.getAll(), equals([linkA]));
@@ -35,7 +35,7 @@ void main() {
   });
 
   test(
-      "Expect the LinkedFragmentModel to be able to "
+      "Expect the ChartLayoutModel to be able to "
       "get a LinkedFragment with its name", () {
     model.upsert(linkA);
     model.upsert(linkB);
@@ -44,7 +44,7 @@ void main() {
   });
 
   test(
-      "Expect the LinkedFragmentModel "
+      "Expect the ChartLayoutModel "
       "return null when retrieving wrong ID", () {
     expect(model.getByID('linkUnknow'), isNull); // model is empty
     model.upsert(linkA);
@@ -52,7 +52,7 @@ void main() {
   });
 
   test(
-      "Giving a resolver, expect the LinkedFragmentModel"
+      "Giving a resolver, expect the ChartLayoutModel"
       "to output classic Fragment",
       () {});
 }

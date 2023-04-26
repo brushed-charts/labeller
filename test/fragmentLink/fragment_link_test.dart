@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
-import 'package:labelling/fragmentLink/fragment_link.dart';
+import 'package:labelling/layout/fragment_link.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockFragment extends Mock implements FragmentInterface {}

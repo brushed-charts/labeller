@@ -5,7 +5,7 @@ import 'package:grapher/kernel/widget.dart';
 import 'package:grapher/reference/contract.dart';
 import 'package:labelling/fragment/fragment_interface.dart';
 import 'package:labelling/fragment/fragment_to_graph_object.dart';
-import 'package:labelling/fragment/layout/stack.dart';
+import 'package:labelling/fragment/implementation/concat.dart';
 
 import 'grapherExtension/axed_graph.dart';
 import 'grapherExtension/centered_text.dart';
@@ -37,6 +37,6 @@ class GraphViewBuilder {
             child: AxedGraph(
                 graph: FragmentToGraphObject(
                     referenceRepository: referenceRepository,
-                    fragment: StackLayoutFragment(children: children)))));
+                    fragment: ConcatFragment(children: children)))));
   }
 }

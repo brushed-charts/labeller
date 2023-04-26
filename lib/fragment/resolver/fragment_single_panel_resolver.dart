@@ -4,7 +4,7 @@ import 'package:grapher/kernel/object.dart';
 import 'package:labelling/fragment/fragment_resolver_interface.dart';
 import 'package:labelling/fragment/fragment_to_graph_object.dart';
 
-import '../layout/stack.dart';
+import '../implementation/concat.dart';
 
 class SinglePanelResolser implements FragmentResolverInterface {
   SinglePanelResolser(this.referenceRepository);
@@ -13,8 +13,7 @@ class SinglePanelResolser implements FragmentResolverInterface {
 
   @override
   GraphObject reduceToGraphObject(FragmentModel model) {
-    final concatedFragment =
-        StackLayoutFragment(children: model.getAllFragment());
+    final concatedFragment = ConcatFragment(children: model.getAllFragment());
     return FragmentToGraphObject(
       fragment: concatedFragment,
       referenceRepository: referenceRepository,
