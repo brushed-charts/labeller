@@ -7,11 +7,11 @@ import 'package:mocktail/mocktail.dart';
 class MockFragment extends Mock implements FragmentInterface {}
 
 void main() {
-  late FragmentLinkTree model;
+  late FragmentTree model;
   late FragmentLink linkA, linkB, linkA2;
 
   setUp(() {
-    model = FragmentLinkTree();
+    model = FragmentTree();
     linkA = FragmentLink(id: 'linkA', fragmentToLink: MockFragment());
     linkA2 = FragmentLink(id: 'linkA', fragmentToLink: MockFragment());
     linkB = FragmentLink(id: 'linkB', fragmentToLink: MockFragment());

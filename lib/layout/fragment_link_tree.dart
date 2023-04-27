@@ -1,6 +1,6 @@
 import 'fragment_link.dart';
 
-class FragmentLinkTree {
+class FragmentTree {
   final _linkList = <FragmentLink>[];
 
   void upsert(FragmentLink linkToAdd) {
