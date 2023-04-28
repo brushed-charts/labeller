@@ -14,12 +14,9 @@ import 'package:labelling/grapherExtension/draw_tool_propagator.dart';
 
 class FigureFragment implements FragmentInterface {
   FigureFragment(
-    this.name,
-    this.rootName,
-    this._figureStore,
-    this._referenceRepository,
-    this._figureDatabase,
-  ) : id = '${rootName}_$name' {
+      this._figureStore, this._referenceRepository, this._figureDatabase,
+      {required this.name, required this.rootName})
+      : id = '${rootName}_$name' {
     visualisation = createVisual();
   }
 

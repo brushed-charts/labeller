@@ -1,3 +1,4 @@
+import 'package:labelling/chartLayer/implementation/price.dart';
 import 'package:labelling/chartLayer/interface.dart';
 import 'package:labelling/fragment/implementation/bar.dart';
 import 'package:labelling/fragment/model/fragment_model.dart';
@@ -30,8 +31,12 @@ class VolumeLayer extends ChartLayerInterface {
 
   @override
   Future<void> updateFragmentModel() async {
-    final fragment = BarFragment(id, id,
-        (sourceOfChange as MarketMetadataModel).broker, await _fetchVolume());
+    final broker = (sourceOfChange as MarketMetadataModel).broker;
+    final fragment = BarFragment(
+        name: 'volume',
+        rootName: '${broker}_${PriceLayer.name}',
+        broker: broker,
+        data: await _fetchVolume());
     _logger.finest("Update the fragment model");
     fragmentModel.upsert(fragment);
   }

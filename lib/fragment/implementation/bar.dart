@@ -21,8 +21,12 @@ import 'package:grapher/geometry/barchart.dart';
 
 class BarFragment implements FragmentInterface {
   BarFragment(
-      this.name, this.rootName, this._broker, Map<String, dynamic>? data)
-      : id = '${_broker}_$name' {
+      {required this.name,
+      required this.rootName,
+      required String broker,
+      required Map<String, dynamic>? data})
+      : _broker = broker,
+        id = '${broker}_$name' {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();

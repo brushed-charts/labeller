@@ -16,9 +16,13 @@ import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class CandleFragment implements FragmentInterface {
-  CandleFragment(this._broker, this.rootName, Map<String, dynamic>? data)
-      : name = NAME,
-        id = '${_broker}_$NAME' {
+  CandleFragment(
+      {required this.rootName,
+      required String broker,
+      required Map<String, dynamic>? data})
+      : _broker = broker,
+        name = NAME,
+        id = '${broker}_$NAME' {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();

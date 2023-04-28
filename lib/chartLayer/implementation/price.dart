@@ -8,13 +8,15 @@ import 'package:logging/logging.dart';
 class PriceLayer extends ChartLayerInterface {
   PriceLayer(MarketMetadataModel marketMetadataModel,
       FragmentModel fragmentModel, MarketQuery marketQuery)
-      : super(
+      : id = '${marketMetadataModel.broker}_$name',
+        super(
             sourceOfChange: marketMetadataModel,
             fragmentModel: fragmentModel,
             marketQuery: marketQuery);
 
+  static const name = 'price';
   @override
-  final String id = 'price';
+  final String id;
   final _logger = Logger('PriceLayer');
 
   @override
@@ -34,7 +36,9 @@ class PriceLayer extends ChartLayerInterface {
   Future<void> updateFragmentModel() async {
     final ohlcPrice = await _getPrice();
     final fragment = CandleFragment(
-        id, (sourceOfChange as MarketMetadataModel).broker, ohlcPrice);
+        rootName: id,
+        broker: (sourceOfChange as MarketMetadataModel).broker,
+        data: ohlcPrice);
     _logger.finest("Update the fragment model");
     fragmentModel.upsert(fragment);
   }

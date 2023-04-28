@@ -14,7 +14,7 @@ abstract class ChartLayerInterface implements Observer {
   final Observable sourceOfChange;
   final FragmentModel fragmentModel;
   final MarketQuery marketQuery;
-  abstract final String id;
+  String get id;
 
   void updateFragmentModel();
 }

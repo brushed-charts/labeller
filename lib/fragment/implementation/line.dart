@@ -16,7 +16,8 @@ import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class LineFragment implements FragmentInterface {
-  LineFragment(this.name, this.rootName, Map<String, dynamic>? data)
+  LineFragment(
+      {required this.name, required this.rootName, Map<String, dynamic>? data})
       : id = '${rootName}_$name' {
     if (data == null) return;
     parser = createParser(data);
