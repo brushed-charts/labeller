@@ -23,7 +23,9 @@ import 'package:grapher/detachedPanel/panel.dart';
 import 'package:grapher/geometry/barchart.dart';
 
 class VolumeFragment implements FragmentInterface {
-  VolumeFragment(this.name, this._broker, Map<String, dynamic>? data) {
+  VolumeFragment(
+      this.name, this.rootParentName, this._broker, Map<String, dynamic>? data)
+      : id = '${_broker}_$name' {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
@@ -32,7 +34,11 @@ class VolumeFragment implements FragmentInterface {
   @override
   GraphObject? interaction, parser, visualisation;
   @override
+  final String id;
+  @override
   final String name;
+  @override
+  final String rootParentName;
   final String _broker;
 
   GraphObject createParser(Map<String, dynamic> jsonInput) {
@@ -52,7 +58,7 @@ class VolumeFragment implements FragmentInterface {
                                 property: TagProperty.neutralRange,
                                 child: PipeIn(
                                     eventType: IncomingData,
-                                    name: 'pipe_main'))))))));
+                                    name: 'pipe_main_$rootParentName'))))))));
   }
 
   GraphObject createVisual() {

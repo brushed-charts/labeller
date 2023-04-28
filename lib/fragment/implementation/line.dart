@@ -16,7 +16,8 @@ import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class LineFragment implements FragmentInterface {
-  LineFragment(this.name, this.id, Map<String, dynamic>? data) {
+  LineFragment(this.name, this.rootParentName, Map<String, dynamic>? data)
+      : id = '${rootParentName}_$name' {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
@@ -24,33 +25,36 @@ class LineFragment implements FragmentInterface {
 
   @override
   GraphObject? interaction, parser, visualisation;
-  final String id;
   @override
   final String name;
+  @override
+  final String id;
+  @override
+  final String rootParentName;
 
   GraphObject createParser(Map jsonInput) {
     return SubGraphKernel(
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
-                id: id,
+                id: name,
                 child: Extract(
-                    options: id,
+                    options: name,
                     child: Explode(
                         child: ToPoint2D(
                             xLabel: "datetime",
                             yLabel: "value",
                             child: Tag(
-                                name: id,
+                                name: name,
                                 child: PipeIn(
                                     eventType: IncomingData,
-                                    name: 'pipe_main'))))))));
+                                    name: 'pipe_main_$rootParentName'))))))));
   }
 
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: id,
+            tagName: name,
             child:
                 DrawUnitFactory(template: DrawUnit.template(child: Line()))));
   }

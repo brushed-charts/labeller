@@ -16,8 +16,7 @@ class FragmentController {
   final Logger _logger = Logger("fragment_controller");
 
   void add(FragmentInterface fragment) {
-    _logger.finest("Adding to model fragment "
-        "(${fragment.name} whith hash ${fragment.hashCode})");
+    _logger.finest("Adding to model fragment ${fragment.name}");
     _model.upsert(fragment);
   }
 

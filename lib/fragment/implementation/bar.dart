@@ -20,7 +20,9 @@ import 'package:labelling/utils/map_to_stream.dart';
 import 'package:grapher/geometry/barchart.dart';
 
 class BarFragment implements FragmentInterface {
-  BarFragment(this.name, this.id, this._broker, Map<String, dynamic>? data) {
+  BarFragment(
+      this.name, this._broker, this.rootParentName, Map<String, dynamic>? data)
+      : id = '${_broker}_$name' {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
@@ -30,7 +32,10 @@ class BarFragment implements FragmentInterface {
   GraphObject? interaction, parser, visualisation;
   @override
   final String name;
+  @override
   final String id;
+  @override
+  final String rootParentName;
   final String _broker;
 
   GraphObject createParser(Map<String, dynamic> jsonInput) {
@@ -46,17 +51,17 @@ class BarFragment implements FragmentInterface {
                             xLabel: "datetime",
                             yLabel: "value",
                             child: Tag(
-                                name: '${_broker}_$id',
+                                name: id,
                                 property: TagProperty.neutralRange,
                                 child: PipeIn(
                                     eventType: IncomingData,
-                                    name: 'pipe_main'))))))));
+                                    name: 'pipe_main_$rootParentName'))))))));
   }
 
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: '${_broker}_$id',
+            tagName: id,
             child: DrawUnitFactory(
                 template: DrawUnit.template(
                     child: BarChart(

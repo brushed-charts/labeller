@@ -16,24 +16,33 @@ import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class CandleFragment implements FragmentInterface {
-  CandleFragment(this.name, this._broker, Map<String, dynamic>? data) {
+  CandleFragment(this._broker, this.rootParentName, Map<String, dynamic>? data)
+      : name = NAME,
+        id = '${_broker}_$NAME' {
     if (data == null) return;
     parser = createParser(data);
     visualisation = createVisual();
   }
 
+  // ignore: constant_identifier_names
+  static const String NAME = 'candle';
+
   @override
   GraphObject? interaction, parser, visualisation;
+  final String _broker;
   @override
   final String name;
-  final String _broker;
+  @override
+  final String id;
+  @override
+  final String rootParentName;
 
   GraphObject createParser(Map<String, dynamic> jsonInput) {
     return SubGraphKernel(
         child: DataInjector(
             stream: mapToStream(jsonInput),
             child: BlockAlreadyReceivedMap(
-                id: 'price',
+                id: id,
                 child: Extract(
                     options: _broker,
                     child: Explode(
@@ -41,16 +50,16 @@ class CandleFragment implements FragmentInterface {
                             xLabel: "datetime",
                             yLabel: "price",
                             child: Tag(
-                                name: '${_broker}_price',
+                                name: id,
                                 child: PipeIn(
                                     eventType: IncomingData,
-                                    name: 'pipe_main'))))))));
+                                    name: 'pipe_main_$rootParentName'))))))));
   }
 
   GraphObject createVisual() {
     return SubGraphKernel(
         child: UnpackFromViewEvent(
-            tagName: '${_broker}_price',
+            tagName: id,
             child: DrawUnitFactory(
                 template: DrawUnit.template(child: Candlestick()))));
   }
