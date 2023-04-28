@@ -21,7 +21,7 @@ import 'package:grapher/geometry/barchart.dart';
 
 class BarFragment implements FragmentInterface {
   BarFragment(
-      this.name, this._broker, this.rootParentName, Map<String, dynamic>? data)
+      this.name, this.rootName, this._broker, Map<String, dynamic>? data)
       : id = '${_broker}_$name' {
     if (data == null) return;
     parser = createParser(data);
@@ -35,7 +35,7 @@ class BarFragment implements FragmentInterface {
   @override
   final String id;
   @override
-  final String rootParentName;
+  final String rootName;
   final String _broker;
 
   GraphObject createParser(Map<String, dynamic> jsonInput) {
@@ -55,7 +55,7 @@ class BarFragment implements FragmentInterface {
                                 property: TagProperty.neutralRange,
                                 child: PipeIn(
                                     eventType: IncomingData,
-                                    name: 'pipe_main_$rootParentName'))))))));
+                                    name: 'pipe_main_$rootName'))))))));
   }
 
   GraphObject createVisual() {

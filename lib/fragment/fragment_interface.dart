@@ -4,7 +4,7 @@ abstract class FragmentInterface {
   GraphObject? parser;
   GraphObject? visualisation;
   GraphObject? interaction;
-  abstract final String rootParentName;
+  abstract final String rootName;
   abstract final String name;
   abstract final String id;
 }

@@ -16,7 +16,7 @@ import 'package:labelling/grapherExtension/block_same_map.dart';
 import 'package:labelling/utils/map_to_stream.dart';
 
 class CandleFragment implements FragmentInterface {
-  CandleFragment(this._broker, this.rootParentName, Map<String, dynamic>? data)
+  CandleFragment(this._broker, this.rootName, Map<String, dynamic>? data)
       : name = NAME,
         id = '${_broker}_$NAME' {
     if (data == null) return;
@@ -35,7 +35,7 @@ class CandleFragment implements FragmentInterface {
   @override
   final String id;
   @override
-  final String rootParentName;
+  final String rootName;
 
   GraphObject createParser(Map<String, dynamic> jsonInput) {
     return SubGraphKernel(
@@ -53,7 +53,7 @@ class CandleFragment implements FragmentInterface {
                                 name: id,
                                 child: PipeIn(
                                     eventType: IncomingData,
-                                    name: 'pipe_main_$rootParentName'))))))));
+                                    name: 'pipe_main_$rootName'))))))));
   }
 
   GraphObject createVisual() {

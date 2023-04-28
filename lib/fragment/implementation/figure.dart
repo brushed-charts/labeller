@@ -15,11 +15,11 @@ import 'package:labelling/grapherExtension/draw_tool_propagator.dart';
 class FigureFragment implements FragmentInterface {
   FigureFragment(
     this.name,
-    this.rootParentName,
+    this.rootName,
     this._figureStore,
     this._referenceRepository,
     this._figureDatabase,
-  ) : id = '${rootParentName}_$name' {
+  ) : id = '${rootName}_$name' {
     visualisation = createVisual();
   }
 
@@ -28,7 +28,7 @@ class FigureFragment implements FragmentInterface {
   @override
   final String name;
   @override
-  final String rootParentName;
+  final String rootName;
   final FigureStore _figureStore;
   final ReferenceRepositoryInterface _referenceRepository;
   final FigureDatabaseInterface _figureDatabase;
@@ -54,7 +54,7 @@ class FigureFragment implements FragmentInterface {
                     interaction: UserInteraction(
                         store: _figureStore,
                         refPointerBypass: ReferenceReader(
-                            refName: "pointer_bypass_$rootParentName",
+                            refName: "pointer_bypass_$rootName",
                             repository: _referenceRepository),
                         figureDatabase: _figureDatabase),
                     store: _figureStore,

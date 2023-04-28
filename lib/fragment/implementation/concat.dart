@@ -5,8 +5,7 @@ import 'package:labelling/utils/null_graph_object.dart';
 import 'package:uuid/uuid.dart';
 
 class ConcatFragment implements FragmentInterface {
-  ConcatFragment(
-      {required this.rootParentName, List<FragmentInterface>? children})
+  ConcatFragment({required this.rootName, List<FragmentInterface>? children})
       : _fragments = children ?? [] {
     _extractSubgraphFromFragment();
     _removeNullValues();
@@ -20,7 +19,7 @@ class ConcatFragment implements FragmentInterface {
   @override
   final String name = 'concat';
   @override
-  final String rootParentName;
+  final String rootName;
 
   final List<FragmentInterface> _fragments;
   final _parserList = <GraphObject?>[];
