@@ -16,4 +16,8 @@ class FragmentTree {
   FragmentLink? getByID(String idToRetrieve) {
     return _linkList.where((link) => link.id == idToRetrieve).firstOrNull;
   }
+
+  Iterable<FragmentLink> getRoots() {
+    return _linkList.where((element) => element.parentID == null);
+  }
 }

@@ -8,13 +8,15 @@ class MockFragment extends Mock implements FragmentInterface {}
 
 void main() {
   late FragmentTree model;
-  late FragmentLink linkA, linkB, linkA2;
+  late FragmentLink linkA, linkB, linkA2, linkC, linkD;
 
   setUp(() {
     model = FragmentTree();
     linkA = FragmentLink(id: 'linkA', fragmentToLink: MockFragment());
     linkA2 = FragmentLink(id: 'linkA', fragmentToLink: MockFragment());
     linkB = FragmentLink(id: 'linkB', fragmentToLink: MockFragment());
+    linkC = FragmentLink(id: 'linkC', fragmentToLink: MockFragment());
+    linkD = FragmentLink(id: 'linkD', fragmentToLink: MockFragment());
   });
   test("Assert LinkedFragment can be added to ChartLayoutModel", () {
     expect(model.getAll(), isEmpty);
@@ -52,7 +54,14 @@ void main() {
   });
 
   test(
-      "Giving a resolver, expect the ChartLayoutModel"
-      "to output classic Fragment",
-      () {});
+      "Expect getRoots from FragmentTree to return "
+      "fragmentLink without parents", () {
+    model.upsert(linkA);
+    model.upsert(linkB);
+    model.upsert(linkC);
+    model.upsert(linkD);
+    linkB.linkToParent(linkA);
+    linkC.linkToParent(linkB);
+    expect(model.getRoots(), equals([linkA, linkD]));
+  });
 }
